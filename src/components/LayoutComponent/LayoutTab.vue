@@ -8,6 +8,7 @@ export default {
 import { ref } from "vue";
 import { useRoute } from "vue-router";
 const route = useRoute();
+import { tabStore } from "@/store/index.js";
 
 const tabList = ref([
   {
@@ -77,7 +78,7 @@ const dropMenu = ref([
 ]);
 
 function handleClick(tab) {
-  console.log(tab, "tab");
+  tabStore().addTab(tab);
 }
 
 function handleCommand(command, tab) {
