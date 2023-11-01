@@ -1,0 +1,40 @@
+{
+  "name": "first-vite-app",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext .vue,.js,.ts,.jsx,.tsx --fix"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.1.0",
+    "crypto-js": "^4.2.0",
+    "element-plus": "^2.3.12",
+    "lodash": "^4.17.21",
+    "rgbaster": "^2.1.1",
+    "v-route-generate": "^1.0.4",
+    "vue": "^3.3.4",
+    "vue-router": "4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.5.7",
+    "@vitejs/plugin-vue": "^4.2.3",
+    "@vitejs/plugin-vue-jsx": "^3.0.2",
+    "eslint": "^8.52.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "eslint-plugin-vue": "^9.18.1",
+    "prettier": "^3.0.3",
+    "sass": "^1.66.1",
+    "unplugin-auto-import": "^0.16.6",
+    "unplugin-vue-components": "^0.25.2",
+    "unplugin-vue-define-options": "^1.3.17",
+    "vite": "^4.4.5",
+    "vite-plugin-turbo-console": "^0.0.9",
+    "vite-plugin-vue-inspector": "^3.6.0",
+    "vite-plugin-vue-setup-extend": "^0.4.0"
+  }
+}

@@ -1,0 +1,20 @@
+.tab-drop-popper {
+  border-color: rgba(50, 62, 82) !important;
+  background-color: rgba(50, 62, 82) !important;
+  box-shadow: rgba(0,0,0,0.1) 0px 5px 5px;
+  .el-dropdown-menu {
+    background-color: rgba(50, 62, 82);
+    &__item {
+      color: #fff;
+      &:hover {
+        background-color: rgba($color: #000, $alpha: 0.3);
+      }
+    }
+  }
+  .el-popper__arrow {
+    &:before {
+      border-color: rgba(50, 62, 82) !important;
+      background-color: rgba(50, 62, 82) !important;
+    }
+  }
+}
