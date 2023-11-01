@@ -1,4 +1,4 @@
-import Layout from "@/view/layout-page/index.vue";
+import Layout from "@/views/layout-page/index.vue";
 import website from "@/config/website.js";
 
 // 未配置在菜单中的视图页面
@@ -14,12 +14,12 @@ export default [
         meta: {
           isTab: true,
         },
-        component: () => import("@/view/index-page/index.vue"),
+        component: () => import("@/views/index-page/index.vue"),
       },
       {
         path: "menu",
         name: "MenuPage",
-        component: () => import("@/view/menu-page/index.vue"),
+        component: () => import("@/views/menu-page/index.vue"),
       },
       {
         path: "sys/menu/index",
@@ -27,7 +27,7 @@ export default [
         meta: {
           title: "菜单管理",
         },
-        component: () => import("@/view/sys/menu/index.vue"),
+        component: () => import("@/views/sys/menu/index.vue"),
       },
     ],
   },

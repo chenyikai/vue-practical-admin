@@ -14,7 +14,7 @@ export default defineConfig(({ mode }) => {
   // eslint-disable-next-line no-undef
   const env = loadEnv(mode, process.cwd(), "");
   return {
-    publicDir: env.VITE_API_PREFIX,
+    // publicDir: env.VITE_API_PREFIX,
     plugins: [
       vue(),
       vueJsx({}),
