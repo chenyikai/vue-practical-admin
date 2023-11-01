@@ -1,0 +1,126 @@
+.login-page {
+  width: 100%;
+  min-height: 100vh;
+  background-image: url("@/assets/images/login/bg04.jpg");
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  padding: 50px 0;
+
+  .animation-content {
+    max-width: 1000px;
+    width: 90%;
+    min-height: 400px;
+    height: 80vh;
+    max-height: 500px;
+  }
+
+  .login-content {
+    width: 100%;
+    height: 100%;
+    background-color: rgba($color: #FFFFFF, $alpha: 1);
+    margin: 0 auto;
+    border-radius: 5px;
+    display: flex;
+  }
+
+  .illustration-layout,
+  .form-content {
+    padding: 30px;
+  }
+
+  .illustration-layout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+
+    img {
+      width: 300px;
+    }
+  }
+
+  .form-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    .login-content-title {
+      text-align: center;
+      font-family: "ZhanKuIiterature";
+      font-size: 30px;
+      line-height: 45px;
+      margin-bottom: 50px;
+    }
+  }
+
+  .login-content-form {
+    width: 90%;
+    margin: 0 auto;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .el-form {
+      width: 90%;
+
+      .el-input-group__append {
+        padding: 0;
+        border-radius: 0 4px 4px 0;
+
+        img {
+          display: block;
+          height: 38px;
+        }
+      }
+    }
+
+    .login-button {
+      width: 100%;
+    }
+  }
+
+  .login-content-footer {
+    max-height: 50px;
+    flex: 1;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .login-page {
+    .illustration-layout {
+      display: none;
+    }
+
+    .form-content {
+      background-image: url("~@/assets/images/login/illustration.png");
+      background-size: 100%;
+      background-repeat: no-repeat;
+      background-position: center bottom;
+    }
+  }
+}
+
+@media screen and (max-width: 411px) {
+  .login-page {
+    padding: 0;
+
+    .animation-content {
+      height: calc(100vh - 50px);
+      max-height: 100%;
+    }
+
+    .form-content {
+      flex: 1;
+    }
+
+    .login-content-footer {
+      flex: 1;
+      max-height: none;
+    }
+  }
+}
