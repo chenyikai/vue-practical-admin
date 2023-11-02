@@ -1,11 +1,11 @@
-import Layout from "@/views/layout-page/index.vue";
+import Layout from "@/pages/Layout/index.vue";
 import website from "@/config/website.js";
 
 // 未配置在菜单中的视图页面
 export default [
   {
     path: "/",
-    name: "首页",
+    name: "Layout",
     component: Layout,
     children: [
       {
@@ -17,17 +17,9 @@ export default [
         component: () => import("@/views/index-page/index.vue"),
       },
       {
-        path: "menu",
+        path: "menu/:id",
         name: "MenuPage",
         component: () => import("@/views/menu-page/index.vue"),
-      },
-      {
-        path: "sys/menu/index",
-        name: "SystemMenu",
-        meta: {
-          title: "菜单管理",
-        },
-        component: () => import("@/views/sys/menu/index.vue"),
       },
     ],
   },
@@ -40,7 +32,7 @@ export default [
   //       path: ":routerPath",
   //       name: "iframe",
   //       component: () =>
-  //         import(/* webpackChunkName: "page" */ "@/page/Layout/iframe.vue"),
+  //         import(/* webpackChunkName: "pages" */ "@/pages/Layout/iframe.vue"),
   //       props: true,
   //     },
   //   ],
@@ -53,6 +45,6 @@ export default [
   //     isAuth: false,
   //   },
   //   component: () =>
-  //     import(/* webpackChunkName: "error-page" */ "@/page/ErrorPage/404.vue"),
+  //     import(/* webpackChunkName: "error-pages" */ "@/pages/ErrorPage/404.vue"),
   // },
 ];

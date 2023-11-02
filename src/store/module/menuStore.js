@@ -10,14 +10,22 @@ const menuStore = defineStore("menu", {
   actions: {
     setMenu(val) {
       this.menuList = val;
-      console.log(this.menuList, "menuList");
     },
     getSecondMenu(id) {
-      const menu = this.menuList.find((item) => item.id === id);
-      if (menu) {
-        return menu["children"] || [];
-      }
+      const menu = this.menuList.find(
+        (item) => String(item["id"]) === String(id),
+      );
+      return menu ? menu["children"] : [];
     },
+  },
+  persist: {
+    enabled: true,
+    // strategies: [
+    //   {
+    //     storage: "localStorage",
+    //     key: website.storageKey,
+    //   },
+    // ],
   },
 });
 

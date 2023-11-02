@@ -28,11 +28,14 @@ const tabStore = defineStore("tab", {
     };
   },
   actions: {
-    addTab(data) {
+    add(data) {
       this.tab = data;
       if (this.tabList.some((ele) => diff(ele, data))) return;
       this.tabList.push(data);
       setFistTag(this.tabList);
+    },
+    delete(data) {
+      console.log(data, "delete");
     },
   },
   persist: {

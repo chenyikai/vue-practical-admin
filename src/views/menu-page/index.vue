@@ -5,54 +5,19 @@ export default {
 </script>
 
 <script setup>
+import website from "@/config/website.js";
 import analyze from "rgbaster";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { menuStore } from "@/store/index.js";
 const route = useRoute();
 const router = useRouter();
+const menuList = ref([]);
+const menuProps = computed(() => website.menu.props);
 onMounted(() => {
-  console.log(route.params.menu);
+  menuList.value = menuStore().getSecondMenu(route.params["id"]);
   setColor();
 });
-
-const menuList = ref([
-  {
-    id: 11,
-    label: "菜单管理",
-    icon: "menu.svg",
-    url: "/sys/menu/index",
-    bgColor: null,
-    children: [],
-  },
-  {
-    id: 12,
-    label: "字典管理",
-    icon: "dict.svg",
-    bgColor: null,
-    children: [],
-  },
-  {
-    id: 13,
-    label: "用户管理",
-    icon: "user.svg",
-    bgColor: null,
-    children: [],
-  },
-  {
-    id: 14,
-    label: "权限管理",
-    icon: "limit.svg",
-    bgColor: null,
-    children: [],
-  },
-  {
-    id: 15,
-    label: "角色管理",
-    icon: "role.svg",
-    bgColor: null,
-    children: [],
-  },
-]);
 
 function setColor() {
   menuList.value.forEach((item) => {
@@ -63,7 +28,8 @@ function setColor() {
 }
 
 function handleClick(menu) {
-  router.push({ path: menu.url });
+  const path = website.menu.props.path;
+  router.push({ path: menu[path] });
 }
 </script>
 
@@ -77,8 +43,8 @@ function handleClick(menu) {
       <div
         class="icon-layout"
         :style="{ backgroundColor: menu['bgColor'] }"></div>
-      <img :src="menu.icon" alt="" />
-      <span class="label">{{ menu.label }}</span>
+      <img :src="menu[menuProps['icon']]" alt="" />
+      <span class="label">{{ menu[menuProps["label"]] }}</span>
     </div>
   </div>
 </template>

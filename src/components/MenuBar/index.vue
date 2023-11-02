@@ -5,13 +5,16 @@ export default {
 </script>
 
 <script setup>
+import website from "@/config/website.js";
+import { computed } from "vue";
 import { menuStore } from "@/store/index.js";
 import { useRouter } from "vue-router";
 const router = useRouter();
+const menuProps = computed(() => website.menu.props);
 
 function handleClick(menu) {
   if (menu.children.length !== 0) {
-    router.push({ name: "MenuPage", params: { menu: menu["id"] } });
+    router.push({ name: "MenuPage", params: { id: menu["id"] } });
   } else {
     console.log(menu, "直接跳转");
   }
@@ -25,8 +28,8 @@ function handleClick(menu) {
       v-for="menu in menuStore().menuList"
       :key="menu.id"
       @click="handleClick(menu)">
-      <img class="icon" :src="menu.icon" alt="" />
-      <span class="title">{{ menu.label }}</span>
+      <img class="icon" :src="menu[menuProps['icon']]" alt="" />
+      <span class="title">{{ menu[menuProps["label"]] }}</span>
     </div>
   </div>
 </template>

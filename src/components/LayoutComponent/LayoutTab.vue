@@ -78,7 +78,7 @@ const dropMenu = ref([
 ]);
 
 function handleClick(tab) {
-  tabStore().addTab(tab);
+  tabStore().add(tab);
 }
 
 function handleCommand(command, tab) {
