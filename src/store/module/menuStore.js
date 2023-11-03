@@ -1,14 +1,16 @@
 import { defineStore } from "pinia";
+import { getStore, setStore } from "@/utils/store.js";
 
 const menuStore = defineStore("menu", {
   state: () => {
     return {
-      menuList: [],
+      menuList: getStore({ name: "menu" }) || [],
       secondaryMenu: {},
     };
   },
   actions: {
     setMenu(val) {
+      setStore({ name: "menu", content: val });
       this.menuList = val;
     },
     getSecondMenu(id) {

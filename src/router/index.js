@@ -3,6 +3,7 @@ import views from "./views/index.js";
 import pages from "./page/index.js";
 import website from "@/config/website.js";
 import { menuStore } from "@/store/index.js";
+import { getStore } from "@/utils/store.js";
 
 const router = createRouter({
   // 4. 内部提供了 history 模式的实现。为了简单起见，我们在这里使用 hash 模式。
@@ -102,6 +103,6 @@ export function addRoute(aMenu = [], first) {
   }
 }
 
-addRoute(menuStore["menuList"], true);
+addRoute(menuStore["menuList"] || getStore({ name: "menu" }), true);
 
 export default router;

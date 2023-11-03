@@ -11,8 +11,6 @@ import LayoutHeader from "@/components/LayoutComponent/LayoutHeader.vue";
 import LayoutTab from "@/components/LayoutComponent/LayoutTab.vue";
 import { menuStore } from "@/store/index.js";
 import { addRoute } from "@/router/index.js";
-import { useRouter } from "vue-router";
-const router = useRouter();
 
 onBeforeMount(() => {
   initMenu().then((menu) => {
