@@ -60,8 +60,7 @@ export function addRoute(aMenu = [], first) {
         }
       })(),
       name,
-      icon,
-      meta,
+      meta: { ...meta, icon },
       query,
       redirect: (() => {
         if (!isChild && first) return `${path}`;
@@ -80,9 +79,8 @@ export function addRoute(aMenu = [], first) {
               return [
                 {
                   component: result,
-                  icon: icon,
                   name: name,
-                  meta: meta,
+                  meta: { ...meta, icon },
                   query: query,
                   path: "",
                 },
@@ -104,5 +102,27 @@ export function addRoute(aMenu = [], first) {
 }
 
 addRoute(menuStore["menuList"] || getStore({ name: "menu" }), true);
+
+export function setTitle(title) {
+  title = title ? `${title}-${website.title}` : website.title;
+  document.title = title;
+}
+
+function objToform(obj) {
+  const result = [];
+  Object.keys(obj).forEach((ele) => {
+    result.push(`${ele}=${obj[ele]}`);
+  });
+  return result.join("&");
+}
+
+export function getPath(params) {
+  const { src } = params;
+  let result = src || "/";
+  if (isURL(src)) {
+    result = `/myiframe/urlPath?${objToform(params)}`;
+  }
+  return result;
+}
 
 export default router;

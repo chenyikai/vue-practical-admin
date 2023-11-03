@@ -17,7 +17,7 @@ export default [
         component: () => import("@/views/index-page/index.vue"),
       },
       {
-        path: "menu/:id",
+        path: "menu",
         name: "MenuPage",
         component: () => import("@/views/menu-page/index.vue"),
       },

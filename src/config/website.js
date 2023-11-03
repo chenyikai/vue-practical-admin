@@ -4,6 +4,7 @@ export default {
   indexPage: "/wel/index", // 项目首页地址
   indexTitle: "翱晨科技", // 项目首页菜单上方显示的名称
   logo: `${import.meta.env.BASE_URL}vite.svg`, // 项目或企业LOGO
+  defaultTabIcon: `${import.meta.env.BASE_URL}tab.svg`, // 项目或企业LOGO
   // defaultAvatar: `${import.meta.env.BASE_URL}images/default-avatar.jpg`, // 默认用户头像
   iv: "aochendemo@12345", // 加密偏移值
   fistPage: {

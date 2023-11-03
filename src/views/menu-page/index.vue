@@ -15,7 +15,7 @@ const router = useRouter();
 const menuList = ref([]);
 const menuProps = computed(() => website.menu.props);
 onMounted(() => {
-  menuList.value = menuStore().getSecondMenu(route.params["id"]);
+  menuList.value = menuStore().getSecondMenu(route.query["id"]);
   setColor();
 });
 

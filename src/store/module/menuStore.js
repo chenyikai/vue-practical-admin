@@ -19,15 +19,10 @@ const menuStore = defineStore("menu", {
       );
       return menu ? menu["children"] : [];
     },
-  },
-  persist: {
-    enabled: true,
-    // strategies: [
-    //   {
-    //     storage: "localStorage",
-    //     key: website.storageKey,
-    //   },
-    // ],
+    deleteAll() {
+      this.menuList = [];
+      setStore({ name: "menu", content: [] });
+    },
   },
 });
 

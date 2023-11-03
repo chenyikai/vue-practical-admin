@@ -4,7 +4,19 @@ export default {
 };
 </script>
 
-<script setup></script>
+<script setup>
+import { userStore } from "@/store/index.js";
+import { useRouter } from "vue-router";
+const rouer = useRouter();
+
+function handleOut() {
+  userStore()
+    .fedLogOut()
+    .then(() => {
+      rouer.push({ path: "/login" });
+    });
+}
+</script>
 
 <template>
   <div class="layout-header-container">
@@ -16,7 +28,7 @@ export default {
       </div>
       <span class="system-title">后台管理系统</span>
     </div>
-    <div class="user-info">用户信息</div>
+    <div class="user-info" @click="handleOut">用户信息</div>
   </div>
 </template>
 

@@ -14,7 +14,14 @@ const menuProps = computed(() => website.menu.props);
 
 function handleClick(menu) {
   if (menu.children.length !== 0) {
-    router.push({ name: "MenuPage", params: { id: menu["id"] } });
+    router.push({
+      name: "MenuPage",
+      query: {
+        id: menu["id"],
+        name: `${menu["menuName"]}-菜单选择`,
+        icon: menu["icon"],
+      },
+    });
   } else {
     console.log(menu, "直接跳转");
   }
