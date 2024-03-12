@@ -9,7 +9,7 @@ import website from "@/config/website.js";
 import analyze from "rgbaster";
 import { readonly, watch, ref, onBeforeMount } from "vue";
 import { go2MenuPage } from "@/router/index.js";
-import { menuStore, tabStore } from "@/store/index.js";
+import { menuStore } from "@/store/index.js";
 import { useRoute } from "vue-router";
 const route = useRoute();
 
