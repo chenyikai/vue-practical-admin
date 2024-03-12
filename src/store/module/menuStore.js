@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
 import { getStore, setStore } from "@/utils/store.js";
+import website from "@/config/website.js";
+const { children } = website.menu.props;
 
 const menuStore = defineStore("menu", {
   state: () => {
@@ -13,11 +15,24 @@ const menuStore = defineStore("menu", {
       setStore({ name: "menu", content: val });
       this.menuList = val;
     },
-    getSecondMenu(id) {
-      const menu = this.menuList.find(
-        (item) => String(item["id"]) === String(id),
-      );
-      return menu ? menu["children"] : [];
+    getMenu(id) {
+      const loop = (menuData) => {
+        for (const menuDatum of menuData) {
+          if (String(menuDatum["id"]) === String(id)) {
+            return menuDatum;
+          }
+
+          if (Array.isArray(menuDatum[children])) {
+            return loop(menuDatum[children]);
+          }
+        }
+      };
+
+      return loop(this.menuList);
+    },
+    getNextLevelMenu(id) {
+      const menu = this.getMenu(id);
+      return menu ? menu[children] : [];
     },
     deleteAll() {
       this.menuList = [];

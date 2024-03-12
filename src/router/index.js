@@ -125,4 +125,20 @@ export function getPath(params) {
   return result;
 }
 
+export function go2MenuPage(menu) {
+  if (menu.children.length !== 0) {
+    router.push({
+      name: "MenuPage",
+      params: {
+        name: menu["menuName"],
+      },
+      query: { id: menu["id"] },
+    });
+    menuStore().setActiveMenuPage(menu);
+  } else {
+    const path = website.menu.props.path;
+    router.push({ path: menu[path] });
+  }
+}
+
 export default router;

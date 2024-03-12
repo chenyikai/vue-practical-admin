@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { diff } from "@/utils/util.js";
 import website from "@/config/website.js";
 import { getStore, setStore } from "@/utils/store.js";
+import { menuStore } from "@/store/index.js";
 
 const isFirstPage = website.isFirstPage;
 const tagWel = website.fistPage;
@@ -42,10 +43,18 @@ const tabStore = defineStore("tab", {
       const flag =
         this.tabList.findIndex((item) => item.value === data.value) === -1;
       if (!flag) return;
+
+      if (data.label === "MenuPage") {
+        const menu = menuStore().getMenu(data.query.id);
+        const { label, icon } = website.menu.props;
+        data.label = menu[label];
+        data.icon = menu[icon];
+      }
       this.tabList.push(data);
       setFistTag(this.tabList);
       setStore({ name: "tabList", content: this.tabList });
     },
+    edit() {},
     delete(data) {
       this.tabList = this.tabList.filter((item) => {
         return !diff(item, data);

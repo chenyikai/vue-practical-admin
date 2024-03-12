@@ -18,31 +18,26 @@ const dropMenu = ref([
     id: 1,
     command: "close",
     label: "关闭标签页",
-    onClick: () => {},
   },
   {
     id: 2,
     command: "refresh",
     label: "刷新标签页",
-    onClick: () => {},
   },
   {
     id: 3,
     command: "close-others",
     label: "关闭其他标签页",
-    onClick: () => {},
   },
   {
     id: 4,
     command: "close-all",
     label: "关闭所有标签页",
-    onClick: () => {},
   },
   {
     id: 5,
     command: "close-right",
     label: "关闭右侧标签页",
-    onClick: () => {},
   },
 ]);
 
@@ -63,6 +58,10 @@ function handleClick(val) {
   );
   router.push({ path, query: tab.query });
 }
+
+function handleCommand(tab) {
+  console.log(tab, "command");
+}
 </script>
 
 <template>
@@ -72,7 +71,7 @@ function handleClick(val) {
       popper-class="tab-drop-popper"
       v-for="tab in tabStore()['tabList']"
       :key="tab.id"
-      @command="tab.onClick($event, tab)">
+      @command="handleCommand">
       <div
         class="tab"
         :class="{ active: route.fullPath === tab['value'] }"
@@ -87,7 +86,7 @@ function handleClick(val) {
           <el-dropdown-item
             v-for="item in dropMenu"
             :key="item.id"
-            :command="item['command']"
+            :command="{ ...tab, command: item['command'] }"
             >{{ item["label"] }}</el-dropdown-item
           >
         </el-dropdown-menu>

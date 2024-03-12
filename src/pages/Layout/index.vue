@@ -33,7 +33,15 @@ function initMenu() {
             menuName: "菜单管理",
             icon: "menu.svg",
             path: "/sys/menu/index",
-            children: [],
+            children: [
+              {
+                id: 112,
+                menuName: "菜单管理",
+                icon: "menu.svg",
+                path: "/sys/menu/child/index",
+                children: [],
+              },
+            ],
           },
           {
             id: 12,

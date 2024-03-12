@@ -19,7 +19,7 @@ export function validateURL(textval) {
  */
 export function isEmail(s) {
   return /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((.[a-zA-Z0-9_-]{2,3}){1,2})$/.test(
-    s
+    s,
   );
 }
 
@@ -242,28 +242,15 @@ export function validatenumord(num, type) {
  * 判断是否为空
  */
 export function validatenull(val) {
-  if (typeof val === "boolean") {
+  if (["boolean", "number"].includes(typeof val)) {
     return false;
-  }
-  if (typeof val === "number") {
-    return false;
-  }
-  if (val instanceof Array) {
-    if (val.length === 0) return true;
+  } else if (val instanceof Array) {
+    return val.length === 0;
   } else if (val instanceof Object) {
-    if (JSON.stringify(val) === "{}") return true;
+    return JSON.stringify(val) === "{}";
   } else {
-    if (
-      val === "null" ||
-      val === null ||
-      val === "undefined" ||
-      val === undefined ||
-      val === ""
-    )
-      return true;
-    return false;
+    return ["null", null, undefined, "undefined", ""].includes(val);
   }
-  return false;
 }
 
 /**

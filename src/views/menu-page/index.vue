@@ -7,17 +7,35 @@ export default {
 <script setup>
 import website from "@/config/website.js";
 import analyze from "rgbaster";
-import { computed, onMounted, ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { menuStore } from "@/store/index.js";
+import { readonly, watch, ref, onBeforeMount } from "vue";
+import { go2MenuPage } from "@/router/index.js";
+import { menuStore, tabStore } from "@/store/index.js";
+import { useRoute } from "vue-router";
 const route = useRoute();
-const router = useRouter();
+
+const menuProps = readonly(website.menu.props);
 const menuList = ref([]);
-const menuProps = computed(() => website.menu.props);
-onMounted(() => {
-  menuList.value = menuStore().getSecondMenu(route.query["id"]);
-  setColor();
+
+watch(
+  route,
+  () => {
+    init();
+  },
+  {
+    deep: true,
+  },
+);
+
+onBeforeMount(() => {
+  init();
 });
+
+function init() {
+  menuList.value = menuStore().getMenu(route.query["id"])[
+    menuProps["children"]
+  ];
+  setColor();
+}
 
 function setColor() {
   menuList.value.forEach((item) => {
@@ -28,8 +46,7 @@ function setColor() {
 }
 
 function handleClick(menu) {
-  const path = website.menu.props.path;
-  router.push({ path: menu[path] });
+  go2MenuPage(menu);
 }
 </script>
 

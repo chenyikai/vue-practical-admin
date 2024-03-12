@@ -8,7 +8,6 @@ import { userStore } from "@/store/index.js";
 import { validatenull } from "@/utils/validate.js";
 
 router.beforeEach((to, from, next) => {
-  console.log(to, "to");
   // 缓冲设置
   if (
     to.meta.keepAlive === 0 &&
@@ -42,11 +41,11 @@ router.beforeEach((to, from, next) => {
               !validatenull(label)
             ) {
               tabStore().add({
-                label: label,
-                value: value,
+                label,
+                value,
                 params: to.params,
                 query: to.query,
-                meta: meta,
+                meta,
                 icon,
               });
             }
@@ -70,11 +69,11 @@ router.beforeEach((to, from, next) => {
           !validatenull(label)
         ) {
           tabStore().add({
-            label: label,
-            value: value,
+            label,
+            value,
             params: to.params,
             query: to.query,
-            meta: meta,
+            meta,
             icon,
           });
         } else {
