@@ -56,17 +56,19 @@ export function loadStyle(url) {
  */
 export function diff(obj1, obj2) {
   delete obj1.close;
-  var o1 = obj1 instanceof Object;
-  var o2 = obj2 instanceof Object;
+  delete obj2.command;
+
+  let o1 = obj1 instanceof Object;
+  let o2 = obj2 instanceof Object;
   if (!o1 || !o2) {
     return obj1 === obj2;
   }
   if (Object.keys(obj1).length !== Object.keys(obj2).length) {
     return false;
   }
-  for (var attr in obj1) {
-    var t1 = obj1[attr] instanceof Object;
-    var t2 = obj2[attr] instanceof Object;
+  for (let attr in obj1) {
+    let t1 = obj1[attr] instanceof Object;
+    let t2 = obj2[attr] instanceof Object;
     if (t1 && t2) {
       return diff(obj1[attr], obj2[attr]);
     } else if (obj1[attr] !== obj2[attr]) {

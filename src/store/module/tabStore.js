@@ -1,10 +1,9 @@
 import { defineStore } from "pinia";
-import { diff } from "@/utils/util.js";
 import website from "@/config/website.js";
 import { getStore, setStore } from "@/utils/store.js";
 import { menuStore } from "@/store/index.js";
 
-const isFirstPage = website.isFirstPage;
+// const isFirstPage = website.isFirstPage;
 const tagWel = website.fistPage;
 const tagObj = {
   label: "", // 标题名称
@@ -14,17 +13,6 @@ const tagObj = {
   meta: {}, // 额外参数
   icon: "", // 图标
 };
-
-// 处理首个标签
-function setFistTag(list) {
-  if (list.length === 1) {
-    list[0].close = false;
-  } else {
-    list.forEach((ele) => {
-      ele.close = !(ele.value === tagWel.value && isFirstPage === false);
-    });
-  }
-}
 
 const tabStore = defineStore("tab", {
   state: () => {
@@ -51,16 +39,31 @@ const tabStore = defineStore("tab", {
         data.icon = menu[icon];
       }
       this.tabList.push(data);
-      setFistTag(this.tabList);
       setStore({ name: "tabList", content: this.tabList });
     },
-    edit() {},
-    delete(data) {
-      this.tabList = this.tabList.filter((item) => {
-        return !diff(item, data);
-      });
-      setFistTag(this.tabList);
+    updateAll(list) {
+      this.tabList = list;
       setStore({ name: "tabList", content: this.tabList });
+    },
+    delete(data) {
+      const index = this.tabList.findIndex((item) => item.value === data.value);
+      if (index === -1) return;
+      const isLast = index === this.tabList.length - 1;
+
+      this.tabList.splice(index, 1);
+      setStore({ name: "tabList", content: this.tabList });
+
+      if (data.value === this.tab.value) {
+        this.tab = this.tabList[isLast ? index - 1 : index];
+        setStore({ name: "tab", content: this.tab });
+      }
+    },
+    deleteRight(data) {
+      const index = this.tabList.findIndex((item) => item.value === data.value);
+      if (index !== -1) {
+        this.tabList = this.tabList.slice(0, index + 1);
+        setStore({ name: "tabList", content: this.tabList });
+      }
     },
     deleteAll() {
       this.tabList = [tagWel];
@@ -77,7 +80,6 @@ const tabStore = defineStore("tab", {
           return true;
         }
       });
-      setFistTag(this.tabList);
       setStore({ name: "tabList", content: this.tabList });
     },
     clean() {

@@ -5,13 +5,15 @@ export default {
 </script>
 
 <script setup>
-import { ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
-const route = useRoute();
+import draggable from "vuedraggable";
+import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
 const router = useRouter();
 import { tabStore } from "@/store/index.js";
 import website from "@/config/website.js";
 import { getPath } from "@/router/index.js";
+import { CloseBold } from "@element-plus/icons-vue";
+const TabStore = tabStore();
 
 const dropMenu = ref([
   {
@@ -41,10 +43,19 @@ const dropMenu = ref([
   },
 ]);
 
+const tabList = computed({
+  get() {
+    return TabStore.tabList;
+  },
+  set(val) {
+    TabStore.updateAll(val);
+  },
+});
+
 function handleClick(val) {
   let tab;
   if (val.name) {
-    tab = tabStore().find(val.name).tag;
+    tab = TabStore.find(val.name).tag;
   } else {
     tab = val;
   }
@@ -60,39 +71,73 @@ function handleClick(val) {
 }
 
 function handleCommand(tab) {
-  console.log(tab, "command");
+  if (tab.command === "close") {
+    TabStore.delete(tab);
+
+    router.push({
+      path: TabStore["tab"]["value"],
+      query: TabStore["tab"]["query"],
+    });
+  } else if (tab.command === "close-others") {
+    TabStore.deleteOther(tab);
+  } else if (tab.command === "close-all") {
+    TabStore.deleteAll();
+  } else if (tab.command === "refresh") {
+    router.go(0);
+  } else if (tab.command === "close-right") {
+    TabStore.deleteRight(tab);
+  } else {
+    console.warn("未匹配的命令");
+  }
+}
+
+function isDisabled(tab) {
+  return tab.value === website.fistPage.value;
 }
 </script>
 
 <template>
-  <div class="layout-tab-container">
-    <el-dropdown
-      trigger="contextmenu"
-      popper-class="tab-drop-popper"
-      v-for="tab in tabStore()['tabList']"
-      :key="tab.id"
-      @command="handleCommand">
-      <div
-        class="tab"
-        :class="{ active: route.fullPath === tab['value'] }"
-        @click.stop="handleClick(tab)">
-        <div class="left-layout">
-          <img :src="tab.icon || website.defaultTabIcon" alt="" />
-          <span class="label">{{ tab.label }}</span>
+  <draggable
+    class="layout-tab-container"
+    v-model="tabList"
+    group="people"
+    animation="300"
+    item-key="id">
+    <template #item="{ element }">
+      <el-dropdown
+        trigger="contextmenu"
+        popper-class="tab-drop-popper"
+        :disabled="isDisabled(element)"
+        @command="handleCommand">
+        <div
+          class="tab"
+          :class="{ active: TabStore['tab']['value'] === element['value'] }"
+          @click.stop="handleClick(element)">
+          <div class="left-layout">
+            <img :src="element.icon || website.defaultTabIcon" alt="" />
+            <span class="label">{{ element.label }}</span>
+          </div>
+          <el-icon
+            v-if="!isDisabled(element)"
+            :size="12"
+            class="close-btn"
+            @click.stop="handleCommand({ ...element, command: 'close' })">
+            <CloseBold />
+          </el-icon>
         </div>
-      </div>
-      <template #dropdown>
-        <el-dropdown-menu>
-          <el-dropdown-item
-            v-for="item in dropMenu"
-            :key="item.id"
-            :command="{ ...tab, command: item['command'] }"
-            >{{ item["label"] }}</el-dropdown-item
-          >
-        </el-dropdown-menu>
-      </template>
-    </el-dropdown>
-  </div>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item
+              v-for="item in dropMenu"
+              :key="item.id"
+              :command="{ ...element, command: item['command'] }"
+              >{{ item["label"] }}</el-dropdown-item
+            >
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+    </template>
+  </draggable>
 </template>
 
 <style scoped lang="scss">
@@ -113,6 +158,7 @@ function handleCommand(tab) {
     border-radius: 4px 4px 0 0;
     cursor: pointer;
     color: #fff;
+    transition: all 0.3s;
     &:hover,
     &.active {
       background-color: rgba(50, 62, 82);
@@ -124,6 +170,7 @@ function handleCommand(tab) {
       display: flex;
       justify-content: center;
       align-items: center;
+      margin-right: 8px;
       img {
         width: 20px;
         height: 20px;
@@ -132,6 +179,15 @@ function handleCommand(tab) {
       .label {
         color: #fff;
         font-size: 12px;
+      }
+    }
+    .close-btn {
+      width: 1.5em;
+      height: 1.5em;
+      border-radius: 50%;
+      transition: all 0.3s;
+      &:hover {
+        background-color: #262f3f;
       }
     }
   }

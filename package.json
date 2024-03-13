@@ -21,7 +21,8 @@
     "rgbaster": "^2.1.1",
     "v-route-generate": "^1.0.4",
     "vue": "^3.3.4",
-    "vue-router": "4"
+    "vue-router": "4",
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@types/node": "^20.5.7",

@@ -18,8 +18,10 @@ const menuList = ref([]);
 
 watch(
   route,
-  () => {
-    init();
+  (val) => {
+    if (val.name === "MenuPage") {
+      init();
+    }
   },
   {
     deep: true,
@@ -51,8 +53,8 @@ function handleClick(menu) {
 </script>
 
 <template>
-  <div class="menu-page-container">
-    <div
+  <ul class="menu-page-container">
+    <li
       class="menu-page-item"
       v-for="menu in menuList"
       :key="menu.id"
@@ -62,8 +64,8 @@ function handleClick(menu) {
         :style="{ backgroundColor: menu['bgColor'] }"></div>
       <img :src="menu[menuProps['icon']]" alt="" />
       <span class="label">{{ menu[menuProps["label"]] }}</span>
-    </div>
-  </div>
+    </li>
+  </ul>
 </template>
 
 <style scoped lang="scss">
