@@ -71,7 +71,6 @@ function handleClick(menu) {
 <style scoped lang="scss">
 .menu-page-container {
   display: flex;
-  padding: 20px;
   .menu-page-item {
     position: relative;
     display: flex;

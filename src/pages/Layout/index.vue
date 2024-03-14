@@ -33,15 +33,7 @@ function initMenu() {
             menuName: "菜单管理",
             icon: "menu.svg",
             path: "/sys/menu/index",
-            children: [
-              {
-                id: 112,
-                menuName: "菜单管理",
-                icon: "menu.svg",
-                path: "/sys/menu/child/index",
-                children: [],
-              },
-            ],
+            children: [],
           },
           {
             id: 12,
@@ -104,11 +96,12 @@ function initMenu() {
   .main {
     display: flex;
     flex-direction: column;
-    background-color: rgba($color: #323e52, $alpha: 0.9);
     padding: 0;
     .content {
       flex: 1;
       overflow: hidden;
+      padding: 20px;
+      background-color: var(--content-color);
     }
   }
 }

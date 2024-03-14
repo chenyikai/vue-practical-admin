@@ -5,22 +5,19 @@ export default {
 </script>
 
 <script setup>
-import { userStore } from "@/store/index.js";
+import UserInfo from "@/components/UserInfo/index.vue";
 import { useRouter } from "vue-router";
-const rouer = useRouter();
+import website from "@/config/website.js";
+const router = useRouter();
 
-function handleOut() {
-  userStore()
-    .fedLogOut()
-    .then(() => {
-      rouer.push({ path: "/login" });
-    });
+function handleGo2Index() {
+  router.push({ path: website.indexPage });
 }
 </script>
 
 <template>
   <div class="layout-header-container">
-    <div class="system-info">
+    <div class="system-info" @click.stop="handleGo2Index">
       <div class="logo-layout">
         <div class="logo-box">
           <img src="vite.svg" alt="" />
@@ -28,7 +25,9 @@ function handleOut() {
       </div>
       <span class="system-title">后台管理系统</span>
     </div>
-    <div class="user-info" @click="handleOut">用户信息</div>
+    <div class="user-info">
+      <user-info />
+    </div>
   </div>
 </template>
 
@@ -43,6 +42,7 @@ function handleOut() {
   .system-info {
     display: flex;
     align-items: center;
+    cursor: pointer;
     .logo-layout {
       display: flex;
       justify-content: center;

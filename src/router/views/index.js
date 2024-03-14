@@ -10,7 +10,7 @@ export default [
     children: [
       {
         path: website.indexPage,
-        name: "仪表盘",
+        name: "主页",
         meta: {
           isTab: true,
         },
@@ -19,6 +19,9 @@ export default [
       {
         path: "menu",
         name: "MenuPage",
+        meta: {
+          isTab: true,
+        },
         component: () => import("@/views/menu-page/index.vue"),
       },
     ],

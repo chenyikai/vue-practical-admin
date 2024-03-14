@@ -7,7 +7,7 @@ export default {
 <script setup></script>
 
 <template>
-  <div class="menu-page-container">菜单管理</div>
+  <page-container class="menu-page-container"> </page-container>
 </template>
 
 <style scoped lang="scss"></style>

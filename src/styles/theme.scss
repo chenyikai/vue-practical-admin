@@ -1,5 +1,13 @@
 :root {
   --theme-color: var(--dark-theme-color);
+  --tab-color: var(--dark-theme-tab-color);
+  --content-color: var(--dark-theme-content-color);
+  --font-color: var(--dark-font-color);
+  --font-size: var(--dark-font-size);
   --dark-theme-color: #323e52;
+  --dark-theme-tab-color: #262f3f;
+  --dark-theme-content-color: #404b5d;
+  --dark-font-color: #fff;
+  --dark-font-size: 14px;
   --el-header-height: 80px !important;
 }

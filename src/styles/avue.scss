@@ -1,0 +1,19 @@
+.avue-crud {
+  .el-card {
+    background-color: transparent;
+    .el-table {
+      background-color: transparent;
+      &__header-wrapper {
+        .el-table__header {
+          th {
+            background-color: var(--theme-color);
+            color: #fff;
+            .cell {
+              line-height: 35px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

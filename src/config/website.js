@@ -8,10 +8,11 @@ export default {
   // defaultAvatar: `${import.meta.env.BASE_URL}images/default-avatar.jpg`, // 默认用户头像
   iv: "aochendemo@12345", // 加密偏移值
   fistPage: {
-    label: "仪表盘",
+    label: "主页",
     value: "/wel/index",
     params: {},
     query: {},
+    icon: "index.svg",
     close: false,
     meta: {
       isTab: true,

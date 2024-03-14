@@ -48,7 +48,16 @@ const tabList = computed({
     return TabStore.tabList;
   },
   set(val) {
-    TabStore.updateAll(val);
+    let indexPage = [];
+    const index = val.findIndex(
+      (item) => item.value === website.fistPage.value,
+    );
+
+    if (index !== 0) {
+      indexPage = val.splice(index, 1);
+    }
+
+    TabStore.updateAll([...indexPage, ...val]);
   },
 });
 
@@ -147,7 +156,7 @@ function isDisabled(tab) {
   width: 100%;
   height: 45px;
   padding: 0 10px;
-  background-color: #262f3f;
+  background-color: var(--tab-color);
   .tab {
     position: relative;
     display: flex;
@@ -157,11 +166,11 @@ function isDisabled(tab) {
     padding: 0 10px;
     border-radius: 4px 4px 0 0;
     cursor: pointer;
-    color: #fff;
+    color: var(--font-color);
     transition: all 0.3s;
     &:hover,
     &.active {
-      background-color: rgba(50, 62, 82);
+      background-color: var(--content-color);
       &:before {
         display: none;
       }
@@ -177,8 +186,8 @@ function isDisabled(tab) {
         margin-right: 5px;
       }
       .label {
-        color: #fff;
-        font-size: 12px;
+        color: var(--font-color);
+        font-size: 14px;
       }
     }
     .close-btn {
