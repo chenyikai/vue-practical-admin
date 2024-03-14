@@ -5,9 +5,12 @@ export default {
 </script>
 
 <script setup>
-import { computed } from "vue";
+import { computed, useSlots } from "vue";
 import { tabStore } from "@/store/index.js";
+import { validatenull } from "@/utils/validate.js";
+const slots = useSlots();
 const TabStore = tabStore();
+
 const label = computed(() => TabStore["tab"]["label"]);
 const icon = computed(() => TabStore["tab"]["icon"]);
 </script>
@@ -19,24 +22,28 @@ const icon = computed(() => TabStore["tab"]["icon"]);
         <img class="icon" :src="icon" alt="" />
         <span class="label">{{ label }}</span>
       </h1>
-      <div class="form-layout">
+      <div class="form-layout" v-if="!validatenull(slots.search)">
         <slot name="search"></slot>
       </div>
     </header>
-    <el-divider class="divider-line" />
+    <el-divider class="divider-line" v-if="!validatenull(slots.search)" />
     <main class="page-container-main">
-      <slot></slot>
+      <slot name="crud"></slot>
     </main>
   </section>
 </template>
 
 <style lang="scss">
 .page-container {
+  display: flex;
+  flex-direction: column;
   width: 100%;
+  height: 100%;
   border-radius: 2px;
   background-color: var(--theme-color);
   box-shadow: 0 0 2px 5px var(--theme-color);
   padding: 10px;
+  overflow: hidden;
   &-header {
     width: 100%;
     .page-title {
@@ -80,7 +87,12 @@ const icon = computed(() => TabStore["tab"]["icon"]);
     }
   }
   .divider-line {
-    border-top: 1px solid #909399;
+    border-top: 1px solid var(--border-color);
+  }
+  &-main {
+    width: 100%;
+    flex: 1;
+    overflow: hidden;
   }
 }
 </style>

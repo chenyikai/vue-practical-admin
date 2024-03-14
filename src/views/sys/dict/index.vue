@@ -7,7 +7,6 @@ export default {
 <script setup>
 import useCrud from "@/hooks/useCrud.js";
 import { crudOption } from "./options.js";
-import PageButton from "package/Button/index.vue";
 
 const {
   listQuery,
@@ -47,30 +46,17 @@ const {
         </el-form-item>
       </el-form>
     </template>
-    <avue-crud
-      v-if="false"
-      ref="crud"
-      :page="pagination"
-      :option="crudOption"
-      :data="mainTableData"
-      :table-loading="tableLoading"
-      @size-change="sizeChange"
-      @current-change="currentChange"
-      @sort-change="sortChange">
-    </avue-crud>
+    <template #crud>
+      <avue-crud
+        ref="crud"
+        :page="pagination"
+        :option="crudOption"
+        :data="mainTableData"
+        :table-loading="tableLoading"
+        @size-change="sizeChange"
+        @current-change="currentChange"
+        @sort-change="sortChange">
+      </avue-crud>
+    </template>
   </page-container>
 </template>
-
-<style scoped lang="scss">
-.dict-page-container {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  .main {
-    width: 100%;
-    flex: 1;
-    overflow: hidden;
-  }
-}
-</style>

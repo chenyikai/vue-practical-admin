@@ -10,6 +10,7 @@ export const crudOption = {
   headerAlign: "center",
   align: "center",
   height: "auto",
+  calcHeight: 10,
   column: [
     {
       label: "英文名称",
