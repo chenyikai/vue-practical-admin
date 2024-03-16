@@ -44,6 +44,7 @@ function handleLogOut() {
   display: flex;
   align-items: center;
   padding: 0 20px;
+  user-select: none;
   .user-info {
     display: flex;
     flex-direction: column;

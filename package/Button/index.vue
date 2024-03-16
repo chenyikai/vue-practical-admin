@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup>
-import { defineProps, readonly, computed } from "vue";
+import { readonly, computed } from "vue";
 const buttonMap = readonly({
   search: {
     icon: new URL("./images/search.svg", import.meta.url),
@@ -44,29 +44,19 @@ const buttonAtr = computed(() => buttonMap[props["type"]]);
 </script>
 
 <template>
-  <button class="page-button" :class="props['type']">
+  <el-button class="page-button" :class="props['type']">
     <img class="icon" :src="buttonAtr['icon']" alt="" />
     <span class="label">{{ buttonAtr["label"] }}</span>
-  </button>
+  </el-button>
 </template>
 
 <style scoped lang="scss">
 .page-button {
-  width: max-content;
-  height: 32px;
-  padding: 0 15px;
-  border-radius: 4px;
-  border: none;
-  & + .page-button {
-    margin-left: 10px;
-  }
+  padding: 8px 10px;
   .icon {
     width: 18px;
     height: 18px;
     margin-right: 4px;
-  }
-  .label {
-    font-size: 14px;
   }
   &.search {
     display: flex;

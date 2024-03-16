@@ -71,16 +71,16 @@ const icon = computed(() => TabStore["tab"]["icon"]);
             color: #fff;
           }
           &__content {
-            .el-input {
-              border: none;
-              &__wrapper {
-                background-color: var(--content-color);
-                box-shadow: 0 0 2px var(--content-color);
-                .el-input__inner {
-                  color: var(--font-color);
-                }
-              }
-            }
+            //.el-input {
+            //  border: none;
+            //  &__wrapper {
+            //    background-color: var(--content-color);
+            //    box-shadow: 0 0 2px var(--content-color);
+            //    .el-input__inner {
+            //      color: var(--font-color);
+            //    }
+            //  }
+            //}
           }
         }
       }

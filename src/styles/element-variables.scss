@@ -1,0 +1,14 @@
+@use 'variables' as vars;
+
+@forward "element-plus/theme-chalk/src/common/var.scss" with (
+  $header: (
+    "padding": 0,
+    "height": 80px
+  ),
+  $switch: (
+    'on-color': vars.$dark_content-color,
+    'off-color': #fff
+  )
+);
+
+@use "element-plus/theme-chalk/src/index.scss" as *;

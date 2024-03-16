@@ -8,6 +8,7 @@ export default {
 import UserInfo from "@/components/UserInfo/index.vue";
 import { useRouter } from "vue-router";
 import website from "@/config/website.js";
+import ThemeButton from "@/components/ThemeButton/index.vue";
 const router = useRouter();
 
 function handleGo2Index() {
@@ -25,7 +26,8 @@ function handleGo2Index() {
       </div>
       <span class="system-title">后台管理系统</span>
     </div>
-    <div class="user-info">
+    <div class="right-layout">
+      <theme-button />
       <user-info />
     </div>
   </div>
@@ -67,6 +69,10 @@ function handleGo2Index() {
       color: #fff;
       font-size: 20px;
     }
+  }
+  .right-layout {
+    display: flex;
+    align-items: center;
   }
 }
 </style>
