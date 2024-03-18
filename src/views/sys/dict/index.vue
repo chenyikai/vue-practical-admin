@@ -7,8 +7,10 @@ export default {
 <script setup>
 import useCrud from "@/hooks/useCrud.js";
 import { crudOption } from "./options.js";
+import MainDialog from "./MainDialog.vue";
 
 const {
+  dialog,
   listQuery,
   pagination,
   mainTableData,
@@ -19,6 +21,10 @@ const {
   sortChange,
   handelResetSearchForm,
 } = useCrud();
+
+function handleAdd() {
+  dialog.value.open();
+}
 </script>
 
 <template>
@@ -46,6 +52,9 @@ const {
         </el-form-item>
       </el-form>
     </template>
+    <template #button>
+      <page-button type="create" @click.stop="handleAdd" />
+    </template>
     <template #crud>
       <avue-crud
         ref="crud"
@@ -56,7 +65,18 @@ const {
         @size-change="sizeChange"
         @current-change="currentChange"
         @sort-change="sortChange">
+        <template v-slot:menu>
+          <page-button type="export" direction="horizontal" />
+          <page-button type="download" direction="horizontal" />
+          <page-button type="pic" direction="horizontal" />
+          <page-button type="detail" direction="horizontal" />
+          <page-button type="update" direction="horizontal" />
+          <page-button type="delete" direction="horizontal" />
+        </template>
       </avue-crud>
+    </template>
+    <template #dialog>
+      <main-dialog ref="dialog" />
     </template>
   </page-container>
 </template>

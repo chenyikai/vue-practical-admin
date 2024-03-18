@@ -27,9 +27,13 @@ const icon = computed(() => TabStore["tab"]["icon"]);
       </div>
     </header>
     <el-divider class="divider-line" v-if="!validatenull(slots.search)" />
+    <div class="button-layout">
+      <slot name="button"></slot>
+    </div>
     <main class="page-container-main">
       <slot name="crud"></slot>
     </main>
+    <slot name="dialog" />
   </section>
 </template>
 
@@ -88,6 +92,9 @@ const icon = computed(() => TabStore["tab"]["icon"]);
   }
   .divider-line {
     border-top: 1px solid var(--border-color);
+  }
+  .button-layout {
+    margin-bottom: 24px;
   }
   &-main {
     width: 100%;

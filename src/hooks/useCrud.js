@@ -4,7 +4,8 @@ import { cleanVal, clearVal } from "@/utils/util.js";
 export default () => {
   const searchForm = ref({});
 
-  const mainTableData = reactive([]);
+  const mainTableData = reactive([{}]);
+  const dialog = ref({});
   const pagination = reactive({
     pageIndex: 1,
     pageSize: 30,
@@ -57,6 +58,7 @@ export default () => {
   function sortChange() {}
 
   return {
+    dialog,
     tableLoading,
     mainTableData,
     pagination,

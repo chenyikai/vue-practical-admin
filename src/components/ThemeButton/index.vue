@@ -14,6 +14,7 @@ const toggleDark = useToggle(isDark);
 
 <template>
   <el-switch
+    size="large"
     :class="isDark ? 'dark' : 'light'"
     :model-value="isDark"
     :active-action-icon="Moon"

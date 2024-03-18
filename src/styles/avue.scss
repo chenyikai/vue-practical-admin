@@ -3,36 +3,32 @@
   .el-card {
     width: 100%;
     background-color: transparent;
-    border-radius: 0;
+    overflow: hidden;
     &__body {
       .el-table {
-        background-color: transparent;
-        &:before, &:after {
-          background-color: var(--border-color);
-        }
-        &__inner-wrapper {
-          &:before, &:after {
-            background-color: var(--border-color);
-          }
-        }
         &__header-wrapper {
           .el-table__header {
             th {
-              background-color: var(--theme-color);
+              background-color: var(--tab-color);
               color: #fff;
               padding: 0;
-              border-color: var(--border-color);
               .cell {
-                line-height: 40px;
+                line-height: 50px;
                 font-size: 14px;
               }
             }
           }
         }
-        .el-table__border-left-patch {
-          background-color: var(--border-color);
-        }
       }
+    }
+  }
+}
+
+.avue-form {
+  .el-collapse {
+    border: none;
+    &-item__wrap {
+      border: none;
     }
   }
 }

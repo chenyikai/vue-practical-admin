@@ -16,6 +16,6 @@ app.use(store);
 app.use(router);
 app.use(ElementPlus);
 app.use(AdminComponent);
-app.use(Avue, { axios, size: "small" });
+app.use(Avue, { axios, size: "medium" });
 
 app.mount("#app");

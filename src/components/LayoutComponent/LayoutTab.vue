@@ -156,6 +156,7 @@ function isDisabled(tab) {
   width: 100%;
   height: 45px;
   padding: 0 10px;
+  border-radius: 8px 8px 0 0;
   background-color: var(--tab-color);
   .tab {
     position: relative;

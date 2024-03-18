@@ -5,10 +5,11 @@
     "fill-color-0": #323e52
   ),
   $bg-color: (
+    '': $dark_content-color,
     "page": #323e52
   ),
   $fill-color: (
-    "blank": var(--content-color)
+    "blank": $dark_content-color
   )
 );
 
@@ -21,8 +22,9 @@ html {
     --theme-content-color: #404b5d;
     --theme-font-color: #fff;
     --theme-font-size: 14px;
-    --theme-border-color: #002765;
-    --el-switch-border-color: #767474;
+    --theme-border-color: #767474;
+    --el-switch-border-color: var(--theme-border-color);
+    --theme-table-header-color: #262f3f;
   }
   &.light {}
 }
@@ -35,4 +37,7 @@ html {
   --font-size: var(--theme-font-size);
   --border-color: var(--theme-border-color);
   --el-aside-width: 80px;
+  #app {
+    background-color: var(--theme-color);
+  }
 }

@@ -8,6 +8,14 @@
   $switch: (
     'on-color': vars.$dark_content-color,
     'off-color': #fff
+  ),
+  $dialog: (
+    'padding-primary': 10px,
+    'title-font-size': 16px
+  ),
+  $table: (
+    'border': none,
+    'border-color': transparent
   )
 );
 

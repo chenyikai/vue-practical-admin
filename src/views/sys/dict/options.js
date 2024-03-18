@@ -42,7 +42,7 @@ export const crudOption = {
       label: "操作",
       prop: "menu",
       slot: true,
-      width: 200,
+      width: "auto",
     },
   ],
 };

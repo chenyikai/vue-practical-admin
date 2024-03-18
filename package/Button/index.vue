@@ -5,22 +5,49 @@ export default {
 </script>
 
 <script setup>
-import { readonly, computed } from "vue";
+import { readonly, computed, toRefs } from "vue";
+const emits = defineEmits({
+  click: null,
+});
 const buttonMap = readonly({
   search: {
     icon: new URL("./images/search.svg", import.meta.url),
     label: "搜索",
+    bgColor: "#409eff",
+    fontColor: "#fff",
   },
   reset: {
     icon: new URL("./images/reset.svg", import.meta.url),
     label: "重置",
   },
-  add: {},
-  delete: {},
-  update: {},
-  detail: {},
-  export: {},
-  download: {},
+  create: {
+    icon: new URL("./images/create.svg", import.meta.url),
+    label: "新增",
+  },
+  delete: {
+    icon: new URL("./images/delete.svg", import.meta.url),
+    label: "删除",
+  },
+  update: {
+    icon: new URL("./images/update.svg", import.meta.url),
+    label: "更新",
+  },
+  detail: {
+    icon: new URL("./images/detail.svg", import.meta.url),
+    label: "详情",
+  },
+  export: {
+    icon: new URL("./images/export.svg", import.meta.url),
+    label: "导出",
+  },
+  download: {
+    icon: new URL("./images/download.svg", import.meta.url),
+    label: "下载",
+  },
+  pic: {
+    icon: new URL("./images/pic.svg", import.meta.url),
+    label: "查看图片",
+  },
 });
 const props = defineProps({
   type: {
@@ -30,50 +57,83 @@ const props = defineProps({
       return [
         "search",
         "reset",
-        "add",
+        "create",
         "delete",
         "update",
         "detail",
         "export",
         "download",
+        "pic",
       ].includes(value);
+    },
+  },
+  direction: {
+    type: String,
+    default: "vertical",
+    required: true,
+    validator(value) {
+      return ["horizontal", "vertical"].includes(value);
     },
   },
 });
 const buttonAtr = computed(() => buttonMap[props["type"]]);
+const { bgColor, fontColor } = toRefs(buttonAtr.value);
+
+function handleClick(e) {
+  emits("click", e);
+}
 </script>
 
 <template>
-  <el-button class="page-button" :class="props['type']">
+  <el-button
+    class="page-button"
+    :class="[props['type'], direction]"
+    @click.stop="handleClick">
     <img class="icon" :src="buttonAtr['icon']" alt="" />
-    <span class="label">{{ buttonAtr["label"] }}</span>
+    <span class="label" :class="type">{{ buttonAtr["label"] }}</span>
   </el-button>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
+@import "src/styles/variables";
 .page-button {
+  background-color: v-bind(bgColor);
+  color: v-bind(fontColor);
   padding: 8px 10px;
   .icon {
     width: 18px;
     height: 18px;
     margin-right: 4px;
   }
-  &.search {
-    display: flex;
-    align-items: center;
-    background-color: #409eff;
-    color: #fff;
-    &:hover {
-      background-color: rgba($color: #409eff, $alpha: 0.7);
-    }
+  &:hover {
+    background-color: v-bind(bgColor);
+    opacity: 0.7;
   }
-  &.reset {
-    display: flex;
-    align-items: center;
-    background-color: #86898a;
-    color: #fff;
+  &.horizontal {
+    border: none;
+    height: auto;
+    padding: 0;
+    & + .horizontal {
+      margin-left: 20px;
+    }
+    & > span {
+      display: flex;
+      flex-direction: column;
+    }
     &:hover {
-      background-color: rgba($color: #86898a, $alpha: 0.7);
+      opacity: 1;
+    }
+    .icon {
+      margin: {
+        right: 0;
+        top: 0;
+        bottom: 8px;
+        left: 0;
+      }
+    }
+    .label {
+      font-size: 12px;
+      color: #fff;
     }
   }
 }
