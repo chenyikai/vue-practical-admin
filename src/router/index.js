@@ -134,7 +134,6 @@ export function go2MenuPage(menu) {
       },
       query: { id: menu["id"] },
     });
-    menuStore().setActiveMenuPage(menu);
   } else {
     const path = website.menu.props.path;
     router.push({ path: menu[path] });

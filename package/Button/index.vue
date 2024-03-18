@@ -67,10 +67,17 @@ const props = defineProps({
       ].includes(value);
     },
   },
+  icon: {
+    type: undefined,
+    default: null,
+  },
+  label: {
+    type: String,
+    default: null,
+  },
   direction: {
     type: String,
     default: "vertical",
-    required: true,
     validator(value) {
       return ["horizontal", "vertical"].includes(value);
     },
@@ -89,8 +96,8 @@ function handleClick(e) {
     class="page-button"
     :class="[props['type'], direction]"
     @click.stop="handleClick">
-    <img class="icon" :src="buttonAtr['icon']" alt="" />
-    <span class="label" :class="type">{{ buttonAtr["label"] }}</span>
+    <img class="icon" :src="buttonAtr['icon'] || icon" alt="" />
+    <span class="label" :class="type">{{ buttonAtr["label"] || label }}</span>
   </el-button>
 </template>
 

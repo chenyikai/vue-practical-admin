@@ -10,7 +10,7 @@ export const crudOption = {
   headerAlign: "center",
   align: "center",
   height: "auto",
-  calcHeight: 10,
+  calcHeight: 30,
   column: [
     {
       label: "英文名称",
@@ -42,7 +42,7 @@ export const crudOption = {
       label: "操作",
       prop: "menu",
       slot: true,
-      width: "auto",
+      width: "350px",
     },
   ],
 };
