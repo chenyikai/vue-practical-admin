@@ -1,7 +1,7 @@
 import * as CryptoJS from "crypto-js";
 import { validatenull } from "./validate.js";
-// import store from "@/store/index.js";
 import { set } from "lodash";
+import { userStore } from "@/store/index.js";
 
 /**
  * 把字符串化的函数还原为可执行函数
@@ -368,7 +368,7 @@ export function kvToJson(k, v) {
 }
 
 export function getDictData(dictName) {
-  const dictAll = [];
+  const dictAll = userStore().dictAll;
   if (Array.isArray(dictAll[dictName])) {
     return dictAll[dictName];
   }

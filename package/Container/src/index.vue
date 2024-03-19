@@ -19,14 +19,14 @@ const TabStore = tabStore();
 
 const label = computed(() => {
   if (validatenull(props.pageInfo)) {
-    return TabStore["tab"]["label"];
+    return TabStore.tab.label;
   } else {
     return props.pageInfo.label;
   }
 });
 const icon = computed(() => {
   if (validatenull(props.pageInfo)) {
-    return TabStore["tab"]["icon"];
+    return TabStore.tab.icon;
   } else {
     return props.pageInfo.icon;
   }

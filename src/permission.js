@@ -26,6 +26,8 @@ router.beforeEach((to, from, next) => {
     if (to.path === "/login") {
       next({ path: "/" });
     } else {
+      userStore().getDictAll();
+
       // NOTE: 当用户角色不存在时，会存在无限请求用户信息接口的问题
       if (userStore()["roles"].length === 0) {
         userStore()
@@ -49,6 +51,7 @@ router.beforeEach((to, from, next) => {
                 icon,
               });
             }
+
             next();
           })
           .catch(() => {

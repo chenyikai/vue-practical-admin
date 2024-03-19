@@ -5,11 +5,13 @@ export default {
 </script>
 
 <script setup>
+// import { useCssVar } from "@vueuse/core";
 import { readonly, computed, toRefs, reactive } from "vue";
 import { validatenull } from "@/utils/validate.js";
 const emits = defineEmits({
   click: null,
 });
+// const themeColor = useCssVar("--theme-color");
 const buttonMap = readonly({
   search: {
     icon: new URL("../images/search.svg", import.meta.url),
@@ -24,6 +26,8 @@ const buttonMap = readonly({
   create: {
     icon: new URL("../images/create.svg", import.meta.url),
     label: "新增",
+    // bgColor: themeColor.value,
+    fontColor: "#fff",
   },
   delete: {
     icon: new URL("../images/delete.svg", import.meta.url),

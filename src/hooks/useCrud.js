@@ -4,6 +4,7 @@ import { cleanVal, clearVal } from "@/utils/util.js";
 export default () => {
   const funcList = reactive({
     search: null,
+    list: null,
   });
   const mainTableData = ref([]);
   const dialog = ref({});
@@ -71,11 +72,20 @@ export default () => {
       const value = freezeData[freezeDataKey];
       listQuery[freezeDataKey] = value;
     }
-    funcList.search(queryParams.value).then(({ data }) => {
-      mainTableData.value = data.data.rows;
-      pagination.total = Number(data.data.total);
-      tableLoading.value = false;
-    });
+    if (funcList.search) {
+      funcList.search(queryParams.value).then(({ data }) => {
+        mainTableData.value = data.data.rows;
+        pagination.total = Number(data.data.total);
+        tableLoading.value = false;
+      });
+    }
+
+    if (funcList.list) {
+      funcList.list(listQuery).then(({ data }) => {
+        mainTableData.value = data.data;
+        tableLoading.value = false;
+      });
+    }
   }
 
   return {

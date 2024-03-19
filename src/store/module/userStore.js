@@ -5,6 +5,7 @@ import { userLoginByPassword, getUserInfo } from "@/api/login";
 import tabStore from "./tabStore.js";
 import menuStore from "./menuStore.js";
 import { getStore, setStore } from "@/utils/store.js";
+import { getDictAll } from "@/api/sys/dict/index.js";
 
 const userStore = defineStore("user", {
   state: () => {
@@ -56,6 +57,19 @@ const userStore = defineStore("user", {
           })
           .catch((err) => {
             reject(err);
+          });
+      });
+    },
+    getDictAll() {
+      return new Promise((resolve, reject) => {
+        getDictAll()
+          .then(({ data }) => {
+            this.dictAll = data.data;
+            setStore({ name: "dictAll", content: data.data });
+            resolve();
+          })
+          .catch((error) => {
+            reject(error);
           });
       });
     },
