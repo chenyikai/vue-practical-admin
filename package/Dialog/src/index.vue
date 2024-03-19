@@ -7,6 +7,16 @@ export default {
 <script setup>
 import { debounce } from "lodash";
 import { ref, useAttrs } from "vue";
+defineProps({
+  showFooter: {
+    type: Boolean,
+    default: true,
+  },
+  loading: {
+    type: Boolean,
+    default: false,
+  },
+});
 const emits = defineEmits({
   submit: null,
 });
@@ -25,12 +35,13 @@ function close() {
 
 const handleConfirm = debounce(
   function () {
-    isSubmit.value.true = false;
+    isSubmit.value = true;
     emits("submit", (flag) => {
       if (flag) {
         close();
-        isSubmit.value = false;
       }
+
+      isSubmit.value = false;
     });
   },
   500,
@@ -61,8 +72,10 @@ defineExpose({
     :before-close="handleClose"
     v-bind="attrs"
     @close="close">
-    <slot> </slot>
-    <template #footer>
+    <div class="form-dialog-content" v-loading="loading">
+      <slot> </slot>
+    </div>
+    <template #footer v-if="showFooter && !loading">
       <div class="dialog-footer">
         <el-button
           type="primary"
@@ -99,6 +112,7 @@ defineExpose({
   .el-dialog__body {
   }
   .el-dialog__footer {
+    padding-bottom: 20px;
   }
 }
 </style>

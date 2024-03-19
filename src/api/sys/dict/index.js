@@ -18,6 +18,10 @@ export function createDict(formData) {
   return request.post(`${DICT_BASE_URL}/add`, formData);
 }
 
+export function dictDetail(id) {
+  return request.post(`${DICT_BASE_URL}/getDetail`, { id });
+}
+
 // 修改字典
 export function updateDict(formData) {
   return request.post(`${DICT_BASE_URL}/update`, formData);

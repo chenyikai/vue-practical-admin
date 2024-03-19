@@ -1,10 +1,8 @@
-import AdminContainer from "./Container/index.vue";
-import PageButton from "./Button/index.vue";
-import PageDialog from "./Dialog/index.vue";
+import AdminContainer from "./Container";
+import PageButton from "./Button";
+import PageDialog from "./Dialog";
 const components = [AdminContainer, PageButton, PageDialog];
 
 export default function install(app) {
-  components.forEach((component) => {
-    app.component(component.name, component);
-  });
+  components.forEach((install) => install(app));
 }

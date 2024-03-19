@@ -27,11 +27,12 @@ export default () => {
     };
   });
 
-  async function handleFilter() {
+  function handleFilter() {
     listQuery = cleanVal(listQuery);
     pagination.pageIndex = 1;
-    await nextTick();
-    getList();
+    nextTick().then(() => {
+      getList();
+    });
   }
 
   function handelResetSearchForm() {

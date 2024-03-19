@@ -6,46 +6,47 @@ export default {
 
 <script setup>
 import { readonly, computed, toRefs } from "vue";
+import { validatenull } from "@/utils/validate.js";
 const emits = defineEmits({
   click: null,
 });
 const buttonMap = readonly({
   search: {
-    icon: new URL("./images/search.svg", import.meta.url),
+    icon: new URL("../images/search.svg", import.meta.url),
     label: "搜索",
     bgColor: "#409eff",
     fontColor: "#fff",
   },
   reset: {
-    icon: new URL("./images/reset.svg", import.meta.url),
+    icon: new URL("../images/reset.svg", import.meta.url),
     label: "重置",
   },
   create: {
-    icon: new URL("./images/create.svg", import.meta.url),
+    icon: new URL("../images/create.svg", import.meta.url),
     label: "新增",
   },
   delete: {
-    icon: new URL("./images/delete.svg", import.meta.url),
+    icon: new URL("../images/delete.svg", import.meta.url),
     label: "删除",
   },
   update: {
-    icon: new URL("./images/update.svg", import.meta.url),
+    icon: new URL("../images/update.svg", import.meta.url),
     label: "更新",
   },
   detail: {
-    icon: new URL("./images/detail.svg", import.meta.url),
+    icon: new URL("../images/detail.svg", import.meta.url),
     label: "详情",
   },
   export: {
-    icon: new URL("./images/export.svg", import.meta.url),
+    icon: new URL("../images/export.svg", import.meta.url),
     label: "导出",
   },
   download: {
-    icon: new URL("./images/download.svg", import.meta.url),
+    icon: new URL("../images/download.svg", import.meta.url),
     label: "下载",
   },
   pic: {
-    icon: new URL("./images/pic.svg", import.meta.url),
+    icon: new URL("../images/pic.svg", import.meta.url),
     label: "查看图片",
   },
 });
@@ -68,7 +69,7 @@ const props = defineProps({
     },
   },
   icon: {
-    type: undefined,
+    type: Object,
     default: null,
   },
   label: {
@@ -83,7 +84,10 @@ const props = defineProps({
     },
   },
 });
-const buttonAtr = computed(() => buttonMap[props["type"]]);
+const buttonAtr = computed(() => {
+  const val = buttonMap[props["type"]];
+  return validatenull(val) ? {} : val;
+});
 const { bgColor, fontColor } = toRefs(buttonAtr.value);
 
 function handleClick(e) {
@@ -96,8 +100,10 @@ function handleClick(e) {
     class="page-button"
     :class="[props['type'], direction]"
     @click.stop="handleClick">
-    <img class="icon" :src="buttonAtr['icon'] || icon" alt="" />
-    <span class="label" :class="type">{{ buttonAtr["label"] || label }}</span>
+    <slot>
+      <img class="icon" :src="buttonAtr['icon'] || icon" alt="" />
+      <span class="label" :class="type">{{ buttonAtr["label"] || label }}</span>
+    </slot>
   </el-button>
 </template>
 
@@ -115,6 +121,7 @@ function handleClick(e) {
   &:hover {
     background-color: v-bind(bgColor);
     opacity: 0.7;
+    color: #fff;
   }
   &.horizontal {
     border: none;

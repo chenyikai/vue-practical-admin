@@ -28,6 +28,11 @@ export default {
       meta: "meta",
     },
   },
+  pageStatus: {
+    CREATE: "create",
+    UPDATE: "update",
+    DETAIL: "detail",
+  },
 };
 
 export const iconfontUrl = "//at.alicdn.com/t/font_$key.css";

@@ -5,8 +5,15 @@ export default {
 </script>
 
 <script setup>
-import { onBeforeMount, ref } from "vue";
-import { getDictPage } from "@/api/sys/dict";
+import website from "@/config/website.js";
+import { ElMessage, ElMessageBox } from "element-plus";
+import { onBeforeMount } from "vue";
+import {
+  getDictPage,
+  createDict,
+  deleteDictById,
+  updateDict,
+} from "@/api/sys/dict";
 import useCrud from "@/hooks/useCrud.js";
 import { crudOption } from "./options.js";
 import MainDialog from "./MainDialog.vue";
@@ -19,22 +26,86 @@ const {
   mainTableData,
   tableLoading,
   getList,
+  sortChange,
   sizeChange,
   handleFilter,
   currentChange,
-  sortChange,
   handelResetSearchForm,
 } = useCrud();
 
-const dictEntry = ref(new URL("/entry.svg", import.meta.url).href);
+const dictEntry = new URL("/entry.svg", import.meta.url);
 
 function onAdd() {
-  dialog.value.open();
+  dialog.value.open(website.pageStatus.CREATE);
 }
 
-function onDelete() {}
+function onDelete(rowData) {
+  ElMessageBox.confirm(`是否确认删除字典：${rowData.remarks}？`, "提示", {
+    confirmButtonText: "确认",
+    cancelButtonText: "取消",
+    type: "warning",
+  })
+    .then(() => {
+      return deleteDictById(rowData.id);
+    })
+    .then(() => {
+      ElMessage({
+        message: "删除成功!",
+        type: "success",
+      });
+      handleFilter();
+    });
+}
 
-function onUpdate() {}
+function onUpdate(rowData) {
+  dialog.value.open(website.pageStatus.UPDATE, rowData);
+}
+
+function onDetail(rowData) {
+  dialog.value.open(website.pageStatus.DETAIL, rowData);
+}
+
+function onCreateSubmit(formData, done) {
+  createDict(formData)
+    .then(() => {
+      done(true);
+      ElMessage({
+        message: "新增成功",
+        type: "success",
+      });
+      getList();
+    })
+    .catch(() => {
+      ElMessage({
+        message: "新增失败",
+        type: "error",
+      });
+      done();
+    });
+}
+
+function onUpdateSubmit(formData, done) {
+  updateDict(formData)
+    .then(() => {
+      done(true);
+      ElMessage({
+        message: "修改成功",
+        type: "success",
+      });
+      getList();
+    })
+    .catch(() => {
+      ElMessage({
+        message: "修改失败",
+        type: "error",
+      });
+      done();
+    });
+}
+
+function handleDictEntry(rowData) {
+  console.log(rowData, "dada");
+}
 
 function onSearch() {
   handleFilter();
@@ -72,10 +143,6 @@ onBeforeMount(() => {
     </template>
     <template #button>
       <page-button type="create" @click.stop="onAdd" />
-      <!--      <page-button-->
-      <!--        :icon="dictEntry"-->
-      <!--        label="字典项管理"-->
-      <!--        direction="horizontal" />-->
     </template>
     <template #crud>
       <avue-crud
@@ -87,21 +154,32 @@ onBeforeMount(() => {
         @size-change="sizeChange"
         @current-change="currentChange"
         @sort-change="sortChange">
-        <template v-slot:menu>
-          <page-button type="detail" direction="horizontal" />
+        <template v-slot:menu="{ row }">
+          <page-button
+            :icon="dictEntry"
+            label="字典项"
+            direction="horizontal"
+            @click.stop="handleDictEntry(row)" />
+          <page-button
+            type="detail"
+            direction="horizontal"
+            @click.stop="onDetail(row)" />
           <page-button
             type="update"
             direction="horizontal"
-            @click.stop="onUpdate" />
+            @click.stop="onUpdate(row)" />
           <page-button
             type="delete"
             direction="horizontal"
-            @click.stop="onDelete" />
+            @click.stop="onDelete(row)" />
         </template>
       </avue-crud>
     </template>
     <template #dialog>
-      <main-dialog ref="dialog" />
+      <main-dialog
+        ref="dialog"
+        @[website.pageStatus.CREATE]="onCreateSubmit"
+        @[website.pageStatus.UPDATE]="onUpdateSubmit" />
     </template>
   </page-container>
 </template>

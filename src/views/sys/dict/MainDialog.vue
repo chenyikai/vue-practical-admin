@@ -5,19 +5,59 @@ export default {
 </script>
 
 <script setup>
-import { reactive, ref } from "vue";
+import useForm from "@/hooks/useForm.js";
+import { nextTick, computed, defineEmits } from "vue";
 import { formOption } from "./options.js";
-const dialog = ref({});
-const form = ref({});
-const formData = reactive({});
-function open() {
+import website from "@/config/website.js";
+import { dictDetail } from "@/api/sys/dict/index.js";
+const emits = defineEmits({
+  [website.pageStatus.CREATE]: null,
+  [website.pageStatus.UPDATE]: null,
+  [website.pageStatus.DETAIL]: null,
+});
+const {
+  form,
+  loading,
+  formStatus,
+  dialog,
+  formData,
+  isDetail,
+  detailFunc,
+  setData,
+} = useForm();
+
+const options = computed(() => {
+  const { column } = formOption;
+  return {
+    ...formOption,
+    column: column.map((item) => {
+      return {
+        disabled: isDetail.value,
+        ...item,
+      };
+    }),
+  };
+});
+
+function open(status, data = {}) {
+  detailFunc.value = dictDetail;
+  setData(status, data);
+
   dialog.value.open();
+  nextTick().then(() => {
+    form.value.clearValidate();
+  });
 }
 
 function handleSubmit(done) {
   form.value.validate((valid) => {
+    if (!valid) {
+      done();
+      return;
+    }
+
     if (valid) {
-      done(true);
+      emits(formStatus.value, formData.value, done);
     }
   });
 }
@@ -28,7 +68,12 @@ defineExpose({
 </script>
 
 <template>
-  <page-dialog ref="dialog" @submit="handleSubmit">
-    <avue-form ref="form" :option="formOption" v-model="formData" />
+  <page-dialog
+    title="字典管理"
+    ref="dialog"
+    @submit="handleSubmit"
+    :loading="loading"
+    :show-footer="!isDetail">
+    <avue-form ref="form" :option="options" v-model="formData" />
   </page-dialog>
 </template>
