@@ -15,6 +15,7 @@ export default () => {
     orders: [],
   });
   let listQuery = reactive({});
+  const freezeData = reactive({});
   const tableLoading = ref(false);
   const queryParams = computed(() => {
     const { pageIndex, pageSize } = pagination;
@@ -41,6 +42,10 @@ export default () => {
     getList();
   }
 
+  function setFreezeData(key, value) {
+    freezeData[key] = value;
+  }
+
   function sizeChange(val) {
     pagination.pageIndex = 1;
     pagination.pageSize = val;
@@ -62,6 +67,10 @@ export default () => {
 
   function getList() {
     tableLoading.value = true;
+    for (const freezeDataKey in freezeData) {
+      const value = freezeData[freezeDataKey];
+      listQuery[freezeDataKey] = value;
+    }
     funcList.search(queryParams.value).then(({ data }) => {
       mainTableData.value = data.data.rows;
       pagination.total = Number(data.data.total);
@@ -82,6 +91,7 @@ export default () => {
     sizeChange,
     currentChange,
     sortChange,
+    setFreezeData,
     handelResetSearchForm,
   };
 };

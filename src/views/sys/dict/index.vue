@@ -7,7 +7,7 @@ export default {
 <script setup>
 import website from "@/config/website.js";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { onBeforeMount } from "vue";
+import { onBeforeMount, ref } from "vue";
 import {
   getDictPage,
   createDict,
@@ -17,6 +17,7 @@ import {
 import useCrud from "@/hooks/useCrud.js";
 import { crudOption } from "./options.js";
 import MainDialog from "./MainDialog.vue";
+import DictEntryDialog from "@/views/sys/dict/DictEntryDialog.vue";
 
 const {
   dialog,
@@ -34,6 +35,7 @@ const {
 } = useCrud();
 
 const dictEntry = new URL("/entry.svg", import.meta.url);
+const dictDialog = ref({});
 
 function onAdd() {
   dialog.value.open(website.pageStatus.CREATE);
@@ -104,7 +106,7 @@ function onUpdateSubmit(formData, done) {
 }
 
 function handleDictEntry(rowData) {
-  console.log(rowData, "dada");
+  dictDialog.value.open(rowData);
 }
 
 function onSearch() {
@@ -180,6 +182,7 @@ onBeforeMount(() => {
         ref="dialog"
         @[website.pageStatus.CREATE]="onCreateSubmit"
         @[website.pageStatus.UPDATE]="onUpdateSubmit" />
+      <dict-entry-dialog ref="dictDialog" />
     </template>
   </page-container>
 </template>

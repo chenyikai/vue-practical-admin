@@ -8,11 +8,29 @@ export default {
 import { computed, useSlots } from "vue";
 import { tabStore } from "@/store/index.js";
 import { validatenull } from "@/utils/validate.js";
+const props = defineProps({
+  pageInfo: {
+    type: Object,
+    default: () => {},
+  },
+});
 const slots = useSlots();
 const TabStore = tabStore();
 
-const label = computed(() => TabStore["tab"]["label"]);
-const icon = computed(() => TabStore["tab"]["icon"]);
+const label = computed(() => {
+  if (validatenull(props.pageInfo)) {
+    return TabStore["tab"]["label"];
+  } else {
+    return props.pageInfo.label;
+  }
+});
+const icon = computed(() => {
+  if (validatenull(props.pageInfo)) {
+    return TabStore["tab"]["icon"];
+  } else {
+    return props.pageInfo.icon;
+  }
+});
 </script>
 
 <template>

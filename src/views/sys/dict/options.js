@@ -96,6 +96,8 @@ export const dictItemCrudOption = {
   menu: false,
   headerAlign: "center",
   align: "center",
+  height: 600,
+  // maxHeight: 500,
   column: [
     {
       label: "字典项名称",

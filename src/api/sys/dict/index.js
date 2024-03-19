@@ -57,6 +57,10 @@ export function deleteDictItemById(id) {
   return request.post(`${DICT_ITEM_BASE_URL}/delete`, { id });
 }
 
+export function dictEntryDetail(id) {
+  return request.post(`${DICT_ITEM_BASE_URL}/getDetail`, { id });
+}
+
 // 获取所有字典
 export function getDictAll() {
   return request.post(`${DICT_BASE_URL}/getAll`);
