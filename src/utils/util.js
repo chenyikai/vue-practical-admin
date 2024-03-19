@@ -366,3 +366,12 @@ export function kvToJson(k, v) {
   });
   return list;
 }
+
+export function getDictData(dictName) {
+  const dictAll = [];
+  if (Array.isArray(dictAll[dictName])) {
+    return dictAll[dictName];
+  }
+  console.warn(`未找到字典：${name}`);
+  return [];
+}

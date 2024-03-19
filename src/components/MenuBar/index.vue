@@ -57,7 +57,7 @@ function handleClick(menu) {
       margin-bottom: 5px;
     }
     .title {
-      font-size: 12px;
+      font-size: 14px;
       color: #fff;
     }
   }

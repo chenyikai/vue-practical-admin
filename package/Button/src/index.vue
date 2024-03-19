@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup>
-import { readonly, computed, toRefs } from "vue";
+import { readonly, computed, toRefs, reactive } from "vue";
 import { validatenull } from "@/utils/validate.js";
 const emits = defineEmits({
   click: null,
@@ -86,7 +86,7 @@ const props = defineProps({
 });
 const buttonAtr = computed(() => {
   const val = buttonMap[props["type"]];
-  return validatenull(val) ? {} : val;
+  return validatenull(val) ? reactive({}) : val;
 });
 const { bgColor, fontColor } = toRefs(buttonAtr.value);
 
