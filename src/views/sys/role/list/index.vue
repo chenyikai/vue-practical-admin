@@ -17,6 +17,7 @@ import {
   getRoleList,
   updateRole,
 } from "@/api/sys/role/index.js";
+import { validatenull } from "@/utils/validate.js";
 const {
   crud,
   dialog,
@@ -112,12 +113,29 @@ function onUpdateSubmit(formData, done) {
     });
 }
 
+function getRoleData() {
+  return new Promise((resolve, reject) => {
+    getRoleList()
+      .then(({ data }) => {
+        let mainData = validatenull(listQuery.roleName)
+          ? data.data
+          : data.data.filter(
+              (item) => item.roleName.indexOf(listQuery.roleName) !== -1,
+            );
+        resolve({
+          mainData,
+        });
+      })
+      .catch((e) => reject(e));
+  });
+}
+
 function onSearch() {
   handleFilter();
 }
 
 onBeforeMount(() => {
-  funcList.list = getRoleList;
+  funcList.callback = getRoleData;
   getList();
 });
 

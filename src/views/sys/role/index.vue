@@ -10,6 +10,7 @@ import RoleListCard from "./list/index.vue";
 import { validatenull } from "@/utils/validate.js";
 import LimitSettingCard from "./setting/index.vue";
 import { getMenuAll } from "@/api/sys/menu/index.js";
+import VerticalStretchBox from "package/VerticalStretchBox/src/index.vue";
 
 const settingData = ref({});
 const list = ref({});
@@ -41,46 +42,16 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <section class="role-page-container">
-    <role-list-card
-      ref="list"
-      class="role-list-card"
-      :class="{ show: isShow }"
-      @setting="handleSetting" />
-    <limit-setting-card
-      ref="limit"
-      v-if="isShow"
-      class="limit-setting"
-      :menu-data="allMenuTree"
-      :class="{ show: isShow }"
-      @setting="handleSetting" />
-  </section>
+  <vertical-stretch-box :visible="isShow" left-width="500">
+    <template #left>
+      <role-list-card ref="list" @setting="handleSetting" />
+    </template>
+    <template #right>
+      <limit-setting-card
+        ref="limit"
+        v-if="isShow"
+        :menu-data="allMenuTree"
+        @setting="handleSetting" />
+    </template>
+  </vertical-stretch-box>
 </template>
-
-<style lang="scss">
-.role-page-container {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  .role-list-card {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    transition: all 300ms;
-    &.show {
-      width: 500px;
-      margin-right: 20px;
-    }
-  }
-  .limit-setting {
-    width: 0;
-    height: 100%;
-    overflow: hidden;
-    &.show {
-      flex: 1;
-      width: auto;
-    }
-  }
-}
-</style>

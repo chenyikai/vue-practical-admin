@@ -90,7 +90,10 @@ defineExpose({
     <header class="limit-setting-card-container-header">
       <h1 class="page-title">
         <img class="icon" src="/limit.svg" alt="" />
-        <span class="label">{{ `权限配置-${currentRoleInfo.roleName}` }}</span>
+        <span class="label">权限配置</span>
+        <span v-if="currentRoleInfo.roleName" class="label"
+          >({{ currentRoleInfo.roleName }})</span
+        >
       </h1>
       <div class="button-group">
         <el-button type="success" :icon="Select" circle @click.stop="submit" />
