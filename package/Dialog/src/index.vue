@@ -20,6 +20,7 @@ defineProps({
 const emits = defineEmits({
   submit: null,
 });
+const pageDialog = ref({});
 const attrs = useAttrs();
 const visible = ref(false);
 const isSubmit = ref(false);
@@ -63,6 +64,7 @@ defineExpose({
 
 <template>
   <el-dialog
+    ref="pageDialog"
     class="form-dialog"
     v-model="visible"
     title="弹窗"

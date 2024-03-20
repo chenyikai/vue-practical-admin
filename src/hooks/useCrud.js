@@ -8,6 +8,7 @@ export default () => {
     list: null,
     callback: null,
   });
+  const crud = ref({});
   const mainTableData = ref([]);
   const dialog = ref({});
   const pagination = reactive({
@@ -127,6 +128,7 @@ export default () => {
   }
 
   return {
+    crud,
     dialog,
     funcList,
     tableLoading,

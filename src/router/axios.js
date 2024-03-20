@@ -1,7 +1,7 @@
 import qs from "qs";
 import axios from "axios";
 import { ElMessage } from "element-plus";
-import { useRouter } from "vue-router";
+import router from "@/router/index.js";
 import { userStore } from "@/store";
 import errorCode from "@/config/errorCode.js";
 import { serialize } from "@/utils/util";
@@ -62,7 +62,7 @@ request.interceptors.response.use(
       userStore()
         .fedLogOut()
         .then(() => {
-          useRouter().push({ path: "/login" });
+          router.push({ path: "/login" });
         });
     }
 

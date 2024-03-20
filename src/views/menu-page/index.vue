@@ -12,6 +12,7 @@ import { go2MenuPage } from "@/router/index.js";
 import { menuStore } from "@/store/index.js";
 import { useRoute } from "vue-router";
 const route = useRoute();
+const MenuStore = menuStore();
 
 const menuProps = readonly(website.menu.props);
 const menuList = ref([]);
@@ -33,16 +34,14 @@ onBeforeMount(() => {
 });
 
 function init() {
-  menuList.value = menuStore().getMenu(route.query["id"])[
-    menuProps["children"]
-  ];
+  menuList.value = MenuStore.getMenu(route.query.id)[menuProps.children];
   setColor();
 }
 
 function setColor() {
   menuList.value.forEach((item) => {
-    analyze(item["icon"], { scale: 0.1 }).then((data) => {
-      if (data.length > 0) item["bgColor"] = data[0]["color"];
+    analyze(item.icon, { scale: 0.1 }).then((data) => {
+      if (data.length > 0) item.bgColor = data[0].color;
     });
   });
 }
@@ -70,7 +69,12 @@ function handleClick(menu) {
 
 <style scoped lang="scss">
 .menu-page-container {
+  @import "src/styles/variables";
   display: flex;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  @include container();
   .menu-page-item {
     position: relative;
     display: flex;

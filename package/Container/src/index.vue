@@ -57,15 +57,13 @@ const icon = computed(() => {
 
 <style lang="scss">
 .page-container {
+  @import "src/styles/variables";
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
-  border-radius: 2px;
-  background-color: var(--theme-color);
-  box-shadow: 0 0 2px 5px var(--theme-color);
-  padding: 10px;
   overflow: hidden;
+  @include container();
   &-header {
     width: 100%;
     .page-title {
@@ -92,24 +90,9 @@ const icon = computed(() => {
           &__label {
             color: #fff;
           }
-          &__content {
-            //.el-input {
-            //  border: none;
-            //  &__wrapper {
-            //    background-color: var(--content-color);
-            //    box-shadow: 0 0 2px var(--content-color);
-            //    .el-input__inner {
-            //      color: var(--font-color);
-            //    }
-            //  }
-            //}
-          }
         }
       }
     }
-  }
-  .divider-line {
-    border-top: 1px solid var(--border-color);
   }
   .button-layout {
     margin-bottom: 24px;
