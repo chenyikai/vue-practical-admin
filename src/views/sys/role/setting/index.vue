@@ -124,6 +124,8 @@ defineExpose({
   display: flex;
   flex-direction: column;
   @include container();
+  width: 100%;
+  height: 100%;
   &-header {
     display: flex;
     justify-content: space-between;
