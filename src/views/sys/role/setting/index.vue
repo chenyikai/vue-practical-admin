@@ -6,27 +6,29 @@ export default {
 
 <script setup>
 import { CloseBold, Select } from "@element-plus/icons-vue";
-import { ref, onBeforeMount } from "vue";
+import { ref } from "vue";
 import { updateRole } from "@/api/sys/role/index.js";
-import { getRoleMenuById, getMenuAll } from "@/api/sys/menu/index.js";
+import { getRoleMenuById } from "@/api/sys/menu/index.js";
 import { ElMessage } from "element-plus";
 import { debounce } from "lodash";
 const emits = defineEmits({ setting: null });
 
 const tree = ref({});
-const allMenuTree = ref([]);
 const currentRoleInfo = ref({});
+
+defineProps({
+  menuData: {
+    type: Array,
+    default: () => {
+      return [];
+    },
+  },
+});
 
 const defaultProps = {
   children: "children",
   label: "menuName",
 };
-
-function getAll() {
-  getMenuAll().then(({ data }) => {
-    allMenuTree.value = data.data;
-  });
-}
 
 function init(info) {
   currentRoleInfo.value = info;
@@ -81,10 +83,6 @@ function getTreeLowestLevelIds(tree) {
 defineExpose({
   init,
 });
-
-onBeforeMount(() => {
-  getAll();
-});
 </script>
 
 <template>
@@ -108,7 +106,7 @@ onBeforeMount(() => {
       <el-tree
         ref="tree"
         class="role-menu-tree"
-        :data="allMenuTree"
+        :data="menuData"
         show-checkbox
         node-key="id"
         :props="defaultProps" />

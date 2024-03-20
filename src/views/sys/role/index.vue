@@ -5,14 +5,16 @@ export default {
 </script>
 
 <script setup>
-import { ref, computed, nextTick } from "vue";
+import { ref, computed, nextTick, onBeforeMount } from "vue";
 import RoleListCard from "./list/index.vue";
 import { validatenull } from "@/utils/validate.js";
 import LimitSettingCard from "./setting/index.vue";
+import { getMenuAll } from "@/api/sys/menu/index.js";
 
 const settingData = ref({});
 const list = ref({});
 const limit = ref({});
+const allMenuTree = ref([]);
 const isShow = computed(() => !validatenull(settingData.value));
 
 function handleSetting(rowData) {
@@ -26,6 +28,16 @@ function handleSetting(rowData) {
     list.value.resetTable();
   }, 300);
 }
+
+function getAll() {
+  getMenuAll().then(({ data }) => {
+    allMenuTree.value = data.data;
+  });
+}
+
+onBeforeMount(() => {
+  getAll();
+});
 </script>
 
 <template>
@@ -39,6 +51,7 @@ function handleSetting(rowData) {
       ref="limit"
       v-if="isShow"
       class="limit-setting"
+      :menu-data="allMenuTree"
       :class="{ show: isShow }"
       @setting="handleSetting" />
   </section>
