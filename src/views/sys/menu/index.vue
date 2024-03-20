@@ -7,7 +7,7 @@ export default {
 <script setup>
 import website from "@/config/website.js";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { onBeforeMount, computed } from "vue";
+import { onBeforeMount, computed, toRef } from "vue";
 import useCrud from "@/hooks/useCrud.js";
 import { crudOption } from "./options.js";
 import MainDialog from "./MainDialog.vue";
@@ -33,14 +33,16 @@ const {
   handelResetSearchForm,
 } = useCrud();
 
-const menuTreeData = computed(() => {
-  return [
-    {
-      menuName: "根节点",
-      id: "-1",
-      children: mainTableData,
-    },
-  ];
+const menuTreeData = computed({
+  get() {
+    return [
+      {
+        menuName: "根节点",
+        id: "-1",
+        children: toRef(mainTableData).value,
+      },
+    ];
+  },
 });
 
 function onAdd() {

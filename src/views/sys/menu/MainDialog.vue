@@ -6,7 +6,7 @@ export default {
 
 <script setup>
 import useForm from "@/hooks/useForm.js";
-import { nextTick, computed, defineEmits, toRef } from "vue";
+import { nextTick, computed, watch } from "vue";
 import { formOption } from "./options.js";
 import website from "@/config/website.js";
 import { userDetail } from "@/api/sys/user/index.js";
@@ -25,9 +25,9 @@ const props = defineProps({
 });
 const {
   form,
+  dialog,
   loading,
   formStatus,
-  dialog,
   formData,
   isDetail,
   detailFunc,
@@ -41,7 +41,7 @@ const options = computed(() => {
     column: column.map((item) => {
       if (item.needMenuData) {
         return {
-          dicData: toRef(props.menuTreeData),
+          dicData: props.menuTreeData,
           disabled: isDetail.value,
           ...item,
         };
@@ -54,6 +54,15 @@ const options = computed(() => {
     }),
   };
 });
+
+watch(
+  options,
+  (val) => {
+    console.log(props.menuTreeData, "menuTreeData");
+    console.log(val, "val");
+  },
+  { deep: true, immediate: true },
+);
 
 function open(status, data = {}) {
   detailFunc.value = userDetail;

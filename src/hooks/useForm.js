@@ -1,6 +1,7 @@
 import { computed, ref } from "vue";
 import website from "@/config/website.js";
 import { validatenull } from "@/utils/validate.js";
+import { ElMessage } from "element-plus";
 
 export default () => {
   const loading = ref(false);
@@ -17,6 +18,14 @@ export default () => {
     if (validatenull(form.id)) {
       formData.value = form;
     } else {
+      if (validatenull(detailFunc.value)) {
+        ElMessage({
+          message: "未传入detail方法",
+          type: "error",
+        });
+        return;
+      }
+
       loading.value = true;
       detailFunc
         .value(form.id)

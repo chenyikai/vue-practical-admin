@@ -146,7 +146,7 @@ function onSearch() {
 }
 
 onBeforeMount(() => {
-  funcList.search = getUserPage;
+  funcList.page = getUserPage;
   getList();
 });
 </script>

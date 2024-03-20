@@ -114,7 +114,7 @@ function onSearch() {
 }
 
 onBeforeMount(() => {
-  funcList.search = getDictPage;
+  funcList.page = getDictPage;
   getList();
 });
 </script>

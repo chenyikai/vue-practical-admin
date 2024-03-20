@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup>
-import { ref, onBeforeMount } from "vue";
+import { onBeforeMount } from "vue";
 import useForm from "@/hooks/useForm.js";
 const { loading, dialog } = useForm();
 import useCrud from "@/hooks/useCrud.js";
@@ -119,7 +119,7 @@ function onSearch() {
 }
 
 onBeforeMount(() => {
-  funcList.search = getDictItemPage;
+  funcList.page = getDictItemPage;
 });
 
 defineExpose({
