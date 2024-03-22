@@ -7,11 +7,12 @@ export default {
 <script setup>
 import { User, Lock, Warning } from "@element-plus/icons-vue";
 import website from "@/config/website.js";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { onBeforeMount, reactive, ref } from "vue";
 import { randomLenNum } from "@/utils/util.js";
 import { userStore } from "@/store";
 const router = useRouter();
+const route = useRoute();
 
 const codeUrl = ref(`${import.meta.env.VITE_API_PREFIX}/rest/auth/captcha`);
 const formData = reactive({
@@ -35,7 +36,7 @@ function handleSubmit() {
     userStore()
       .userLoginByPassword(formData)
       .then(() => {
-        router.push({ path: website.indexPage });
+        router.push({ path: route.query.redirect || website.indexPage });
       })
       .catch(() => {
         refreshCode();

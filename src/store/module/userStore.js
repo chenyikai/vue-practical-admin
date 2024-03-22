@@ -3,7 +3,6 @@ import { encryption } from "@/utils/util.js";
 import website from "@/config/website.js";
 import { userLoginByPassword, getUserInfo } from "@/api/login";
 import tabStore from "./tabStore.js";
-import menuStore from "./menuStore.js";
 import { getStore, setStore } from "@/utils/store.js";
 import { getDictAll } from "@/api/sys/dict/index.js";
 
@@ -88,7 +87,7 @@ const userStore = defineStore("user", {
         setStore({ name: "roles", content: [] });
         setStore({ name: "permissions", content: [] });
         tabStore().deleteAll();
-        menuStore().deleteAll();
+        // menuStore().deleteAll();
         resolve();
       });
     },
