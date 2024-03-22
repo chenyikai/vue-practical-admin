@@ -62,6 +62,7 @@ export default () => {
    */
   function setFreezeData(key, value) {
     freezeData[key] = value;
+    listQuery[key] = value
   }
 
   /**
