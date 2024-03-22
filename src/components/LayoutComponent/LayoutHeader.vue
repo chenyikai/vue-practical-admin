@@ -21,7 +21,7 @@ function handleGo2Index() {
     <div class="system-info" @click.stop="handleGo2Index">
       <div class="logo-layout">
         <div class="logo-box">
-          <img src="vite.svg" alt="" />
+          <img src="/vite.svg" alt="" />
         </div>
       </div>
       <span class="system-title">后台管理系统</span>
