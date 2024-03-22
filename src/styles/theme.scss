@@ -24,18 +24,20 @@ html {
     --theme-font-size: 14px; // 字体大小
     --theme-menu-hover-bg: #202835; // 菜单hover背景
     --theme-border-color: #767474; // 边框颜色
+    --theme-system-avatar-bg: #fff; // 系统图标背景色
     --el-switch-border-color: var(--theme-border-color); // switch按钮边框色
     --theme-table-header-color: var(--theme-tab-color); // 表头颜色
     --theme-table-header-font-color: var(--theme-tab-color); // 表头颜色
   }
   &.light {
     --system-color: #fff; // 系统主色
-    --theme-tab-color: #c3d9fc; // tab颜色
+    --theme-tab-color: #cddef8; // tab颜色
     --theme-content-color: #e8f0fc; // 内容颜色
     --theme-font-color: #000; // 字体颜色
     --theme-font-size: 14px; // 字体大小
     --theme-menu-hover-bg: #202835; // 菜单hover背景
     --theme-border-color: #767474; // 边框颜色
+    --theme-system-avatar-bg: #fff; // 系统图标背景色
     --el-switch-border-color: var(--theme-border-color); // switch按钮边框色
     --theme-table-header-color: var(--theme-tab-color); // 表头颜色
   }
@@ -49,6 +51,7 @@ html {
   --font-size: var(--theme-font-size);
   --border-color: var(--theme-border-color);
   --menu-hover-bg: var(--theme-menu-hover-bg);
+  --system-avatar-bg: var(--theme-system-avatar-bg);
   --el-aside-width: 80px;
   #app {
     background-color: var(--theme-color);

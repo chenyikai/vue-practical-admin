@@ -97,8 +97,16 @@ defineExpose({
   border-radius: 8px;
   overflow: hidden;
   .el-dialog__header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 44px;
     margin-right: 0;
     background-color: var(--theme-color);
+    margin-bottom: 10px;
+    .el-dialog__title {
+      margin-left: 10px;
+    }
     &btn {
       top: 15px;
       right: 10px;
@@ -106,15 +114,16 @@ defineExpose({
       height: 19px;
       color: #fff;
       .el-dialog__close {
-        color: #fff;
+        color: var(--font-color);
         font-weight: bold;
       }
     }
   }
   .el-dialog__body {
+    padding: 10px;
   }
   .el-dialog__footer {
-    padding-bottom: 20px;
+    padding: 10px;
   }
 }
 </style>

@@ -58,7 +58,7 @@ function handleClick(menu) {
     }
     .title {
       font-size: 14px;
-      color: #fff;
+      color: var(--font-color);
     }
     & + .menu-item {
       margin-top: 10px;

@@ -10,7 +10,7 @@
     'off-color': #fff
   ),
   $dialog: (
-    'padding-primary': 10px,
+    'padding-primary': 0,
     'title-font-size': 16px
   ),
   $table: (
@@ -19,6 +19,9 @@
   ),
   $tree: (
     'node-content-height': 40px
+  ),
+  $button: (
+    'hover-text-color': getCssVar('text-color', 'regular'),
   )
 );
 

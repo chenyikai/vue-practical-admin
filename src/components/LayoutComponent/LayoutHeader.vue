@@ -27,7 +27,7 @@ function handleGo2Index() {
       <span class="system-title">后台管理系统</span>
     </div>
     <div class="right-layout">
-      <theme-button />
+      <theme-button v-if="false" />
       <user-info />
     </div>
   </div>
@@ -58,7 +58,7 @@ function handleGo2Index() {
         width: 70%;
         height: 70%;
         border-radius: 50%;
-        background-color: #fff;
+        background-color: var(--system-avatar-bg);
         img {
           width: 60%;
           height: 60%;
