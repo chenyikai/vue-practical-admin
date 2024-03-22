@@ -32,3 +32,7 @@ export function deleteMenuById(id) {
 export function getRoleMenuById(roleId) {
   return request.get(`${BASE_URL}/getMenuListByRoleId/${roleId}`);
 }
+
+export function menuDetail(id) {
+  return request.post(`${BASE_URL}/getDetail`, { id });
+}

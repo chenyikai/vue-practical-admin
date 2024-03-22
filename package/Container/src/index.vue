@@ -45,7 +45,7 @@ const icon = computed(() => {
       </div>
     </header>
     <el-divider class="divider-line" v-if="!validatenull(slots.search)" />
-    <div class="button-layout">
+    <div class="button-layout" v-if="!validatenull(slots.button)">
       <slot name="button"></slot>
     </div>
     <main class="page-container-main">

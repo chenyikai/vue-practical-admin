@@ -6,41 +6,42 @@ export default {
 
 <script setup>
 import useForm from "@/hooks/useForm.js";
-import { nextTick } from "vue";
+import { nextTick, computed, defineEmits } from "vue";
+import { formOption } from "./options.js";
 import website from "@/config/website.js";
-import useOptions from "./useOptions.js";
-import { menuDetail } from "@/api/sys/menu/index.js";
+import { userDetail } from "@/api/sys/user/index.js";
 const emits = defineEmits({
   [website.pageStatus.CREATE]: null,
   [website.pageStatus.UPDATE]: null,
   [website.pageStatus.DETAIL]: null,
 });
-const { formOption, setColumnData, setDisabled } = useOptions();
-
-const props = defineProps({
-  menuTreeData: {
-    type: Array,
-    default: () => {
-      return [];
-    },
-  },
-});
 const {
   form,
-  dialog,
   loading,
   formStatus,
+  dialog,
   formData,
   isDetail,
   detailFunc,
   setData,
 } = useForm();
 
+const options = computed(() => {
+  const { column } = formOption;
+  return {
+    ...formOption,
+    column: column.map((item) => {
+      return {
+        disabled: isDetail.value,
+        ...item,
+      };
+    }),
+  };
+});
+
 function open(status, data = {}) {
-  detailFunc.value = menuDetail;
-  setColumnData("parentId", "dicData", props.menuTreeData);
+  detailFunc.value = userDetail;
   setData(status, data);
-  setDisabled(isDetail);
 
   dialog.value.open();
   nextTick().then(() => {
@@ -68,11 +69,11 @@ defineExpose({
 
 <template>
   <page-dialog
-    title="菜单管理"
+    title="用户管理"
     ref="dialog"
     @submit="handleSubmit"
     :loading="loading"
     :show-footer="!isDetail">
-    <avue-form ref="form" :option="formOption" v-model="formData" />
+    <avue-form ref="form" :option="options" v-model="formData" />
   </page-dialog>
 </template>

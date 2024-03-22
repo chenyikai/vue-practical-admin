@@ -165,9 +165,16 @@ export default () => {
     formOption.column[index][key] = value;
   }
 
+  function setDisabled(disabled) {
+    formOption.column.forEach((item) => {
+      item["disabled"] = disabled;
+    });
+  }
+
   return {
     crudOption,
     formOption,
+    setDisabled,
     setColumnData,
   };
 };
