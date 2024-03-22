@@ -49,7 +49,7 @@ function handleClick(menu) {
     transition: all 0.3s;
     &:hover {
       border-radius: 50%;
-      background-color: #202835;
+      background-color: var(--menu-hover-bg);
     }
     .icon {
       width: 25px;
@@ -59,6 +59,9 @@ function handleClick(menu) {
     .title {
       font-size: 14px;
       color: #fff;
+    }
+    & + .menu-item {
+      margin-top: 10px;
     }
   }
 }

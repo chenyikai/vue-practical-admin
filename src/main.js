@@ -7,7 +7,7 @@ import Avue from "@smallwei/avue";
 import axios from "@/router/axios.js";
 import "./styles/index.scss";
 import "./styles/element-variables.scss";
-import "./styles/dark.scss";
+import "./styles/theme.scss";
 import ElementPlus from "element-plus";
 import AdminComponent from "package/index.js";
 

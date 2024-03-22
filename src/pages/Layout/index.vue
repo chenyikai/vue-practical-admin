@@ -63,13 +63,13 @@ function initMenu() {
             path: "/sys/dept/index",
             children: [],
           },
-          {
-            id: 16,
-            menuName: "在线用户管理",
-            icon: "online.svg",
-            path: "/sys/live/index",
-            children: [],
-          },
+          // {
+          //   id: 16,
+          //   menuName: "在线用户管理",
+          //   icon: "online.svg",
+          //   path: "/sys/live/index",
+          //   children: [],
+          // },
           {
             id: 17,
             menuName: "日志管理",

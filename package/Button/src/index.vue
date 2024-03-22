@@ -17,7 +17,6 @@ const buttonMap = readonly({
     icon: new URL("../images/search.svg", import.meta.url),
     label: "搜索",
     bgColor: "#409eff",
-    fontColor: "#fff",
   },
   reset: {
     icon: new URL("../images/reset.svg", import.meta.url),
@@ -92,7 +91,7 @@ const buttonAtr = computed(() => {
   const val = buttonMap[props["type"]];
   return validatenull(val) ? reactive({}) : val;
 });
-const { bgColor, fontColor } = toRefs(buttonAtr.value);
+const { bgColor } = toRefs(buttonAtr.value);
 
 function handleClick(e) {
   emits("click", e);
@@ -115,7 +114,6 @@ function handleClick(e) {
 @import "src/styles/variables";
 .page-button {
   background-color: v-bind(bgColor);
-  color: v-bind(fontColor);
   padding: 8px 10px;
   .icon {
     width: 18px;
@@ -125,7 +123,6 @@ function handleClick(e) {
   &:hover {
     background-color: v-bind(bgColor);
     opacity: 0.7;
-    color: #fff;
   }
   &.horizontal {
     border: none;
@@ -151,7 +148,6 @@ function handleClick(e) {
     }
     .label {
       font-size: 12px;
-      color: #fff;
     }
   }
 }

@@ -197,7 +197,7 @@ function isDisabled(tab) {
       border-radius: 50%;
       transition: all 0.3s;
       &:hover {
-        background-color: #262f3f;
+        background-color: var(--tab-color);
       }
     }
   }

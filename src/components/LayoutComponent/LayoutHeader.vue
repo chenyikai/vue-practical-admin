@@ -66,7 +66,7 @@ function handleGo2Index() {
       }
     }
     .system-title {
-      color: #fff;
+      color: var(--font-color);
       font-size: 20px;
     }
   }

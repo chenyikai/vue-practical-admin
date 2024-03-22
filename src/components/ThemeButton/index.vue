@@ -8,7 +8,10 @@ export default {
 import { useDark, useToggle } from "@vueuse/core";
 import { Sunny, Moon } from "@element-plus/icons-vue";
 
-const isDark = useDark();
+const isDark = useDark({
+  valueDark: "dark",
+  valueLight: "light",
+});
 const toggleDark = useToggle(isDark);
 </script>
 

@@ -71,7 +71,7 @@ const icon = computed(() => {
       align-items: center;
       margin: 0 0 20px 0;
       font-size: 16px;
-      color: #fff;
+      color: var(--font-color);
       .icon {
         width: 24px;
         height: 24px;
@@ -87,9 +87,6 @@ const icon = computed(() => {
         row-gap: 20px;
         &-item {
           margin-bottom: 0;
-          &__label {
-            color: #fff;
-          }
         }
       }
     }
