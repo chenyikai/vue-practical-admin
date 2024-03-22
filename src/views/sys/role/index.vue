@@ -49,7 +49,6 @@ onBeforeMount(() => {
     <template #right>
       <limit-setting-card
         ref="limit"
-        v-if="isShow"
         :menu-data="allMenuTree"
         @setting="handleSetting" />
     </template>

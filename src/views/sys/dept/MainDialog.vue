@@ -6,40 +6,40 @@ export default {
 
 <script setup>
 import useForm from "@/hooks/useForm.js";
-import { nextTick } from "vue";
+import { nextTick, defineEmits } from "vue";
 import website from "@/config/website.js";
+import { deptDetail } from "@/api/sys/dept/index.js";
 import useOptions from "./useOptions.js";
-import { userDetail } from "@/api/sys/user/index.js";
-const emits = defineEmits({
-  [website.pageStatus.CREATE]: null,
-  [website.pageStatus.UPDATE]: null,
-  [website.pageStatus.DETAIL]: null,
-});
-const { formOption, setColumnData } = useOptions();
-
 const props = defineProps({
-  menuTreeData: {
+  departTreeData: {
     type: Array,
     default: () => {
       return [];
     },
   },
 });
+const emits = defineEmits({
+  [website.pageStatus.CREATE]: null,
+  [website.pageStatus.UPDATE]: null,
+  [website.pageStatus.DETAIL]: null,
+});
 const {
   form,
-  dialog,
   loading,
   formStatus,
+  dialog,
   formData,
   isDetail,
   detailFunc,
   setData,
 } = useForm();
+const { formOption, setColumnData, setDisabled } = useOptions();
 
 function open(status, data = {}) {
-  detailFunc.value = userDetail;
-  setColumnData("parentId", "dicData", props.menuTreeData);
+  detailFunc.value = deptDetail;
   setData(status, data);
+  setColumnData("parentId", "dicData", props.departTreeData);
+  setDisabled(isDetail);
 
   dialog.value.open();
   nextTick().then(() => {
@@ -67,7 +67,7 @@ defineExpose({
 
 <template>
   <page-dialog
-    title="菜单管理"
+    title="部门管理"
     ref="dialog"
     @submit="handleSubmit"
     :loading="loading"

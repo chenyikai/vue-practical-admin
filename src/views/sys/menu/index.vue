@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: "UserPage",
+  name: "MenuPage",
 };
 </script>
 
@@ -9,14 +9,16 @@ import website from "@/config/website.js";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { onBeforeMount, computed, toRef } from "vue";
 import useCrud from "@/hooks/useCrud.js";
-import { crudOption } from "./options.js";
 import MainDialog from "./MainDialog.vue";
 import {
-  createUser,
-  deleteUserById,
-  updateUser,
-} from "@/api/sys/user/index.js";
-import { getUserMenuAll } from "@/api/sys/menu/index.js";
+  createMenu,
+  deleteMenuById,
+  getUserMenuAll,
+  updateMenu,
+} from "@/api/sys/menu/index.js";
+import useOptions from "./useOptions.js";
+
+const { crudOption } = useOptions();
 
 const {
   dialog,
@@ -33,20 +35,23 @@ const {
   handelResetSearchForm,
 } = useCrud();
 
-const menuTreeData = computed({
-  get() {
-    return [
-      {
-        menuName: "根节点",
-        id: "-1",
-        children: toRef(mainTableData).value,
-      },
-    ];
+const menuTreeData = computed(() => [
+  {
+    menuName: "根节点",
+    id: "-1",
+    children: toRef(mainTableData).value,
   },
-});
+]);
 
-function onAdd() {
-  dialog.value.open(website.pageStatus.CREATE);
+function onAdd(rowData) {
+  if (rowData) {
+    dialog.value.open(website.pageStatus.CREATE, {
+      id: undefined,
+      parentId: rowData.id,
+    });
+  } else {
+    dialog.value.open(website.pageStatus.CREATE);
+  }
 }
 
 function onDelete(rowData) {
@@ -56,7 +61,7 @@ function onDelete(rowData) {
     type: "warning",
   })
     .then(() => {
-      return deleteUserById(rowData.id);
+      return deleteMenuById(rowData.id);
     })
     .then(() => {
       ElMessage({
@@ -76,7 +81,7 @@ function onDetail(rowData) {
 }
 
 function onCreateSubmit(formData, done) {
-  createUser(formData)
+  createMenu(formData)
     .then(() => {
       done(true);
       ElMessage({
@@ -95,7 +100,7 @@ function onCreateSubmit(formData, done) {
 }
 
 function onUpdateSubmit(formData, done) {
-  updateUser(formData)
+  updateMenu(formData)
     .then(() => {
       done(true);
       ElMessage({

@@ -1,25 +1,25 @@
 <script>
 export default {
-  name: "RoleListCard",
+  name: "UserPage",
 };
 </script>
 
 <script setup>
 import website from "@/config/website.js";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { onBeforeMount } from "vue";
+import { computed, onBeforeMount, toRef } from "vue";
 import useCrud from "@/hooks/useCrud.js";
-import { crudOption } from "./options.js";
 import MainDialog from "./MainDialog.vue";
 import {
-  createRole,
-  deleteRoleById,
-  getRoleList,
-  updateRole,
-} from "@/api/sys/role/index.js";
-import { validatenull } from "@/utils/validate.js";
+  createDept,
+  deleteDeptById,
+  getDeptPage,
+  updateDept,
+} from "@/api/sys/dept/index.js";
+import useOptions from "./useOptions.js";
+const { crudOption } = useOptions();
+
 const {
-  crud,
   dialog,
   funcList,
   listQuery,
@@ -33,26 +33,27 @@ const {
   currentChange,
   handelResetSearchForm,
 } = useCrud();
-const emits = defineEmits({ setting: null });
 
-const settingIcon = new URL("/setting.svg", import.meta.url);
-const pageInfo = {
-  icon: "/role.svg",
-  label: "角色管理",
-};
+const departTreeData = computed(() => [
+  {
+    deptName: "根节点",
+    id: "-1",
+    children: toRef(mainTableData).value,
+  },
+]);
 
 function onAdd() {
   dialog.value.open(website.pageStatus.CREATE);
 }
 
 function onDelete(rowData) {
-  ElMessageBox.confirm(`是否确认删除角色：${rowData.roleName}？`, "提示", {
+  ElMessageBox.confirm(`是否确认删除部门：${rowData.deptName}？`, "提示", {
     confirmButtonText: "确认",
     cancelButtonText: "取消",
     type: "warning",
   })
     .then(() => {
-      return deleteRoleById(rowData.id);
+      return deleteDeptById(rowData.id);
     })
     .then(() => {
       ElMessage({
@@ -67,16 +68,12 @@ function onUpdate(rowData) {
   dialog.value.open(website.pageStatus.UPDATE, rowData);
 }
 
-function resetTable() {
-  crud.value.getTableHeight();
-}
-
-function onSetting(rowData) {
-  emits("setting", rowData);
+function onDetail(rowData) {
+  dialog.value.open(website.pageStatus.DETAIL, rowData);
 }
 
 function onCreateSubmit(formData, done) {
-  createRole(formData)
+  createDept(formData)
     .then(() => {
       done(true);
       ElMessage({
@@ -95,7 +92,7 @@ function onCreateSubmit(formData, done) {
 }
 
 function onUpdateSubmit(formData, done) {
-  updateRole(formData)
+  updateDept(formData)
     .then(() => {
       done(true);
       ElMessage({
@@ -113,50 +110,28 @@ function onUpdateSubmit(formData, done) {
     });
 }
 
-function getRoleData() {
-  return new Promise((resolve, reject) => {
-    getRoleList()
-      .then(({ data }) => {
-        let mainData = validatenull(listQuery.roleName)
-          ? data.data
-          : data.data.filter(
-              (item) => item.roleName.indexOf(listQuery.roleName) !== -1,
-            );
-        resolve({
-          mainData,
-        });
-      })
-      .catch((e) => reject(e));
-  });
-}
-
 function onSearch() {
   handleFilter();
 }
 
 onBeforeMount(() => {
-  funcList.callback = getRoleData;
+  funcList.page = getDeptPage;
   getList();
-});
-
-defineExpose({
-  resetTable,
 });
 </script>
 
 <template>
-  <page-container class="role-list-page-container" :page-info="pageInfo">
+  <page-container class="dict-page-container">
     <template #search>
       <el-form
         ref="searchForm"
         :model="listQuery"
         :inline="true"
         label-suffix=":">
-        <el-form-item label="角色名" prop="roleName">
+        <el-form-item label="部门机构名称" prop="deptName">
           <el-input
-            v-model="listQuery.roleName"
-            placeholder="请输入用户名"
-            clearable></el-input>
+            placeholder="请输入部门机构名称"
+            v-model="listQuery.deptName"></el-input>
         </el-form-item>
         <el-form-item>
           <page-button type="search" @click.stop="onSearch" />
@@ -179,10 +154,9 @@ defineExpose({
         @sort-change="sortChange">
         <template v-slot:menu="{ row }">
           <page-button
-            :icon="settingIcon"
-            label="权限配置"
+            type="detail"
             direction="horizontal"
-            @click.stop="onSetting(row)" />
+            @click.stop="onDetail(row)" />
           <page-button
             type="update"
             direction="horizontal"
@@ -197,14 +171,9 @@ defineExpose({
     <template #dialog>
       <main-dialog
         ref="dialog"
+        :departTreeData="departTreeData"
         @[website.pageStatus.CREATE]="onCreateSubmit"
         @[website.pageStatus.UPDATE]="onUpdateSubmit" />
     </template>
   </page-container>
 </template>
-
-<style lang="scss" scoped>
-.role-list-page-container {
-  padding: 0;
-}
-</style>

@@ -56,6 +56,13 @@ function initMenu() {
             path: "/sys/role/index",
             children: [],
           },
+          {
+            id: 15,
+            menuName: "部门管理",
+            icon: "department.svg",
+            path: "/sys/dept/index",
+            children: [],
+          },
           // {
           //   id: 15,
           //   menuName: "角色管理",
