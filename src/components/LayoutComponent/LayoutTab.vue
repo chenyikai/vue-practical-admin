@@ -94,7 +94,12 @@ function handleCommand(tab) {
   } else if (tab.command === "refresh") {
     router.go(0);
   } else if (tab.command === "close-right") {
-    TabStore.deleteRight(tab);
+    TabStore.deleteRight(tab, () => {
+      router.push({
+        path: TabStore["tab"]["value"],
+        query: TabStore["tab"]["query"],
+      });
+    });
   } else {
     console.warn("未匹配的命令");
   }

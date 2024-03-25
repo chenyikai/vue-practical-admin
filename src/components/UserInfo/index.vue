@@ -12,8 +12,9 @@ import { userStore } from "@/store/index.js";
 import { useRoute, useRouter } from "vue-router";
 import { validatenull } from "@/utils/validate.js";
 import { encryption } from "@/utils/util.js";
-import PasswordDialog from "@/components/UserInfo/PasswordDialog.vue";
+import PasswordDialog from "./password/PasswordDialog.vue";
 import { resetPassword } from "@/api/sys/auth/index.js";
+import UserInfoDialog from "./info/UserInfoDialog.vue";
 const router = useRouter();
 const route = useRoute();
 const UserStore = userStore();
@@ -29,6 +30,7 @@ const avatarUrl = computed(() => {
 });
 
 const password = ref({});
+const info = ref({});
 
 function handleLogOut() {
   ElMessageBox.confirm("请确认是否要退出？", "提示", {
@@ -45,6 +47,8 @@ function handleLogOut() {
 function handleCommand(command) {
   if (command === "password") {
     password.value.open(MODIFY);
+  } else if (command === "info") {
+    info.value.open(MODIFY);
   }
 }
 
@@ -74,6 +78,8 @@ function onModifySubmit(formData, done) {
       done();
     });
 }
+
+function onInfoModifySubmit() {}
 </script>
 
 <template>
@@ -97,6 +103,7 @@ function onModifySubmit(formData, done) {
       alt=""
       @click.stop="handleLogOut" />
     <password-dialog ref="password" @[MODIFY]="onModifySubmit" />
+    <user-info-dialog ref="info" @[MODIFY]="onInfoModifySubmit" />
   </section>
 </template>
 

@@ -58,12 +58,20 @@ const tabStore = defineStore("tab", {
         setStore({ name: "tab", content: this.tab });
       }
     },
-    deleteRight(data) {
+    deleteRight(data, callback) {
       const index = this.tabList.findIndex((item) => item.value === data.value);
-      if (index !== -1) {
-        this.tabList = this.tabList.slice(0, index + 1);
-        setStore({ name: "tabList", content: this.tabList });
+      if (index === -1) return;
+
+      this.tabList = this.tabList.slice(0, index + 1);
+      setStore({ name: "tabList", content: this.tabList });
+
+      const i = this.tabList.findIndex((item) => item.value === this.tab.value);
+      if (i === -1) {
+        this.tab = this.tabList.at(-1);
+        setStore({ name: "tab", content: this.tab });
       }
+
+      callback();
     },
     deleteAll() {
       this.tabList = [tagWel];

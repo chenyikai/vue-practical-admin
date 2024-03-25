@@ -110,6 +110,7 @@ defineExpose({
         ref="tree"
         class="role-menu-tree"
         :data="menuData"
+        default-expand-all
         show-checkbox
         node-key="id"
         :props="defaultProps" />
