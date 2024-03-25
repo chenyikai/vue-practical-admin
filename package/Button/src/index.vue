@@ -5,8 +5,7 @@ export default {
 </script>
 
 <script setup>
-// import { useCssVar } from "@vueuse/core";
-import { readonly, computed, toRefs, reactive } from "vue";
+import { readonly, computed, reactive } from "vue";
 import { validatenull } from "@/utils/validate.js";
 const emits = defineEmits({
   click: null,
@@ -16,7 +15,6 @@ const buttonMap = readonly({
   search: {
     icon: new URL("../images/search.svg", import.meta.url),
     label: "搜索",
-    bgColor: "#409eff",
   },
   reset: {
     icon: new URL("../images/reset.svg", import.meta.url),
@@ -44,6 +42,10 @@ const buttonMap = readonly({
     icon: new URL("../images/export.svg", import.meta.url),
     label: "导出",
   },
+  import: {
+    icon: new URL("../images/import.svg", import.meta.url),
+    label: "导入",
+  },
   download: {
     icon: new URL("../images/download.svg", import.meta.url),
     label: "下载",
@@ -66,6 +68,7 @@ const props = defineProps({
         "update",
         "detail",
         "export",
+        "import",
         "download",
         "pic",
       ].includes(value);
@@ -91,7 +94,6 @@ const buttonAtr = computed(() => {
   const val = buttonMap[props["type"]];
   return validatenull(val) ? reactive({}) : val;
 });
-const { bgColor } = toRefs(buttonAtr.value);
 
 function handleClick(e) {
   emits("click", e);
@@ -113,7 +115,6 @@ function handleClick(e) {
 <style lang="scss">
 @import "src/styles/variables";
 .page-button {
-  background-color: v-bind(bgColor);
   padding: 8px 10px;
   .icon {
     width: 18px;
@@ -121,7 +122,6 @@ function handleClick(e) {
     margin-right: 4px;
   }
   &:hover {
-    background-color: v-bind(bgColor);
     opacity: 0.7;
   }
   &.horizontal {

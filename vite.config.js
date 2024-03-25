@@ -16,6 +16,7 @@ export default defineConfig(({ mode }) => {
       alias: {
         "@": fileURLToPath(new URL("./src", import.meta.url)),
         package: fileURLToPath(new URL("./package", import.meta.url)),
+        plugins: fileURLToPath(new URL("./plugins", import.meta.url)),
       },
     },
     server: {

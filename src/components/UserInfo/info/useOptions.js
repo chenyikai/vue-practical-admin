@@ -12,7 +12,6 @@ export default () => {
         prop: "username",
         span: 12,
         disabled: true,
-        rules: [{ required: true, message: "不能为空", trigger: "blur" }],
       },
       {
         label: "姓名",
@@ -42,14 +41,12 @@ export default () => {
           value: "id",
         },
         span: 12,
-        rules: [{ required: true, message: "不能为空", trigger: "change" }],
       },
       {
         label: "是否数据权限",
         prop: "isAdmin",
         type: "select",
         disabled: true,
-        rules: [{ required: true, message: "不能为空", trigger: "change" }],
         dicData: [
           {
             label: "是",
@@ -79,7 +76,6 @@ export default () => {
         disabled: true,
         dicData: getDictData("user_status"),
         span: 12,
-        rules: [{ required: true, message: "请选择状态", trigger: "change" }],
       },
       // {
       //   label: "头像",
@@ -100,9 +96,6 @@ export default () => {
           label: "roleName",
           value: "id",
         },
-        rules: [
-          { required: true, message: "请选择用户角色", trigger: "change" },
-        ],
       },
       {
         label: "描述",

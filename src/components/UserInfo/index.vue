@@ -15,6 +15,7 @@ import { encryption } from "@/utils/util.js";
 import PasswordDialog from "./password/PasswordDialog.vue";
 import { resetPassword } from "@/api/sys/auth/index.js";
 import UserInfoDialog from "./info/UserInfoDialog.vue";
+import { updateUser } from "@/api/sys/user/index.js";
 const router = useRouter();
 const route = useRoute();
 const UserStore = userStore();
@@ -48,7 +49,7 @@ function handleCommand(command) {
   if (command === "password") {
     password.value.open(MODIFY);
   } else if (command === "info") {
-    info.value.open(MODIFY);
+    info.value.open(MODIFY, UserStore.userInfo);
   }
 }
 
@@ -79,7 +80,24 @@ function onModifySubmit(formData, done) {
     });
 }
 
-function onInfoModifySubmit() {}
+function onInfoModifySubmit(formData, done) {
+  updateUser(formData)
+    .then(() => {
+      done(true);
+      ElMessage({
+        message: "修改成功",
+        type: "success",
+      });
+      UserStore.getUserInfo();
+    })
+    .catch(() => {
+      ElMessage({
+        message: "修改失败",
+        type: "error",
+      });
+      done();
+    });
+}
 </script>
 
 <template>

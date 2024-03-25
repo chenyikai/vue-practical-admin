@@ -9,6 +9,9 @@
       ],
       "package/*": [
         "package/*"
+      ],
+      "plugins/*": [
+        "plugins/*"
       ]
     }
   },

@@ -1,0 +1,11 @@
+.mapboxgl-popup.ehh-route-draw__popup {
+  pointer-events: none;
+  * {
+    pointer-events: none;
+  }
+  .mapboxgl-popup-content {
+    padding: 5px;
+    color: #F00;
+    border-radius: 0;
+  }
+}

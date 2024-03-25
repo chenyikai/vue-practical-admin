@@ -1,29 +1,31 @@
 <script>
 export default {
-  name: "MenuPage",
+  name: "RecordCard",
 };
 </script>
 
 <script setup>
 import website from "@/config/website.js";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { onBeforeMount, computed, toRef } from "vue";
+import { computed, toRef } from "vue";
 import useCrud from "@/hooks/useCrud.js";
 import MainDialog from "./MainDialog.vue";
 import {
   createMenu,
   deleteMenuById,
-  getUserMenuAll,
   updateMenu,
 } from "@/api/sys/menu/index.js";
 import useOptions from "./useOptions.js";
 
 const { crudOption } = useOptions();
+const pageInfo = {
+  icon: new URL("./tuban.svg", import.meta.url),
+  label: "图斑管理",
+};
 
 const {
+  crud,
   dialog,
-  funcList,
-  listQuery,
   pagination,
   mainTableData,
   tableLoading,
@@ -32,7 +34,6 @@ const {
   sizeChange,
   handleFilter,
   currentChange,
-  handelResetSearchForm,
 } = useCrud();
 
 const menuTreeData = computed(() => [
@@ -117,40 +118,10 @@ function onUpdateSubmit(formData, done) {
       done();
     });
 }
-
-function onSearch() {
-  handleFilter();
-}
-
-onBeforeMount(() => {
-  funcList.list = getUserMenuAll;
-  getList();
-});
 </script>
 
 <template>
-  <page-container class="dict-page-container">
-    <template #search>
-      <el-form
-        ref="searchForm"
-        :model="listQuery"
-        :inline="true"
-        label-suffix=":">
-        <el-form-item label="菜单名称" prop="menuName">
-          <el-input
-            v-model="listQuery.menuName"
-            placeholder="请输入菜单名称"
-            clearable></el-input>
-        </el-form-item>
-        <el-form-item>
-          <page-button type="search" @click.stop="onSearch" />
-          <page-button type="reset" @click.prevent="handelResetSearchForm" />
-        </el-form-item>
-      </el-form>
-    </template>
-    <template #button>
-      <page-button type="create" @click.stop="onAdd" />
-    </template>
+  <page-container class="dict-page-container" :pageInfo="pageInfo">
     <template #crud>
       <avue-crud
         ref="crud"

@@ -9,17 +9,27 @@ import useForm from "@/hooks/useForm.js";
 import useOptions from "./useOptions.js";
 import { nextTick, defineEmits } from "vue";
 import website from "@/config/website.js";
+import { userDetail } from "@/api/sys/user/index.js";
 const emits = defineEmits({
   [website.pageStatus.CREATE]: null,
   [website.pageStatus.UPDATE]: null,
   [website.pageStatus.DETAIL]: null,
 });
-const { form, loading, formStatus, dialog, formData, isDetail, setData } =
-  useForm();
+const {
+  form,
+  detailFunc,
+  loading,
+  formStatus,
+  dialog,
+  formData,
+  isDetail,
+  setData,
+} = useForm();
 
 const { formOption } = useOptions();
 
 function open(status, data = {}) {
+  detailFunc.value = userDetail;
   setData(status, data);
 
   dialog.value.open();

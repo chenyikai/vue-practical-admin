@@ -69,9 +69,8 @@ const tabStore = defineStore("tab", {
       if (i === -1) {
         this.tab = this.tabList.at(-1);
         setStore({ name: "tab", content: this.tab });
+        callback && callback();
       }
-
-      callback();
     },
     deleteAll() {
       this.tabList = [tagWel];

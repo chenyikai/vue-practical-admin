@@ -14,35 +14,44 @@ export default () => {
     headerAlign: "center",
     align: "center",
     height: "auto",
-    calcHeight: 10,
+    calcHeight: 20,
     column: [
       {
-        label: "菜单名称",
+        label: "养殖证编号",
         prop: "menuName",
         align: "left",
       },
       {
-        label: "菜单类型",
+        label: "申请人",
         prop: "type",
         type: "select",
         dataType: "number",
         dicData: getDictData("menu_type"),
       },
       {
-        label: "菜单路径",
+        label: "申请类型",
         prop: "path",
         align: "left",
       },
       {
-        label: "菜单权限",
+        label: "样式方式",
         prop: "permissions",
       },
       {
-        label: "排序",
+        label: "面积(公顷)",
         prop: "sort",
       },
       {
-        label: "路由缓存",
+        label: "数据来源",
+        prop: "keepAlive",
+        type: "select",
+        dicData: [
+          { label: "缓存", value: 0 },
+          { label: "不缓存", value: 1 },
+        ],
+      },
+      {
+        label: "状态",
         prop: "keepAlive",
         type: "select",
         dicData: [
