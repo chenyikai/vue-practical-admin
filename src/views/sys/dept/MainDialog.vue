@@ -6,7 +6,7 @@ export default {
 
 <script setup>
 import useForm from "@/hooks/useForm.js";
-import { nextTick, defineEmits } from "vue";
+import { nextTick } from "vue";
 import website from "@/config/website.js";
 import { deptDetail } from "@/api/sys/dept/index.js";
 import useOptions from "./useOptions.js";

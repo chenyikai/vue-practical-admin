@@ -30,16 +30,17 @@ html {
     --theme-table-header-font-color: var(--theme-tab-color); // 表头颜色
   }
   &.light {
-    --system-color: #fff; // 系统主色
-    --theme-tab-color: #cddef8; // tab颜色
-    --theme-content-color: #e8f0fc; // 内容颜色
-    --theme-font-color: #000; // 字体颜色
+    --system-color: #323e52; // 系统主色
+    --theme-tab-color: #262f3f; // tab颜色
+    --theme-content-color: #404b5d; // 内容颜色
+    --theme-font-color: #333; // 字体颜色
     --theme-font-size: 14px; // 字体大小
     --theme-menu-hover-bg: #202835; // 菜单hover背景
     --theme-border-color: #767474; // 边框颜色
     --theme-system-avatar-bg: #fff; // 系统图标背景色
     --el-switch-border-color: var(--theme-border-color); // switch按钮边框色
     --theme-table-header-color: var(--theme-tab-color); // 表头颜色
+    --theme-table-header-font-color: var(--theme-tab-color); // 表头颜色
   }
 }
 

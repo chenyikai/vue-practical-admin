@@ -81,11 +81,11 @@ function handleClick(val) {
 
 function handleCommand(tab) {
   if (tab.command === "close") {
-    TabStore.delete(tab);
-
-    router.push({
-      path: TabStore["tab"]["value"],
-      query: TabStore["tab"]["query"],
+    TabStore.delete(tab, () => {
+      router.push({
+        path: TabStore["tab"]["value"],
+        query: TabStore["tab"]["query"],
+      });
     });
   } else if (tab.command === "close-others") {
     TabStore.deleteOther(tab);

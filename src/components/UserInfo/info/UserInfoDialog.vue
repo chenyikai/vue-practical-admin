@@ -7,7 +7,7 @@ export default {
 <script setup>
 import useForm from "@/hooks/useForm.js";
 import useOptions from "./useOptions.js";
-import { nextTick, defineEmits } from "vue";
+import { nextTick } from "vue";
 import website from "@/config/website.js";
 import { userDetail } from "@/api/sys/user/index.js";
 const emits = defineEmits({

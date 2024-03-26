@@ -45,7 +45,7 @@ const tabStore = defineStore("tab", {
       this.tabList = list;
       setStore({ name: "tabList", content: this.tabList });
     },
-    delete(data) {
+    delete(data, callback) {
       const index = this.tabList.findIndex((item) => item.value === data.value);
       if (index === -1) return;
       const isLast = index === this.tabList.length - 1;
@@ -57,6 +57,8 @@ const tabStore = defineStore("tab", {
         this.tab = this.tabList[isLast ? index - 1 : index];
         setStore({ name: "tab", content: this.tab });
       }
+
+      callback && callback();
     },
     deleteRight(data, callback) {
       const index = this.tabList.findIndex((item) => item.value === data.value);

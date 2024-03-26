@@ -36,10 +36,13 @@ const icon = computed(() => {
 <template>
   <section class="page-container">
     <header class="page-container-header">
-      <h1 class="page-title">
-        <img class="icon" :src="icon" alt="" />
-        <span class="label">{{ label }}</span>
-      </h1>
+      <div class="title-layout">
+        <h1 class="page-title">
+          <img class="icon" :src="icon" alt="" />
+          <span class="label">{{ label }}</span>
+        </h1>
+        <slot name="title"></slot>
+      </div>
       <div class="form-layout" v-if="!validatenull(slots.search)">
         <slot name="search"></slot>
       </div>
@@ -66,17 +69,22 @@ const icon = computed(() => {
   @include container();
   &-header {
     width: 100%;
-    .page-title {
+    .title-layout {
       display: flex;
-      align-items: center;
-      margin: 0 0 20px 0;
-      font-size: 16px;
-      color: var(--font-color);
-      .icon {
-        width: 24px;
-        height: 24px;
-        margin-right: 6px;
+      justify-content: space-between;
+      .page-title {
+        display: flex;
+        align-items: center;
+        margin: 0 0 20px 0;
+        font-size: 16px;
+        color: var(--font-color);
+        .icon {
+          width: 24px;
+          height: 24px;
+          margin-right: 6px;
+        }
       }
+      align-items: center;
     }
     .form-layout {
       width: 100%;

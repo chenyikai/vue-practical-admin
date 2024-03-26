@@ -6,7 +6,7 @@ export default {
 
 <script setup>
 import useForm from "@/hooks/useForm.js";
-import { nextTick, computed, defineEmits } from "vue";
+import { nextTick, computed } from "vue";
 import { dictItemFormOption } from "./options.js";
 import website from "@/config/website.js";
 import { dictEntryDetail } from "@/api/sys/dict/index.js";

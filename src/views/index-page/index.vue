@@ -10,12 +10,19 @@ import useCrud from "@/hooks/useCrud.js";
 import MapBox from "@/components/Mapbox/index.vue";
 import PageButton from "package/Button/src/index.vue";
 import RecordCard from "./record/index.vue";
+import Mapbox from "plugins/composition/mapbox.js";
 
 const visible = ref(true);
 const { listQuery, handleFilter, handelResetSearchForm } = useCrud();
 
 function onSearch() {
   handleFilter();
+}
+
+function onChange() {
+  setTimeout(() => {
+    Mapbox.getMap().resize();
+  }, 300);
 }
 </script>
 
@@ -128,10 +135,10 @@ function onSearch() {
     <main class="index-page-container-main">
       <vertical-stretch-box left-width="50%" :visible="visible">
         <template #left>
-          <record-card />
+          <record-card v-model="visible" @update:modelValue="onChange" />
         </template>
         <template #right>
-          <map-box />
+          <map-box ref="map" />
         </template>
       </vertical-stretch-box>
     </main>

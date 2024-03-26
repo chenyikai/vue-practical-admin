@@ -71,6 +71,7 @@ function onMousemove() {
   height: 100%;
   .left-layout {
     width: 100%;
+    min-width: v-bind(_leftWidth);
     height: 100%;
     overflow: hidden;
     @include container();

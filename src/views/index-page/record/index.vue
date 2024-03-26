@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script setup>
+import { Expand } from "@element-plus/icons-vue";
 import website from "@/config/website.js";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { computed, toRef } from "vue";
@@ -17,11 +18,23 @@ import {
 } from "@/api/sys/menu/index.js";
 import useOptions from "./useOptions.js";
 
-const { crudOption } = useOptions();
+const props = defineProps({
+  modelValue: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const emits = defineEmits({ "update:modelValue": null });
+
+const { shortCrudOption, longCrudOption } = useOptions();
 const pageInfo = {
   icon: new URL("./tuban.svg", import.meta.url),
   label: "图斑管理",
 };
+const crudOption = computed(() => {
+  return props.modelValue.value ? shortCrudOption : longCrudOption;
+});
 
 const {
   crud,
@@ -118,13 +131,25 @@ function onUpdateSubmit(formData, done) {
       done();
     });
 }
+
+function handleShrink() {
+  emits("update:modelValue", !props.modelValue);
+}
 </script>
 
 <template>
   <page-container
-    class="dict-page-container"
+    class="record-page-container"
     :pageInfo="pageInfo"
     style="padding: 0">
+    <template #title>
+      <el-icon
+        class="shrink-btn"
+        :shrink="{ shrink: modelValue }"
+        @click.stop="handleShrink"
+        ><Expand
+      /></el-icon>
+    </template>
     <template #crud>
       <avue-crud
         ref="crud"
@@ -164,3 +189,16 @@ function onUpdateSubmit(formData, done) {
     </template>
   </page-container>
 </template>
+
+<style lang="scss">
+.record-page-container {
+  .shrink-btn {
+    width: 25px;
+    cursor: pointer;
+    transition: all 0.3s;
+    &.shrink {
+      transform: rotate(180deg);
+    }
+  }
+}
+</style>
