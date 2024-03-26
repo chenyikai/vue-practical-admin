@@ -10,7 +10,7 @@ $detail_font_color: #E6A23C;
 $update_font_color: #67C23A;
 
 @mixin container() {
-  border-radius: 2px;
+  border-radius: 4px;
   background-color: var(--theme-color);
   box-shadow: 0 0 2px 5px var(--theme-color);
   padding: 10px;

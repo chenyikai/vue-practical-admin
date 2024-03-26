@@ -14,7 +14,7 @@ export default () => {
     headerAlign: "center",
     align: "center",
     height: "auto",
-    calcHeight: 20,
+    calcHeight: 10,
     column: [
       {
         label: "养殖证编号",

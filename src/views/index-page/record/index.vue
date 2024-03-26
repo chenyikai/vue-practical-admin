@@ -121,7 +121,10 @@ function onUpdateSubmit(formData, done) {
 </script>
 
 <template>
-  <page-container class="dict-page-container" :pageInfo="pageInfo">
+  <page-container
+    class="dict-page-container"
+    :pageInfo="pageInfo"
+    style="padding: 0">
     <template #crud>
       <avue-crud
         ref="crud"

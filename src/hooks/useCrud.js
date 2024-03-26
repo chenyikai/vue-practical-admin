@@ -1,6 +1,5 @@
 import { ref, reactive, computed, nextTick } from "vue";
 import { cleanVal, clearVal } from "@/utils/util.js";
-import { validatenull } from "@/utils/validate.js";
 
 export default () => {
   const funcList = reactive({
@@ -62,7 +61,7 @@ export default () => {
    */
   function setFreezeData(key, value) {
     freezeData[key] = value;
-    listQuery[key] = value
+    listQuery[key] = value;
   }
 
   /**
