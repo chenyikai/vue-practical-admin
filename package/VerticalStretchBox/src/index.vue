@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup>
-import { useMousePressed } from "@vueuse/core";
+import { useMouse } from "@vueuse/core";
 import { computed, ref } from "vue";
 const props = defineProps({
   visible: {
@@ -26,36 +26,60 @@ const props = defineProps({
     default: 20,
   },
 });
+const emits = defineEmits({
+  resize: null,
+});
 
+const startPosition = ref(null);
 const left = ref({});
+const originWidth = ref(null);
 const _animation = ref(props.animation + "ms");
 const _leftWidth = computed(() => {
   if (typeof props.leftWidth === "number") return props.leftWidth + "px";
   if (typeof props.leftWidth === "string") return props.leftWidth;
   return props.leftWidth;
 });
+const resizeWidth = ref(null);
 const _gap = ref(props.gap + "px");
+const box = ref({});
+const { x } = useMouse();
+
+function onMousedown() {
+  originWidth.value = left.value.offsetWidth;
+  startPosition.value = x.value;
+}
 
 function onMousemove() {
-  const mousePress = useMousePressed({ target: left });
-  console.log(mousePress.pressed.value, "pressed.value");
-  // if (pressed.value) {
-  //   const mouse = reactive(useMouseInElement(left));
-  //   console.log(mouse);
-  // }
+  if (startPosition.value) {
+    resizeWidth.value = `${originWidth.value - (startPosition.value - x.value)}px`;
+    emits("resize", 0);
+  }
+}
+
+function onMouseup() {
+  startPosition.value = null;
+  emits("resize", 0);
 }
 </script>
 
 <template>
-  <section class="vertical-stretch-box">
-    <div class="left-layout" ref="left" :class="{ show: visible }">
+  <section
+    class="vertical-stretch-box"
+    ref="box"
+    @mousemove="onMousemove"
+    @mouseup="onMouseup">
+    <div
+      class="left-layout"
+      ref="left"
+      :class="[{ show: visible }, { animation: !startPosition }]"
+      :style="{ width: resizeWidth }">
       <slot name="left"></slot>
     </div>
     <div
-      v-if="false"
       ref="shrink"
+      v-if="visible"
       class="shrink-btn"
-      @mousemove="onMousemove" />
+      @mousedown="onMousedown" />
     <div class="right-layout" v-if="visible" :class="{ show: visible }">
       <slot name="right"></slot>
     </div>
@@ -71,19 +95,18 @@ function onMousemove() {
   height: 100%;
   .left-layout {
     width: 100%;
-    min-width: v-bind(_leftWidth);
+    //min-width: v-bind(_leftWidth);
     height: 100%;
     overflow: hidden;
     @include container();
-    transition: all v-bind(_animation);
     &.show {
       width: v-bind(_leftWidth);
-      margin-right: v-bind(_gap);
+    }
+    &.animation {
+      transition: all v-bind(_animation);
     }
   }
   .shrink-btn {
-    position: absolute;
-    left: v-bind(_leftWidth);
     width: v-bind(_gap);
     height: 100%;
     cursor: col-resize;
