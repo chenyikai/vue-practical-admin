@@ -6,15 +6,15 @@ export default {
 
 <script setup>
 import { useMouse } from "@vueuse/core";
-import { computed, ref } from "vue";
+import { ref, watch } from "vue";
 const props = defineProps({
   visible: {
     type: Boolean,
     default: false,
   },
   leftWidth: {
-    type: [Number, String],
-    default: 300,
+    type: String,
+    default: "300px",
     required: true,
   },
   animation: {
@@ -34,15 +34,23 @@ const startPosition = ref(null);
 const left = ref({});
 const originWidth = ref(null);
 const _animation = ref(props.animation + "ms");
-const _leftWidth = computed(() => {
-  if (typeof props.leftWidth === "number") return props.leftWidth + "px";
-  if (typeof props.leftWidth === "string") return props.leftWidth;
-  return props.leftWidth;
-});
 const resizeWidth = ref(null);
 const _gap = ref(props.gap + "px");
 const box = ref({});
 const { x } = useMouse();
+
+watch(
+  props,
+  ({ visible }) => {
+    if (!visible) {
+      resizeWidth.value = null;
+    }
+  },
+  {
+    deep: true,
+    immediate: true,
+  },
+);
 
 function onMousedown() {
   originWidth.value = left.value.offsetWidth;
@@ -100,7 +108,7 @@ function onMouseup() {
     overflow: hidden;
     @include container();
     &.show {
-      width: v-bind(_leftWidth);
+      width: v-bind(leftWidth);
     }
     &.animation {
       transition: all v-bind(_animation);
