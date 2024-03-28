@@ -1,9 +1,3 @@
-<script>
-export default {
-  name: "RecordCard",
-};
-</script>
-
 <script setup>
 import { Expand } from "@element-plus/icons-vue";
 import website from "@/config/website.js";
@@ -17,6 +11,9 @@ import {
   updateMenu,
 } from "@/api/sys/menu/index.js";
 import useOptions from "./useOptions.js";
+defineOptions({
+  name: "RecordCard",
+});
 
 const props = defineProps({
   modelValue: {
@@ -25,7 +22,10 @@ const props = defineProps({
   },
 });
 
-const emits = defineEmits({ "update:modelValue": null });
+const emits = defineEmits({
+  "update:modelValue": null,
+  change: { timeout: Number },
+});
 
 const { shortCrudOption, longCrudOption } = useOptions();
 const pageInfo = {
@@ -134,6 +134,7 @@ function onUpdateSubmit(formData, done) {
 
 function handleShrink() {
   emits("update:modelValue", !props.modelValue);
+  emits("change", 300);
 }
 </script>
 

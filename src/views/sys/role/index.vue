@@ -42,7 +42,7 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <vertical-stretch-box :visible="isShow" left-width="500">
+  <vertical-stretch-box :visible="isShow" left-width="500px">
     <template #left>
       <role-list-card ref="list" @setting="handleSetting" />
     </template>

@@ -14,7 +14,7 @@ export default {
     value: "/index",
     params: {},
     query: {},
-    icon: "index.svg",
+    icon: `$${import.meta.env.BASE_URL}index.svg`,
     meta: {
       isTab: true,
     },

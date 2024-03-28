@@ -1,12 +1,9 @@
-<script>
-export default {
-  name: "ThemeButton",
-};
-</script>
-
 <script setup>
 import { useDark, useToggle } from "@vueuse/core";
 import { Sunny, Moon } from "@element-plus/icons-vue";
+defineOptions({
+  name: "ThemeButton",
+});
 
 const isDark = useDark({
   valueDark: "dark",

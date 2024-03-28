@@ -1,15 +1,15 @@
-<script>
-export default {
-  name: "LayoutHeader",
-};
-</script>
-
 <script setup>
+import { FullScreen } from "@element-plus/icons-vue";
+import { useFullscreen } from "@vueuse/core";
 import UserInfo from "@/components/UserInfo/index.vue";
 import { useRouter } from "vue-router";
 import website from "@/config/website.js";
 import ThemeButton from "@/components/ThemeButton/index.vue";
 const router = useRouter();
+const { toggle } = useFullscreen();
+defineOptions({
+  name: "LayoutHeader",
+});
 
 function handleGo2Index() {
   router.push({ path: website.indexPage });
@@ -27,6 +27,9 @@ function handleGo2Index() {
       <span class="system-title">{{ website.title }}</span>
     </div>
     <div class="right-layout">
+      <div class="full-btn-layout" @click.stop="toggle">
+        <el-icon class="full-icon" :size="20"><FullScreen /></el-icon>
+      </div>
       <theme-button v-if="false" />
       <user-info />
     </div>
@@ -73,6 +76,19 @@ function handleGo2Index() {
   .right-layout {
     display: flex;
     align-items: center;
+    .full-btn-layout {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 35px;
+      height: 35px;
+      cursor: pointer;
+      transition: all 0.3s;
+      &:hover {
+        border-radius: 50%;
+        background-color: var(--theme-menu-hover-bg);
+      }
+    }
   }
 }
 </style>

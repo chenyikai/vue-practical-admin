@@ -7,7 +7,7 @@
   ),
   $switch: (
     'on-color': vars.$dark_content-color,
-    'off-color': #fff
+    'off-color': vars.$dark_content-color
   ),
   $dialog: (
     'padding-primary': 0,

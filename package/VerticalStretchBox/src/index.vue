@@ -66,7 +66,7 @@ function onMousemove() {
 
 function onMouseup() {
   startPosition.value = null;
-  emits("resize", 0);
+  emits("resize", props.animation);
 }
 </script>
 
@@ -106,6 +106,7 @@ function onMouseup() {
     //min-width: v-bind(_leftWidth);
     height: 100%;
     overflow: hidden;
+    user-select: none;
     @include container();
     &.show {
       width: v-bind(leftWidth);
@@ -124,6 +125,7 @@ function onMouseup() {
     height: 100%;
     overflow: hidden;
     @include container();
+    user-select: none;
     border-radius: 4px;
     &.show {
       flex: 1;
