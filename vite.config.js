@@ -3,6 +3,7 @@ import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import TurboConsole from "vite-plugin-turbo-console";
 import DefineOptions from "unplugin-vue-define-options/vite";
+import viteCompression from "vite-plugin-compression";
 import { fileURLToPath, URL } from "node:url";
 import { loadEnv } from "vite";
 
@@ -11,7 +12,15 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
   return {
     // publicDir: env.VITE_API_PREFIX,
-    plugins: [vue(), vueJsx({}), TurboConsole(), DefineOptions()],
+    plugins: [
+      vue(),
+      vueJsx({}),
+      TurboConsole(),
+      DefineOptions(),
+      viteCompression({
+        deleteOriginFile: true,
+      }),
+    ],
     resolve: {
       alias: {
         "@": fileURLToPath(new URL("./src", import.meta.url)),
