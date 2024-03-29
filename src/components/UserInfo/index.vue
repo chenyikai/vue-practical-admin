@@ -129,13 +129,13 @@ function onInfoModifySubmit(formData, done) {
 .userinfo-container {
   display: flex;
   align-items: center;
-  padding: 0 20px;
   user-select: none;
   .user-info {
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: var(--font-color);
+    //color: var(--font-color);
+    color: #fff;
     font-size: 14px;
     margin: 0 10px;
     .username {

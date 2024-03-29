@@ -22,7 +22,7 @@
   ),
   $button: (
     'hover-text-color': getCssVar('text-color', 'regular'),
-  )
+  ),
 );
 
 @use "element-plus/theme-chalk/src/index.scss" as *;

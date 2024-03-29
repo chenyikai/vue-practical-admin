@@ -1,23 +1,4 @@
-.tab-drop-popper {
-  border-color: rgba(50, 62, 82) !important;
-  background-color: rgba(50, 62, 82) !important;
-  box-shadow: rgba(0,0,0,0.1) 0px 5px 5px;
-  .el-dropdown-menu {
-    background-color: rgba(50, 62, 82);
-    &__item {
-      color: #fff;
-      &:hover {
-        background-color: rgba($color: #000, $alpha: 0.3);
-      }
-    }
-  }
-  .el-popper__arrow {
-    &:before {
-      border-color: rgba(50, 62, 82) !important;
-      background-color: rgba(50, 62, 82) !important;
-    }
-  }
-}
+@use 'variables' as vars;
 
 .page-tabs {
   width: 100%;
@@ -34,4 +15,30 @@
   //max-height: 100%;
   border-radius: 8px;
   overflow: hidden;
+}
+
+.notification-tabs {
+  .el-tabs__item {
+    &.is-active {
+      color: var(--font-color) !important;
+    }
+    &:hover {
+      color: var(--font-color) !important;
+    }
+  }
+}
+
+.btn-layout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  transition: all 0.3s;
+  color: #fff;
+  &:hover {
+    border-radius: 50%;
+    background-color: var(--theme-menu-hover-bg);
+  }
 }

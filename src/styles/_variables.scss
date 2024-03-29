@@ -1,4 +1,5 @@
 $dark_system-color: #323e52;
+$dark_container-color: $dark_system-color;
 $dark_tab-color: #262f3f;
 $dark_content-color: #404b5d;
 $dark_font-color: #fff;
@@ -11,7 +12,7 @@ $update_font_color: #67C23A;
 
 @mixin container() {
   border-radius: 4px;
-  background-color: var(--theme-color);
-  box-shadow: 0 0 2px 5px var(--theme-color);
+  background-color: var(--container-color);
+  box-shadow: 0 0 2px 5px var(--container-color);
   padding: 10px;
 }

@@ -36,6 +36,7 @@ function handleClick(menu) {
   align-items: center;
   width: 100%;
   border: none;
+  user-select: none;
   background-color: var(--theme-color);
   .menu-item {
     position: relative;
@@ -58,7 +59,8 @@ function handleClick(menu) {
     }
     .title {
       font-size: 14px;
-      color: var(--font-color);
+      //color: var(--font-color);
+      color: #fff;
     }
     & + .menu-item {
       margin-top: 10px;

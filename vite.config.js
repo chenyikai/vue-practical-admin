@@ -2,7 +2,6 @@ import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import TurboConsole from "vite-plugin-turbo-console";
-import DefineOptions from "unplugin-vue-define-options/vite";
 import viteCompression from "vite-plugin-compression";
 import { fileURLToPath, URL } from "node:url";
 import { loadEnv } from "vite";
@@ -16,8 +15,9 @@ export default defineConfig(({ mode }) => {
       vue(),
       vueJsx({}),
       TurboConsole(),
-      DefineOptions(),
       viteCompression({
+        algorithm: "gzip",
+        threshold: 10240,
         deleteOriginFile: true,
       }),
     ],

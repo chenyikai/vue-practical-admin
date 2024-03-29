@@ -152,7 +152,7 @@ class MapboxShip extends EventEmitter {
     const _index = shipData.findIndex((item) => item[index] === mmsi);
     const locationIndex = this.getKeyIndex(
       this.shipData[OWN_SHIP]["k"],
-      "location"
+      "location",
     );
     const [lat, lon] = shipData[_index][locationIndex].split(",");
     this.map.flyTo({
@@ -227,7 +227,7 @@ class MapboxShip extends EventEmitter {
             ...this.shipData[OWN_SHIP].v,
             ...this.shipData[OUT_SHIP].v,
           ];
-        }
+        },
       );
     }
 
@@ -325,7 +325,7 @@ class MapboxShip extends EventEmitter {
     const index = this.getKeyIndex(k, key);
     const shipMap = new Map();
     v.filter(
-      (item) => !shipMap.has(item[index]) && shipMap.set(item[index], item)
+      (item) => !shipMap.has(item[index]) && shipMap.set(item[index], item),
     );
     return Array.from(shipMap.values());
   }

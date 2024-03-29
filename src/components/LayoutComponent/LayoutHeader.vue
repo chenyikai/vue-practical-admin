@@ -1,12 +1,11 @@
 <script setup>
-import { FullScreen } from "@element-plus/icons-vue";
-import { useFullscreen } from "@vueuse/core";
 import UserInfo from "@/components/UserInfo/index.vue";
 import { useRouter } from "vue-router";
 import website from "@/config/website.js";
 import ThemeButton from "@/components/ThemeButton/index.vue";
+import NotificationCenter from "@/components/NotificationCenter/index.vue";
+import FullScreen from "@/components/FullScreen/index.vue";
 const router = useRouter();
-const { toggle } = useFullscreen();
 defineOptions({
   name: "LayoutHeader",
 });
@@ -27,10 +26,9 @@ function handleGo2Index() {
       <span class="system-title">{{ website.title }}</span>
     </div>
     <div class="right-layout">
-      <div class="full-btn-layout" @click.stop="toggle">
-        <el-icon class="full-icon" :size="20"><FullScreen /></el-icon>
-      </div>
-      <theme-button v-if="false" />
+      <notification-center />
+      <full-screen />
+      <theme-button />
       <user-info />
     </div>
   </div>
@@ -69,26 +67,17 @@ function handleGo2Index() {
       }
     }
     .system-title {
-      color: var(--font-color);
+      color: #fff;
       font-size: 20px;
     }
   }
   .right-layout {
     display: flex;
+    justify-content: flex-end;
     align-items: center;
-    .full-btn-layout {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 35px;
-      height: 35px;
-      cursor: pointer;
-      transition: all 0.3s;
-      &:hover {
-        border-radius: 50%;
-        background-color: var(--theme-menu-hover-bg);
-      }
-    }
+    flex: 1;
+    gap: 20px;
+    padding-right: 20px;
   }
 }
 </style>

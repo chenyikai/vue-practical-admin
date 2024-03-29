@@ -7,9 +7,35 @@
     <link rel="stylesheet" href="/cdn/avue@3.3.2/index.css">
     <link rel="stylesheet" href="/ehhGis/EhhGis.min.css">
     <title>%VITE_TITLE%</title>
+      <style>
+          body {
+              margin: 0;
+          }
+
+          .loading-view {
+              width: 100%;
+              height: 100vh;
+              background: radial-gradient(#333333, #1f1f1f);
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+          }
+
+          .loading-view>.text {
+              color: #FFFFFF;
+              font-size: 25px;
+              margin-top: 20px;
+          }
+      </style>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app">
+        <div class="loading-view">
+            <img src="/ball-triangle.svg">
+            <span class="text">Loading...</span>
+        </div>
+    </div>
     <script src="/ehhGis/EhhGis.min.js"></script>
     <script type="module" src="/src/main.js"></script>
   </body>

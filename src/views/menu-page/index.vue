@@ -107,7 +107,8 @@ function handleClick(menu) {
     }
     .label {
       font-size: 14px;
-      color: #d3d3d3;
+      //color: #d3d3d3;
+      color: var(--font-color);
     }
     &:hover {
       background-color: rgba($color: #fff, $alpha: 0.1);
