@@ -173,6 +173,7 @@ function isDisabled(tab) {
     border-radius: 4px 4px 0 0;
     cursor: pointer;
     color: var(--font-color);
+    user-select: none;
     transition: all 0.3s;
     &:hover,
     &.active {

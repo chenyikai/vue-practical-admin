@@ -24,17 +24,8 @@ export default {
     return {};
   },
   methods: {
-    handleResetCacheData() {
-      this.$store.dispatch("FedLogOut").then(() => {
-        window.location.replace("/login");
-      });
-    },
-    handleNavigatorToWel() {
-      this.$router.push({ path: "/" });
-    },
-  },
-  created() {
-    this.$store.commit("DEL_ALL_TAG");
+    handleResetCacheData() {},
+    handleNavigatorToWel() {},
   },
 };
 </script>

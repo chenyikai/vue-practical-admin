@@ -24,6 +24,18 @@ export default [
         },
         component: () => import("@/views/menu-page/index.vue"),
       },
+      {
+        path: "/:pathMatch(.*)*", // 解决动态路由页面刷新的警告
+        name: "页面不存在",
+        meta: {
+          isTab: false,
+          isAuth: false,
+        },
+        component: () =>
+          import(
+            /* webpackChunkName: "error-pages" */ "@/pages/ErrorPage/404.vue"
+          ),
+      },
     ],
   },
   // {
@@ -39,15 +51,5 @@ export default [
   //       props: true,
   //     },
   //   ],
-  // },
-  // {
-  //   path: "*",
-  //   name: "页面不存在",
-  //   meta: {
-  //     isTab: true,
-  //     isAuth: false,
-  //   },
-  //   component: () =>
-  //     import(/* webpackChunkName: "error-pages" */ "@/pages/ErrorPage/404.vue"),
   // },
 ];
