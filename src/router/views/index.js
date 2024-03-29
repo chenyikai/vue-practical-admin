@@ -28,7 +28,7 @@ export default [
         path: "/:pathMatch(.*)*", // 解决动态路由页面刷新的警告
         name: "页面不存在",
         meta: {
-          isTab: false,
+          isTab: true,
           isAuth: false,
         },
         component: () =>

@@ -19,6 +19,9 @@ export default {
       isTab: true,
     },
   },
+  pageIcon: {
+    404: `${import.meta.env.BASE_URL}404.svg`,
+  },
   gender: {
     MALE: 0,
     FEMALE: 1,

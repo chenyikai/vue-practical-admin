@@ -38,6 +38,11 @@ const tabStore = defineStore("tab", {
         data.label = menu[label];
         data.icon = menu[icon];
       }
+
+      if (data.label === "页面不存在") {
+        data.icon = website.pageIcon["404"];
+      }
+
       this.tabList.push(data);
       setStore({ name: "tabList", content: this.tabList });
     },
