@@ -86,6 +86,13 @@ function initMenu() {
           // },
         ],
       },
+      // {
+      //   id: 2,
+      //   menuName: "表单配置",
+      //   icon: "form-config.svg",
+      //   path: "/form/index",
+      //   children: [],
+      // },
     ]);
   });
 }
