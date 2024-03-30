@@ -6,28 +6,16 @@ export default {
 
 <script setup>
 import useForm from "@/hooks/useForm.js";
-import { nextTick, computed } from "vue";
+import { nextTick } from "vue";
 import { formOption } from "./options.js";
 import { logDetail } from "@/api/sys/log/index.js";
 const { form, loading, dialog, formData, isDetail, detailFunc, setData } =
   useForm();
 
-const options = computed(() => {
-  const { column } = formOption;
-  return {
-    ...formOption,
-    column: column.map((item) => {
-      return {
-        disabled: isDetail.value,
-        ...item,
-      };
-    }),
-  };
-});
-
 function open(status, data = {}) {
   detailFunc.value = logDetail;
   setData(status, data);
+  formOption.disabled = isDetail.value;
 
   dialog.value.open();
   nextTick().then(() => {
@@ -46,6 +34,6 @@ defineExpose({
     ref="dialog"
     :loading="loading"
     :show-footer="!isDetail">
-    <avue-form ref="form" :option="options" v-model="formData" />
+    <avue-form ref="form" :option="formOption" v-model="formData" />
   </page-dialog>
 </template>

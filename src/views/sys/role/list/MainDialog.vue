@@ -6,7 +6,7 @@ export default {
 
 <script setup>
 import useForm from "@/hooks/useForm.js";
-import { nextTick, computed } from "vue";
+import { nextTick } from "vue";
 import { formOption } from "./options.js";
 import website from "@/config/website.js";
 import { roleDetail } from "@/api/sys/role/index.js";
@@ -26,22 +26,10 @@ const {
   setData,
 } = useForm();
 
-const options = computed(() => {
-  const { column } = formOption;
-  return {
-    ...formOption,
-    column: column.map((item) => {
-      return {
-        disabled: isDetail.value,
-        ...item,
-      };
-    }),
-  };
-});
-
 function open(status, data = {}) {
   detailFunc.value = roleDetail;
   setData(status, data);
+  formOption.disabled = isDetail.value;
 
   dialog.value.open();
   nextTick().then(() => {
@@ -62,6 +50,23 @@ function handleSubmit(done) {
   });
 }
 
+function onDialogSubmit() {
+  form.value.submit();
+}
+
+function onFormSubmit(data, done) {
+  dialog.value.onLoad();
+
+  emits(formStatus.value, formData.value, (isClose = false) => {
+    done();
+    dialog.value.onDone(isClose);
+  });
+}
+
+function onClose() {
+  form.value.resetForm(true);
+}
+
 defineExpose({
   open,
 });
@@ -71,9 +76,14 @@ defineExpose({
   <page-dialog
     title="用户管理"
     ref="dialog"
-    @submit="handleSubmit"
+    @submit="onDialogSubmit"
+    @close="onClose"
     :loading="loading"
     :show-footer="!isDetail">
-    <avue-form ref="form" :option="options" v-model="formData" />
+    <avue-form
+      ref="form"
+      :option="formOption"
+      v-model="formData"
+      @submit="onFormSubmit" />
   </page-dialog>
 </template>

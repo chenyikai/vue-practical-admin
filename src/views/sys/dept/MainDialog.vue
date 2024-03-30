@@ -33,31 +33,36 @@ const {
   detailFunc,
   setData,
 } = useForm();
-const { formOption, setColumnData, setDisabled } = useOptions();
+const { formOption, setColumnData } = useOptions();
 
 function open(status, data = {}) {
+  dialog.value.open();
+
   detailFunc.value = deptDetail;
   setData(status, data);
   setColumnData("parentId", "dicData", props.departTreeData);
-  setDisabled(isDetail);
+  formOption.disabled = isDetail.value;
 
-  dialog.value.open();
   nextTick().then(() => {
     form.value.clearValidate();
   });
 }
 
-function handleSubmit(done) {
-  form.value.validate((valid) => {
-    if (!valid) {
-      done();
-      return;
-    }
+function onDialogSubmit() {
+  form.value.submit();
+}
 
-    if (valid) {
-      emits(formStatus.value, formData.value, done);
-    }
+function onFormSubmit(data, done) {
+  dialog.value.onLoad();
+
+  emits(formStatus.value, formData.value, (isClose = false) => {
+    done();
+    dialog.value.onDone(isClose);
   });
+}
+
+function onClose() {
+  form.value.resetForm(true);
 }
 
 defineExpose({
@@ -69,9 +74,14 @@ defineExpose({
   <page-dialog
     title="部门管理"
     ref="dialog"
-    @submit="handleSubmit"
+    @submit="onDialogSubmit"
+    @close="onClose"
     :loading="loading"
     :show-footer="!isDetail">
-    <avue-form ref="form" :option="formOption" v-model="formData" />
+    <avue-form
+      ref="form"
+      :option="formOption"
+      v-model="formData"
+      @submit="onFormSubmit" />
   </page-dialog>
 </template>

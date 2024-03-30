@@ -15,7 +15,7 @@ const emits = defineEmits({
   [website.pageStatus.UPDATE]: null,
   [website.pageStatus.DETAIL]: null,
 });
-const { formOption, setColumnData, setDisabled } = useOptions();
+const { formOption, setColumnData } = useOptions();
 
 const props = defineProps({
   menuTreeData: {
@@ -40,7 +40,7 @@ function open(status, data = {}) {
   detailFunc.value = menuDetail;
   setColumnData("parentId", "dicData", props.menuTreeData);
   setData(status, data);
-  setDisabled(isDetail);
+  formOption.disabled = isDetail.value;
 
   dialog.value.open();
   nextTick().then(() => {
@@ -48,17 +48,21 @@ function open(status, data = {}) {
   });
 }
 
-function handleSubmit(done) {
-  form.value.validate((valid) => {
-    if (!valid) {
-      done();
-      return;
-    }
+function onDialogSubmit() {
+  form.value.submit();
+}
 
-    if (valid) {
-      emits(formStatus.value, formData.value, done);
-    }
+function onFormSubmit(data, done) {
+  dialog.value.onLoad();
+
+  emits(formStatus.value, formData.value, (isClose = false) => {
+    done();
+    dialog.value.onDone(isClose);
   });
+}
+
+function onClose() {
+  form.value.resetForm(true);
 }
 
 defineExpose({
@@ -70,9 +74,14 @@ defineExpose({
   <page-dialog
     title="菜单管理"
     ref="dialog"
-    @submit="handleSubmit"
+    @submit="onDialogSubmit"
+    @close="onClose"
     :loading="loading"
     :show-footer="!isDetail">
-    <avue-form ref="form" :option="formOption" v-model="formData" />
+    <avue-form
+      ref="form"
+      :option="formOption"
+      v-model="formData"
+      @submit="onFormSubmit" />
   </page-dialog>
 </template>

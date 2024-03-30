@@ -128,6 +128,7 @@ function handleClick(e) {
     border: none;
     height: auto;
     padding: 0;
+    background-color: transparent;
     & + .horizontal {
       margin-left: 20px;
     }
@@ -136,7 +137,7 @@ function handleClick(e) {
       flex-direction: column;
     }
     &:hover {
-      opacity: 1;
+      background-color: transparent !important;
     }
     .icon {
       margin: {

@@ -38,14 +38,7 @@ function close() {
 
 const handleConfirm = debounce(
   function () {
-    isSubmit.value = true;
-    emits("submit", (flag) => {
-      if (flag) {
-        visible.value = false;
-      }
-
-      isSubmit.value = false;
-    });
+    emits("submit");
   },
   500,
   {
@@ -54,13 +47,28 @@ const handleConfirm = debounce(
   },
 );
 
+function onLoad(flag = true) {
+  isSubmit.value = flag;
+}
+
+function onDone(flag) {
+  if (flag) {
+    visible.value = false;
+  }
+
+  onLoad(false);
+}
+
 function handleClose() {
   visible.value = false;
 }
 
 defineExpose({
+  isSubmit,
   open,
   close,
+  onLoad,
+  onDone,
 });
 </script>
 
