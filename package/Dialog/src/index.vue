@@ -19,6 +19,7 @@ defineProps({
 });
 const emits = defineEmits({
   submit: null,
+  close: null,
 });
 const pageDialog = ref({});
 const attrs = useAttrs();
@@ -32,6 +33,7 @@ function open() {
 function close() {
   handleClose();
   visible.value = false;
+  emits("close");
 }
 
 const handleConfirm = debounce(
@@ -39,7 +41,7 @@ const handleConfirm = debounce(
     isSubmit.value = true;
     emits("submit", (flag) => {
       if (flag) {
-        close();
+        visible.value = false;
       }
 
       isSubmit.value = false;
