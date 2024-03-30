@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup>
-import { useMouse } from "@vueuse/core";
+import { useMouse, useEventListener } from "@vueuse/core";
 import { ref, watch } from "vue";
 const props = defineProps({
   visible: {
@@ -37,6 +37,8 @@ const _animation = ref(props.animation + "ms");
 const resizeWidth = ref(null);
 const _gap = ref(props.gap + "px");
 const box = ref({});
+let moveCleanUp = null;
+let upCleanUp = null;
 const { x } = useMouse();
 
 watch(
@@ -55,27 +57,26 @@ watch(
 function onMousedown() {
   originWidth.value = left.value.offsetWidth;
   startPosition.value = x.value;
+
+  moveCleanUp = useEventListener(box.value, "mousemove", onMousemove);
+  upCleanUp = useEventListener(box.value, "mouseup", onMouseup);
 }
 
 function onMousemove() {
-  if (startPosition.value) {
-    resizeWidth.value = `${originWidth.value - (startPosition.value - x.value)}px`;
-    emits("resize", 0);
-  }
+  resizeWidth.value = `${originWidth.value - (startPosition.value - x.value)}px`;
+  emits("resize", 0);
 }
 
 function onMouseup() {
   startPosition.value = null;
+  moveCleanUp();
+  upCleanUp();
   emits("resize", props.animation);
 }
 </script>
 
 <template>
-  <section
-    class="vertical-stretch-box"
-    ref="box"
-    @mousemove="onMousemove"
-    @mouseup="onMouseup">
+  <section class="vertical-stretch-box" ref="box">
     <div
       class="left-layout"
       ref="left"
