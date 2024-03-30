@@ -119,12 +119,12 @@ function initMenu() {
 
 <style lang="scss" scoped>
 .layout-page-container {
-  width: 100%;
-  height: 100%;
   .main {
     display: flex;
     flex-direction: column;
     padding: 0;
+    flex-basis: 0;
+    overflow: hidden;
     .content {
       flex: 1;
       overflow: hidden;
