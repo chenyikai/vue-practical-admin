@@ -114,13 +114,13 @@ function onInfoModifySubmit(formData, done) {
           <el-dropdown-item command="info">
             <svg-icon
               name="modifyInfo"
-              style="width: 20px; height: 20px; margin-right: 5px" />
+              style="width: 18px; height: 18px; margin-right: 5px" />
             <span>修改信息</span>
           </el-dropdown-item>
           <el-dropdown-item command="password">
             <svg-icon
               name="modifyPassword"
-              style="width: 20px; height: 20px; margin-right: 5px" />
+              style="width: 18px; height: 18px; margin-right: 5px" />
             <span>修改密码</span>
           </el-dropdown-item>
         </el-dropdown-menu>
