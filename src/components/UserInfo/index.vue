@@ -104,15 +104,25 @@ function onInfoModifySubmit(formData, done) {
 <template>
   <section class="userinfo-container">
     <el-avatar class="avatar" :size="40" :src="avatarUrl" />
-    <el-dropdown popper-class="tab-drop-popper" @command="handleCommand">
+    <el-dropdown @command="handleCommand">
       <div class="user-info">
         <span class="username">{{ UserStore.userInfo.username }}</span>
         <span class="user-role">{{ UserStore.userInfo.name }}</span>
       </div>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item command="info">修改信息</el-dropdown-item>
-          <el-dropdown-item command="password">修改密码</el-dropdown-item>
+          <el-dropdown-item command="info">
+            <svg-icon
+              name="modifyInfo"
+              style="width: 20px; height: 20px; margin-right: 5px" />
+            <span>修改信息</span>
+          </el-dropdown-item>
+          <el-dropdown-item command="password">
+            <svg-icon
+              name="modifyPassword"
+              style="width: 20px; height: 20px; margin-right: 5px" />
+            <span>修改密码</span>
+          </el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown>
