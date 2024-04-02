@@ -26,6 +26,7 @@ const props = defineProps({
   },
 });
 const {
+  key,
   form,
   dialog,
   loading,
@@ -80,6 +81,7 @@ defineExpose({
     :show-footer="!isDetail">
     <avue-form
       ref="form"
+      :key="key"
       :option="formOption"
       v-model="formData"
       @submit="onFormSubmit" />

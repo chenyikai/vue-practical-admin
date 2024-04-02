@@ -4,6 +4,7 @@ import { validatenull } from "@/utils/validate.js";
 import { ElMessage } from "element-plus";
 
 export default () => {
+  const key = ref(1);
   const loading = ref(false);
   const detailFunc = ref(null);
   const dialog = ref({});
@@ -38,9 +39,19 @@ export default () => {
     }
 
     formStatus.value = status;
+
+    forceUpdate();
+  }
+
+  /**
+   * 强制更新form组件(需要绑定key)
+   */
+  function forceUpdate() {
+    key.value += 1;
   }
 
   return {
+    key,
     form,
     dialog,
     loading,
@@ -49,5 +60,6 @@ export default () => {
     formStatus,
     detailFunc,
     setData,
+    forceUpdate,
   };
 };

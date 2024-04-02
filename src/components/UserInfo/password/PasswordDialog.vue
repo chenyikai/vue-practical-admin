@@ -14,7 +14,7 @@ const emits = defineEmits({
   [website.pageStatus.UPDATE]: null,
   [website.pageStatus.DETAIL]: null,
 });
-const { form, loading, formStatus, dialog, formData, isDetail, setData } =
+const { key, form, loading, formStatus, dialog, formData, isDetail, setData } =
   useForm();
 
 const { formOption, setRule } = useOptions();
@@ -65,6 +65,6 @@ defineExpose({
     @submit="handleSubmit"
     :loading="loading"
     :show-footer="!isDetail">
-    <avue-form ref="form" :option="formOption" v-model="formData" />
+    <avue-form ref="form" :key="key" :option="formOption" v-model="formData" />
   </page-dialog>
 </template>

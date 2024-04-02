@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import website from "@/config/website.js";
 import { getStore, setStore } from "@/utils/store.js";
 import { menuStore } from "@/store/index.js";
+import router from "@/router/index.js";
 
 // const isFirstPage = website.isFirstPage;
 const tagWel = website.fistPage;
@@ -50,7 +51,7 @@ const tabStore = defineStore("tab", {
       this.tabList = list;
       setStore({ name: "tabList", content: this.tabList });
     },
-    delete(data, callback) {
+    delete(data) {
       const index = this.tabList.findIndex((item) => item.value === data.value);
       if (index === -1) return;
       const isLast = index === this.tabList.length - 1;
@@ -63,9 +64,9 @@ const tabStore = defineStore("tab", {
         setStore({ name: "tab", content: this.tab });
       }
 
-      callback && callback();
+      router.push({ path: this.tab.value, query: this.tab.query });
     },
-    deleteRight(data, callback) {
+    deleteRight(data) {
       const index = this.tabList.findIndex((item) => item.value === data.value);
       if (index === -1) return;
 
@@ -76,16 +77,16 @@ const tabStore = defineStore("tab", {
       if (i === -1) {
         this.tab = this.tabList.at(-1);
         setStore({ name: "tab", content: this.tab });
-        callback && callback();
+        router.push({ path: this.tab.value, query: this.tab.query });
       }
     },
-    deleteAll(callback) {
+    deleteAll() {
       this.tabList = [tagWel];
       this.tab = tagWel;
       setStore({ name: "tab", content: this.tab });
       setStore({ name: "tabList", content: this.tabList });
 
-      callback && callback();
+      router.push({ path: this.tab.value, query: this.tab.query });
     },
     deleteOther(tab) {
       this.tabList = this.tabList.filter((item) => {
@@ -99,6 +100,9 @@ const tabStore = defineStore("tab", {
         }
       });
       setStore({ name: "tabList", content: this.tabList });
+      this.tab = this.tabList.at(-1);
+      setStore({ name: "tab", content: this.tab });
+      router.push({ path: this.tab.value, query: this.tab.query });
     },
     clean() {
       this.tab = tagObj;

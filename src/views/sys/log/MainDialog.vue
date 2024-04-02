@@ -9,7 +9,7 @@ import useForm from "@/hooks/useForm.js";
 import { nextTick } from "vue";
 import { formOption } from "./options.js";
 import { logDetail } from "@/api/sys/log/index.js";
-const { form, loading, dialog, formData, isDetail, detailFunc, setData } =
+const { key, form, loading, dialog, formData, isDetail, detailFunc, setData } =
   useForm();
 
 function open(status, data = {}) {
@@ -34,6 +34,6 @@ defineExpose({
     ref="dialog"
     :loading="loading"
     :show-footer="!isDetail">
-    <avue-form ref="form" :option="formOption" v-model="formData" />
+    <avue-form ref="form" :key="key" :option="formOption" v-model="formData" />
   </page-dialog>
 </template>

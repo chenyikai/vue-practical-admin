@@ -16,6 +16,7 @@ const emits = defineEmits({
   [website.pageStatus.DETAIL]: null,
 });
 const {
+  key,
   form,
   detailFunc,
   loading,
@@ -63,6 +64,6 @@ defineExpose({
     @submit="handleSubmit"
     :loading="loading"
     :show-footer="!isDetail">
-    <avue-form ref="form" :option="formOption" v-model="formData" />
+    <avue-form ref="form" :key="key" :option="formOption" v-model="formData" />
   </page-dialog>
 </template>

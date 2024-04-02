@@ -53,30 +53,15 @@ function handleClick(val) {
 
 function handleCommand(tab) {
   if (tab.command === "close") {
-    TabStore.delete(tab, () => {
-      router.push({
-        path: TabStore["tab"]["value"],
-        query: TabStore["tab"]["query"],
-      });
-    });
+    TabStore.delete(tab);
   } else if (tab.command === "close-others") {
     TabStore.deleteOther(tab);
   } else if (tab.command === "close-all") {
-    TabStore.deleteAll(() => {
-      router.push({
-        path: TabStore["tab"]["value"],
-        query: TabStore["tab"]["query"],
-      });
-    });
+    TabStore.deleteAll();
   } else if (tab.command === "refresh") {
     router.go(0);
   } else if (tab.command === "close-right") {
-    TabStore.deleteRight(tab, () => {
-      router.push({
-        path: TabStore["tab"]["value"],
-        query: TabStore["tab"]["query"],
-      });
-    });
+    TabStore.deleteRight(tab);
   } else {
     console.warn("未匹配的命令");
   }
