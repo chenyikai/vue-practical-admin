@@ -79,9 +79,13 @@ const tabStore = defineStore("tab", {
         callback && callback();
       }
     },
-    deleteAll() {
+    deleteAll(callback) {
       this.tabList = [tagWel];
+      this.tab = tagWel;
+      setStore({ name: "tab", content: this.tab });
       setStore({ name: "tabList", content: this.tabList });
+
+      callback && callback();
     },
     deleteOther(tab) {
       this.tabList = this.tabList.filter((item) => {

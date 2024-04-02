@@ -17,6 +17,7 @@ function onSearch() {
 }
 
 function onResize(timeout) {
+  console.log(timeout);
   setTimeout(() => {
     Mapbox.getMap().resize();
   }, timeout);
@@ -135,7 +136,7 @@ function onResize(timeout) {
         :visible="visible"
         @resize="onResize">
         <template #left>
-          <record-card v-model="visible" @update:modelValue="onResize" />
+          <record-card v-model="visible" @resize="onResize" />
         </template>
         <template #right>
           <map-box ref="map" />

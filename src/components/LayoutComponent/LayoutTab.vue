@@ -6,7 +6,7 @@ export default {
 
 <script setup>
 import draggable from "vuedraggable";
-import { ref, computed } from "vue";
+import { computed } from "vue";
 import { useRouter } from "vue-router";
 const router = useRouter();
 import { tabStore } from "@/store/index.js";
@@ -14,34 +14,6 @@ import website from "@/config/website.js";
 import { getPath } from "@/router/index.js";
 import { CloseBold } from "@element-plus/icons-vue";
 const TabStore = tabStore();
-
-const dropMenu = ref([
-  {
-    id: 1,
-    command: "close",
-    label: "关闭标签页",
-  },
-  {
-    id: 2,
-    command: "refresh",
-    label: "刷新标签页",
-  },
-  {
-    id: 3,
-    command: "close-others",
-    label: "关闭其他标签页",
-  },
-  {
-    id: 4,
-    command: "close-all",
-    label: "关闭所有标签页",
-  },
-  {
-    id: 5,
-    command: "close-right",
-    label: "关闭右侧标签页",
-  },
-]);
 
 const tabList = computed({
   get() {
@@ -90,7 +62,12 @@ function handleCommand(tab) {
   } else if (tab.command === "close-others") {
     TabStore.deleteOther(tab);
   } else if (tab.command === "close-all") {
-    TabStore.deleteAll();
+    TabStore.deleteAll(() => {
+      router.push({
+        path: TabStore["tab"]["value"],
+        query: TabStore["tab"]["query"],
+      });
+    });
   } else if (tab.command === "refresh") {
     router.go(0);
   } else if (tab.command === "close-right") {
@@ -105,8 +82,43 @@ function handleCommand(tab) {
   }
 }
 
-function isDisabled(tab) {
+function isFixedPage(tab) {
   return tab.value === website.fistPage.value;
+}
+
+function getDropMenu(tab) {
+  return [
+    {
+      id: 1,
+      command: "close",
+      visible: !isFixedPage(tab),
+      label: "关闭标签页",
+    },
+    {
+      id: 2,
+      command: "refresh",
+      visible: true,
+      label: "刷新标签页",
+    },
+    {
+      id: 3,
+      command: "close-others",
+      visible: true,
+      label: "关闭其他标签页",
+    },
+    {
+      id: 4,
+      command: "close-all",
+      visible: true,
+      label: "关闭所有标签页",
+    },
+    {
+      id: 5,
+      command: "close-right",
+      visible: true,
+      label: "关闭右侧标签页",
+    },
+  ];
 }
 </script>
 
@@ -121,7 +133,6 @@ function isDisabled(tab) {
       <el-dropdown
         trigger="contextmenu"
         popper-class="tab-drop-popper"
-        :disabled="isDisabled(element)"
         @command="handleCommand">
         <div
           class="tab"
@@ -131,11 +142,10 @@ function isDisabled(tab) {
             <svg-icon
               class="icon"
               :name="element.icon || website.defaultTabIcon" />
-            <!--            <img :src="element.icon || website.defaultTabIcon" alt="" />-->
             <span class="label">{{ element.label }}</span>
           </div>
           <el-icon
-            v-if="!isDisabled(element)"
+            v-if="!isFixedPage(element)"
             :size="12"
             class="close-btn"
             @click.stop="handleCommand({ ...element, command: 'close' })">
@@ -144,12 +154,13 @@ function isDisabled(tab) {
         </div>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item
-              v-for="item in dropMenu"
-              :key="item.id"
-              :command="{ ...element, command: item['command'] }"
-              >{{ item["label"] }}</el-dropdown-item
-            >
+            <template v-for="item in getDropMenu(element)" :key="item.id">
+              <el-dropdown-item
+                v-if="item.visible"
+                :command="{ ...element, command: item['command'] }"
+                >{{ item["label"] }}</el-dropdown-item
+              >
+            </template>
           </el-dropdown-menu>
         </template>
       </el-dropdown>

@@ -134,7 +134,7 @@ function onUpdateSubmit(formData, done) {
 
 function handleShrink() {
   emits("update:modelValue", !props.modelValue);
-  emits("change", 300);
+  emits("resize", 300);
 }
 </script>
 
