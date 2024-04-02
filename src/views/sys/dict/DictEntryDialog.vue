@@ -21,7 +21,7 @@ import {
 import EntryMainDialog from "./EntryMainDialog.vue";
 
 const pageInfo = {
-  icon: new URL("/entry.svg", import.meta.url),
+  icon: "entry",
   label: "字典项管理",
 };
 

@@ -11,6 +11,7 @@ import { readonly, watch, ref, onBeforeMount } from "vue";
 import { go2MenuPage } from "@/router/index.js";
 import { menuStore } from "@/store/index.js";
 import { useRoute } from "vue-router";
+import SvgIcon from "package/SvgIcon/src/index.vue";
 const route = useRoute();
 const MenuStore = menuStore();
 
@@ -40,7 +41,8 @@ function init() {
 
 function setColor() {
   menuList.value.forEach((item) => {
-    analyze(item.icon, { scale: 0.1 }).then((data) => {
+    const icon = new URL(`../../icons/${item.icon}.svg`, import.meta.url);
+    analyze(icon["href"], { scale: 0.1 }).then((data) => {
       if (data.length > 0) item.bgColor = data[0].color;
     });
   });
@@ -61,7 +63,7 @@ function handleClick(menu) {
       <div
         class="icon-layout"
         :style="{ backgroundColor: menu['bgColor'] }"></div>
-      <img :src="menu[menuProps['icon']]" alt="" />
+      <svg-icon class="icon" :name="menu[menuProps['icon']]" />
       <span class="label">{{ menu[menuProps["label"]] }}</span>
     </li>
   </ul>
@@ -99,7 +101,7 @@ function handleClick(menu) {
       margin-bottom: 10px;
       opacity: 0.1;
     }
-    img {
+    .icon {
       position: absolute;
       width: 30px;
       height: 30px;

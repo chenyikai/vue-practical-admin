@@ -34,7 +34,6 @@ const {
   handelResetSearchForm,
 } = useCrud();
 
-const dictEntry = new URL("/entry.svg", import.meta.url);
 const dictDialog = ref({});
 
 function onAdd() {
@@ -158,7 +157,7 @@ onBeforeMount(() => {
         @sort-change="sortChange">
         <template v-slot:menu="{ row }">
           <page-button
-            :icon="dictEntry"
+            icon="entry"
             label="字典项"
             direction="horizontal"
             @click.stop="handleDictEntry(row)" />

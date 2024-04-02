@@ -35,9 +35,8 @@ const {
 } = useCrud();
 const emits = defineEmits({ setting: null });
 
-const settingIcon = new URL("/setting.svg", import.meta.url);
 const pageInfo = {
-  icon: "/role.svg",
+  icon: "role",
   label: "角色管理",
 };
 
@@ -179,7 +178,7 @@ defineExpose({
         @sort-change="sortChange">
         <template v-slot:menu="{ row }">
           <page-button
-            :icon="settingIcon"
+            icon="setting"
             label="权限配置"
             direction="horizontal"
             @click.stop="onSetting(row)" />

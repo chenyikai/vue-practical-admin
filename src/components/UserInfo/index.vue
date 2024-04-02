@@ -16,6 +16,7 @@ import PasswordDialog from "./password/PasswordDialog.vue";
 import { resetPassword } from "@/api/sys/auth/index.js";
 import UserInfoDialog from "./info/UserInfoDialog.vue";
 import { updateUser } from "@/api/sys/user/index.js";
+import SvgIcon from "package/SvgIcon/src/index.vue";
 const router = useRouter();
 const route = useRoute();
 const UserStore = userStore();
@@ -115,11 +116,7 @@ function onInfoModifySubmit(formData, done) {
         </el-dropdown-menu>
       </template>
     </el-dropdown>
-    <img
-      class="logout-btn"
-      src="/logout.svg"
-      alt=""
-      @click.stop="handleLogOut" />
+    <svg-icon class="logout-btn" name="logout" @click.stop="handleLogOut" />
     <password-dialog ref="password" @[MODIFY]="onModifySubmit" />
     <user-info-dialog ref="info" @[MODIFY]="onInfoModifySubmit" />
   </section>

@@ -8,6 +8,7 @@ export default {
 import { computed, useSlots } from "vue";
 import { tabStore } from "@/store/index.js";
 import { validatenull } from "@/utils/validate.js";
+import SvgIcon from "package/SvgIcon/src/index.vue";
 const props = defineProps({
   pageInfo: {
     type: Object,
@@ -38,7 +39,7 @@ const icon = computed(() => {
     <header class="page-container-header">
       <div class="title-layout">
         <h1 class="page-title">
-          <img class="icon" :src="icon" alt="" />
+          <svg-icon class="icon" :name="icon" />
           <span class="label">{{ label }}</span>
         </h1>
         <slot name="title"></slot>

@@ -11,6 +11,7 @@ import { updateRole } from "@/api/sys/role/index.js";
 import { getRoleMenuById } from "@/api/sys/menu/index.js";
 import { ElMessage } from "element-plus";
 import { debounce } from "lodash";
+import SvgIcon from "package/SvgIcon/src/index.vue";
 const emits = defineEmits({ setting: null });
 
 const tree = ref({});
@@ -89,7 +90,7 @@ defineExpose({
   <section class="limit-setting-card-container">
     <header class="limit-setting-card-container-header">
       <h1 class="page-title">
-        <img class="icon" src="/limit.svg" alt="" />
+        <svg-icon name="limit" class="icon" />
         <span class="label">权限配置</span>
         <span v-if="currentRoleInfo.roleName" class="label"
           >({{ currentRoleInfo.roleName }})</span

@@ -35,8 +35,6 @@ const {
   handelResetSearchForm,
 } = useCrud();
 
-const resetPassword = new URL("/reset-password.svg", import.meta.url);
-
 function onAdd() {
   dialog.value.open(website.pageStatus.CREATE);
 }
@@ -198,7 +196,7 @@ onBeforeMount(() => {
         @sort-change="sortChange">
         <template v-slot:menu="{ row }">
           <page-button
-            :icon="resetPassword"
+            icon="reset-password"
             label="重置密码"
             direction="horizontal"
             @click.stop="handleReset(row)" />

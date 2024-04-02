@@ -3,8 +3,10 @@ import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import TurboConsole from "vite-plugin-turbo-console";
 import viteCompression from "vite-plugin-compression";
+import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 import { fileURLToPath, URL } from "node:url";
 import { loadEnv } from "vite";
+import path from "path";
 
 export default defineConfig(({ mode }) => {
   // eslint-disable-next-line no-undef
@@ -19,6 +21,11 @@ export default defineConfig(({ mode }) => {
         algorithm: "gzip",
         threshold: 10240,
         deleteOriginFile: true,
+      }),
+      createSvgIconsPlugin({
+        // eslint-disable-next-line no-undef
+        iconDirs: [path.resolve(process.cwd(), "src/icons")],
+        symbolId: "icon-[dir]-[name]",
       }),
     ],
     resolve: {

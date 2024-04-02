@@ -5,8 +5,8 @@ export default {
   logo: `${import.meta.env.BASE_URL}vite.svg`, // 项目或企业LOGO
   defaultTabIcon: `${import.meta.env.BASE_URL}tab.svg`, // 项目或企业LOGO
   defaultAvatar: {
-    male: `${import.meta.env.BASE_URL}user-man.svg`,
-    female: `${import.meta.env.BASE_URL}user-woman.svg`,
+    male: `${import.meta.env.BASE_URL}male.svg`,
+    female: `${import.meta.env.BASE_URL}female.svg`,
   },
   iv: "aochendemo@12345", // 加密偏移值
   fistPage: {
@@ -14,20 +14,19 @@ export default {
     value: "/index",
     params: {},
     query: {},
-    icon: `${import.meta.env.BASE_URL}index.svg`,
+    icon: `index`,
     meta: {
       isTab: true,
     },
   },
   pageIcon: {
-    404: `${import.meta.env.BASE_URL}404.svg`,
+    404: 404,
   },
   gender: {
     MALE: 0,
     FEMALE: 1,
   },
   menu: {
-    iconDefault: "iconfont icon-caidan",
     props: {
       label: "menuName",
       path: "path",

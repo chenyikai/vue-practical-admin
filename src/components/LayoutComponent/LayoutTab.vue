@@ -128,7 +128,10 @@ function isDisabled(tab) {
           :class="{ active: TabStore['tab']['value'] === element['value'] }"
           @click.stop="handleClick(element)">
           <div class="left-layout">
-            <img :src="element.icon || website.defaultTabIcon" alt="" />
+            <svg-icon
+              class="icon"
+              :name="element.icon || website.defaultTabIcon" />
+            <!--            <img :src="element.icon || website.defaultTabIcon" alt="" />-->
             <span class="label">{{ element.label }}</span>
           </div>
           <el-icon
@@ -187,7 +190,7 @@ function isDisabled(tab) {
       justify-content: center;
       align-items: center;
       margin-right: 8px;
-      img {
+      .icon {
         width: 20px;
         height: 20px;
         margin-right: 5px;

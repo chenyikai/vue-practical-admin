@@ -7,51 +7,52 @@ export default {
 <script setup>
 import { readonly, computed, reactive } from "vue";
 import { validatenull } from "@/utils/validate.js";
+import SvgIcon from "package/SvgIcon/src/index.vue";
 const emits = defineEmits({
   click: null,
 });
 // const themeColor = useCssVar("--theme-color");
 const buttonMap = readonly({
   search: {
-    icon: new URL("../images/search.svg", import.meta.url),
+    icon: "search",
     label: "搜索",
   },
   reset: {
-    icon: new URL("../images/reset.svg", import.meta.url),
+    icon: "reset",
     label: "重置",
   },
   create: {
-    icon: new URL("../images/create.svg", import.meta.url),
+    icon: "create",
     label: "新增",
     // bgColor: themeColor.value,
     fontColor: "#fff",
   },
   delete: {
-    icon: new URL("../images/delete.svg", import.meta.url),
+    icon: "delete",
     label: "删除",
   },
   update: {
-    icon: new URL("../images/update.svg", import.meta.url),
+    icon: "update",
     label: "更新",
   },
   detail: {
-    icon: new URL("../images/detail.svg", import.meta.url),
+    icon: "detail",
     label: "详情",
   },
   export: {
-    icon: new URL("../images/export.svg", import.meta.url),
+    icon: "export",
     label: "导出",
   },
   import: {
-    icon: new URL("../images/import.svg", import.meta.url),
+    icon: "import",
     label: "导入",
   },
   download: {
-    icon: new URL("../images/download.svg", import.meta.url),
+    icon: "download",
     label: "下载",
   },
   pic: {
-    icon: new URL("../images/pic.svg", import.meta.url),
+    icon: "pic",
     label: "查看图片",
   },
 });
@@ -106,7 +107,7 @@ function handleClick(e) {
     :class="[props['type'], direction]"
     @click.stop="handleClick">
     <slot>
-      <img class="icon" :src="buttonAtr['icon'] || icon" alt="" />
+      <svg-icon class="icon" :name="buttonAtr['icon'] || icon" />
       <span class="label" :class="type">{{ buttonAtr["label"] || label }}</span>
     </slot>
   </el-button>
