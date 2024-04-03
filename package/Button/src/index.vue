@@ -7,11 +7,12 @@ export default {
 <script setup>
 import { readonly, computed, reactive } from "vue";
 import { validatenull } from "@/utils/validate.js";
+import { userStore } from "@/store";
 import SvgIcon from "package/SvgIcon/src/index.vue";
 const emits = defineEmits({
   click: null,
 });
-// const themeColor = useCssVar("--theme-color");
+const UserStore = userStore();
 const buttonMap = readonly({
   search: {
     icon: "search",
@@ -24,7 +25,6 @@ const buttonMap = readonly({
   create: {
     icon: "create",
     label: "新增",
-    // bgColor: themeColor.value,
     fontColor: "#fff",
   },
   delete: {
@@ -90,6 +90,10 @@ const props = defineProps({
       return ["horizontal", "vertical"].includes(value);
     },
   },
+  permission: {
+    type: String,
+    default: null,
+  },
 });
 const buttonAtr = computed(() => {
   const val = buttonMap[props["type"]];
@@ -104,6 +108,9 @@ function handleClick(e) {
 <template>
   <el-button
     class="page-button"
+    v-if="
+      validatenull(permission) || UserStore.permissions.includes(permission)
+    "
     :class="[props['type'], direction]"
     @click.stop="handleClick">
     <slot>

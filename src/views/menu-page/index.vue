@@ -12,6 +12,7 @@ import { go2MenuPage } from "@/router/index.js";
 import { menuStore } from "@/store/index.js";
 import { useRoute } from "vue-router";
 import SvgIcon from "package/SvgIcon/src/index.vue";
+import { cloneDeep } from "lodash";
 const route = useRoute();
 const MenuStore = menuStore();
 
@@ -35,7 +36,9 @@ onBeforeMount(() => {
 });
 
 function init() {
-  menuList.value = MenuStore.getMenu(route.query.id)[menuProps.children];
+  menuList.value = cloneDeep(
+    MenuStore.getMenu(route.query.id)[menuProps.children],
+  ).sort((a, b) => a.sort - b.sort);
   setColor();
 }
 

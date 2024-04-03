@@ -14,7 +14,7 @@ export default [
         meta: {
           isTab: true,
         },
-        component: () => import("@/views/index-page/index.vue"),
+        component: () => import("@/views/index.vue"),
       },
       {
         path: "menu",

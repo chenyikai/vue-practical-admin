@@ -16,29 +16,43 @@ export default () => {
   );
 
   function setData(status, form) {
-    if (validatenull(form.id)) {
-      formData.value = form;
-    } else {
-      if (validatenull(detailFunc.value)) {
-        ElMessage({
-          message: "未传入detail方法",
-          type: "error",
-        });
-        return;
-      }
-
-      loading.value = true;
-      detailFunc
-        .value(form.id)
-        .then(({ data }) => {
-          formData.value = data.data;
-        })
-        .finally(() => {
-          loading.value = false;
-        });
-    }
-
     formStatus.value = status;
+
+    return new Promise((resolve, reject) => {
+      if (validatenull(form.id)) {
+        formData.value = form;
+        resolve(formData);
+      } else {
+        if (validatenull(detailFunc.value)) {
+          ElMessage({
+            message: "未传入detail方法",
+            type: "error",
+          });
+          return;
+        }
+
+        loading.value = true;
+        detailFunc
+          .value(form.id)
+          .then(({ data }) => {
+            formData.value = data.data;
+            resolve(formData);
+          })
+          .catch((e) => reject(e))
+          .finally(() => {
+            loading.value = false;
+          });
+      }
+    });
+  }
+
+  function setColumnData(option, prop, key, value) {
+    const index = option.column.findIndex((item) => item.prop === prop);
+    if (index === -1) {
+      console.warn("未找到该配置");
+      return;
+    }
+    option.column[index][key] = value;
 
     forceUpdate();
   }
@@ -48,6 +62,14 @@ export default () => {
    */
   function forceUpdate() {
     key.value += 1;
+  }
+
+  function setDisabled(option, disabled) {
+    option.column.forEach((item) => {
+      item["disabled"] = disabled;
+    });
+
+    return option;
   }
 
   return {
@@ -60,6 +82,8 @@ export default () => {
     formStatus,
     detailFunc,
     setData,
+    setDisabled,
+    setColumnData,
     forceUpdate,
   };
 };

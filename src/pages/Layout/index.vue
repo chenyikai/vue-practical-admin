@@ -26,7 +26,7 @@ function initMenu() {
         id: 1,
         menuName: "设置",
         icon: "setting",
-        path: "/menu",
+        path: "/Layout",
         children: [
           {
             id: 11,

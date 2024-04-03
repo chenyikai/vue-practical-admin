@@ -5,12 +5,18 @@ export default {
 </script>
 
 <script setup>
+import { cloneDeep } from "lodash";
 import website from "@/config/website.js";
 import { computed } from "vue";
 import { menuStore } from "@/store/index.js";
 import { go2MenuPage } from "@/router/index.js";
 import SvgIcon from "package/SvgIcon/src/index.vue";
+
+const MenuStore = menuStore();
 const menuProps = computed(() => website.menu.props);
+const sortMenu = computed(() => {
+  return cloneDeep(MenuStore.menuList).sort((a, b) => a.sort - b.sort);
+});
 
 function handleClick(menu) {
   go2MenuPage(menu);
@@ -21,7 +27,7 @@ function handleClick(menu) {
   <div class="system-menu">
     <div
       class="menu-item"
-      v-for="menu in menuStore().menuList"
+      v-for="menu in sortMenu"
       :key="menu.id"
       @click="handleClick(menu)">
       <svg-icon class="icon" name="setting" />
