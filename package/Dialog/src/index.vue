@@ -36,7 +36,7 @@ function close() {
   emits("close");
 }
 
-const handleConfirm = debounce(
+const onConfirm = debounce(
   function () {
     emits("submit");
   },
@@ -46,6 +46,10 @@ const handleConfirm = debounce(
     trailing: false,
   },
 );
+
+function onCancel() {
+  visible.value = false;
+}
 
 function onLoad(flag = true) {
   isSubmit.value = flag;
@@ -91,12 +95,12 @@ defineExpose({
       <div class="dialog-footer">
         <el-button
           type="primary"
-          @click.stop="handleConfirm"
+          @click.stop="onConfirm"
           :loading="isSubmit"
           :disabled="isSubmit"
           >保存</el-button
         >
-        <el-button @click.stop="close">取消</el-button>
+        <el-button @click.stop="onCancel">取消</el-button>
       </div>
     </template>
   </el-dialog>

@@ -16,3 +16,11 @@ $update_font_color: #67C23A;
   box-shadow: 0 0 2px 5px var(--container-color);
   padding: 10px;
 }
+
+@mixin text-ellipsis($row_num) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $row_num;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

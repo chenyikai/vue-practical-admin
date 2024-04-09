@@ -76,7 +76,7 @@ const props = defineProps({
     },
   },
   icon: {
-    type: Object,
+    type: String,
     default: null,
   },
   label: {

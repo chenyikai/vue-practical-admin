@@ -2,6 +2,7 @@ import * as CryptoJS from "crypto-js";
 import { validatenull } from "./validate.js";
 import { set } from "lodash";
 import { userStore } from "@/store/index.js";
+import { cloneDeep } from "lodash";
 
 /**
  * 把字符串化的函数还原为可执行函数
@@ -367,10 +368,18 @@ export function kvToJson(k, v) {
   return list;
 }
 
-export function getDictData(dictName) {
+export function getDictData(dictName, type = "number") {
   const dictAll = userStore().dictAll;
   if (Array.isArray(dictAll[dictName])) {
-    return dictAll[dictName];
+    return dictAll[dictName].map((dictEntry) => {
+      const item = cloneDeep(dictEntry);
+      if (type === "number") {
+        item.value = Number(dictEntry.value);
+      } else {
+        item.value = dictEntry.value.toString();
+      }
+      return item;
+    });
   }
   console.warn(`未找到字典：${name}`);
   return [];

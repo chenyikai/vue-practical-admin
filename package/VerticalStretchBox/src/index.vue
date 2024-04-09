@@ -107,7 +107,6 @@ function onMouseup() {
     //min-width: v-bind(_leftWidth);
     height: 100%;
     overflow: hidden;
-    user-select: none;
     @include container();
     &.show {
       width: v-bind(leftWidth);

@@ -5,5 +5,7 @@ defineOptions({
 </script>
 
 <template>
-  <page-container>首页</page-container>
+  <div>
+    <upload-file type="avatar" :size="40" />
+  </div>
 </template>

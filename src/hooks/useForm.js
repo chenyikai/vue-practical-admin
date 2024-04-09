@@ -43,6 +43,7 @@ export default () => {
             loading.value = false;
           });
       }
+      forceUpdate();
     });
   }
 

@@ -8,6 +8,10 @@ export default {
     male: `${import.meta.env.BASE_URL}male.svg`,
     female: `${import.meta.env.BASE_URL}female.svg`,
   },
+  upload: {
+    url: "/rest/file/upload",
+    ossType: 1,
+  },
   iv: "aochendemo@12345", // 加密偏移值
   fistPage: {
     label: "主页",
