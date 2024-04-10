@@ -4,6 +4,7 @@ import PageDialog from "./Dialog";
 import VerticalStretchBox from "./VerticalStretchBox";
 import SvgIcon from "./SvgIcon";
 import UploadFile from "./Upload";
+import PicZoom from "./PicZoom";
 const components = [
   AdminContainer,
   PageButton,
@@ -11,6 +12,7 @@ const components = [
   VerticalStretchBox,
   SvgIcon,
   UploadFile,
+  PicZoom,
 ];
 
 export default function install(app) {
