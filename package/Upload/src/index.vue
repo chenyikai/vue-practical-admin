@@ -3,13 +3,14 @@
     <el-upload
       ref="upload"
       action="#"
+      :file-list="files"
       :http-request="uploadFunc"
       :before-upload="onBeforeUpload"
       :on-progress="onProgress"
       :on-success="onSuccess"
       :on-error="onError"
-      v-bind="{ ...attrs, ...bindValue }"
-      :show-file-list="false">
+      :disabled="isUpload"
+      v-bind="bindValue">
       <div class="upload-layout" v-if="type === 'drag'">
         <template v-if="!isUpload">
           <el-icon class="el-icon--upload"><upload-filled /></el-icon>
@@ -17,41 +18,87 @@
         </template>
         <template v-else>
           <el-progress
+            striped-flow
+            striped
             type="dashboard"
             :percentage="progress"
-            :color="colors" />
+            :color="colors">
+            <template #default="{ percentage }">
+              <div class="upload-progress-content">
+                <svg-icon class="icon" name="loading" />
+                <span class="text">{{ percentage }}%</span>
+              </div>
+            </template>
+          </el-progress>
         </template>
       </div>
+
       <div class="upload-layout avatar-layout" v-if="type === 'avatar'">
         <img v-if="model" :src="model" class="avatar" />
         <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
       </div>
+      <div
+        class="upload-layout picture-card-layout"
+        v-if="type === 'pictureCard'">
+        <el-icon><Plus /></el-icon>
+      </div>
+
+      <template #file="{ file }">
+        <div
+          v-if="props.type !== 'pictureCard'"
+          class="file-card"
+          :key="file.uid"
+          @click.stop="onFileClick(file)">
+          <img
+            v-if="isImg(getIcon(file))"
+            :src="getIcon(file)"
+            alt=""
+            class="icon" />
+          <svg-icon v-else class="icon" :name="getIcon(file)" />
+          <span class="label">{{ file.name }}</span>
+          <el-icon
+            v-if="results[file.uid].status === status.SUCCESS"
+            :size="20"
+            class="status success"
+            ><SuccessFilled
+          /></el-icon>
+          <el-icon
+            v-if="results[file.uid].status === status.ERROR"
+            :size="20"
+            class="status fail"
+            ><CircleCloseFilled
+          /></el-icon>
+          <el-icon
+            v-if="results[file.uid].status === status.LOADING"
+            :size="20"
+            class="status loading"
+            ><Loading
+          /></el-icon>
+          <el-icon class="close-btn" :size="20" @click.stop="onDelete(file)"
+            ><CircleClose
+          /></el-icon>
+        </div>
+
+        <div v-else class="file-card-img-layout">
+          <img :src="file.url" alt="" />
+          <span class="el-upload-list__item-status-label">
+            <el-icon :size="12"><Check /></el-icon>
+          </span>
+          <span class="el-upload-list__item-actions func">
+            <el-icon class="icon" :size="22" @click.stop="onPreview(file)"
+              ><Search
+            /></el-icon>
+            <el-icon class="icon" :size="22" @click.stop="onDelete(file)"
+              ><Delete
+            /></el-icon>
+          </span>
+        </div>
+      </template>
+
       <template v-if="slots.tip" #tip>
-        <div class="el-upload__tip">上传jpg/png文件</div>
+        <slot name="tip"> </slot>
       </template>
     </el-upload>
-    <ul class="file-list-box" v-if="attrs['show-file-list']">
-      <li
-        class="file-card"
-        v-for="item in files"
-        :key="item.uid"
-        @click.stop="onFileClick(item.uid)">
-        <svg-icon class="icon" :name="getIcon(item.type)" />
-        <span class="label">{{ item.name }}</span>
-        <el-icon
-          v-if="success.includes(item.uid)"
-          :size="20"
-          class="status success"
-          ><SuccessFilled
-        /></el-icon>
-        <el-icon v-if="fails.includes(item.uid)" :size="20" class="status fail"
-          ><CircleCloseFilled
-        /></el-icon>
-        <el-icon class="close-btn" :size="20" @click.stop="onClose(item)"
-          ><CircleClose
-        /></el-icon>
-      </li>
-    </ul>
   </section>
 </template>
 
@@ -62,17 +109,33 @@ export default {
 </script>
 
 <script setup>
-import { ref, useAttrs, computed, useSlots } from "vue";
+import { ref, useAttrs, computed, useSlots, readonly, reactive } from "vue";
 import {
   UploadFilled,
   SuccessFilled,
   CircleCloseFilled,
   CircleClose,
   Plus,
+  Loading,
+  Check,
+  Search,
+  Delete,
 } from "@element-plus/icons-vue";
 import request from "@/router/axios.js";
 import website from "@/config/website.js";
 import SvgIcon from "package/SvgIcon/src/index.vue";
+import { ElMessageBox } from "element-plus";
+
+const emits = defineEmits({
+  success: null,
+  error: null,
+  "file-click": null,
+});
+const status = readonly({
+  SUCCESS: "success",
+  ERROR: "error",
+  LOADING: "loading",
+});
 const attrs = useAttrs();
 const slots = useSlots();
 const model = defineModel();
@@ -82,7 +145,7 @@ const props = defineProps({
     default: null,
     required: true,
     validator(value) {
-      return ["drag", "avatar"].includes(value);
+      return ["drag", "avatar", "pictureCard"].includes(value);
     },
   },
   colors: {
@@ -104,45 +167,91 @@ const props = defineProps({
     type: Number,
     default: 50,
   },
+  ossType: {
+    type: Number,
+    default: null,
+  },
 });
+// 上传实例
 const upload = ref({});
+// 是否上传
 const isUpload = ref(false);
+// 上传进度
 const progress = ref(0);
+// 文件列表
 const files = ref([]);
-const success = ref([]);
-const fails = ref([]);
+// 上传结果
+const results = reactive({});
+// 正在上传文件
 const loadingFile = ref({});
+// 组件绑定值
 const bindValue = computed(() => {
+  let properties = {};
   if (props.type === "drag") {
-    return {
+    properties = {
       drag: true,
+      "show-file-list": true,
     };
   } else if (props.type === "avatar") {
-    return {
+    properties = {
       limit: 1,
       "show-file-list": false,
+      accept: ".png, .jpg",
     };
+  } else if (props.type === "pictureCard") {
+    properties = {
+      "list-type": "picture-card",
+      "show-file-list": true,
+      accept: ".png, .jpg",
+    };
+  } else {
+    properties = {};
   }
 
-  return {};
+  return {
+    ...attrs,
+    ...properties,
+  };
+});
+
+const isShowFileList = computed(() => {
+  return (
+    bindValue.value["show-file-list"] ||
+    props["show-file-list"] ||
+    props.type === "pictureCard"
+  );
 });
 
 // 头像
 const avatarSize = ref(props.size + "px");
 
-function getIcon(type) {
+function getIcon(file) {
+  const suffix = file.name.split(".")[1];
   const fileType = {
     // word
     doc: "doc",
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-      "doc",
+    docs: "doc",
+
     // excel
-    "application/vnd.ms-excel": "file-excel",
-    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
-      "file-excel",
+    xls: "file-excel",
+    xlsx: "file-excel",
+
+    // pdf
+    pdf: "file-pdf",
+
+    // zip
+    zip: "file-zip",
   };
 
-  return fileType[type] || "file-document";
+  if (["png", "jpg", "jpeg"].includes(suffix)) {
+    return URL.createObjectURL(file.raw);
+  }
+
+  return fileType[suffix] || "file-document";
+}
+
+function isImg(url) {
+  return url.indexOf("http") !== -1;
 }
 
 function onClose(val) {
@@ -150,7 +259,7 @@ function onClose(val) {
   files.value.splice(index, 1);
 }
 
-function uploadFunc(option) {
+function uploadFunc(option, reload = false) {
   const formData = new FormData();
   if (option.data) {
     for (const [key, value] of Object.entries(option.data)) {
@@ -159,10 +268,20 @@ function uploadFunc(option) {
     }
   }
   formData.append("file", option.file);
-  formData.append("ossType", website.upload.ossType);
+  formData.append("ossType", props.ossType || website.upload.ossType);
+
+  results[option.file.uid] = {
+    status: status.LOADING,
+    file: option.file,
+    option,
+  };
+
+  if (isShowFileList.value && !reload) {
+    files.value.push(option.file);
+  }
 
   return request({
-    url: website.upload.url,
+    url: props.action || website.upload.url,
     method: "post",
     onUploadProgress: option.onProgress,
     data: formData,
@@ -170,22 +289,31 @@ function uploadFunc(option) {
 }
 
 function onBeforeUpload(file) {
+  // TODO 做一些校验
   isUpload.value = true;
-  console.log(file.type, "filefilefile");
 
-  files.value.push(file);
   loadingFile.value = file;
 
   return isUpload.value;
 }
 
-function onFileClick(uid) {
-  const file = files.value.find((item) => item.uid === uid);
-  if (success.value.includes(uid)) {
-    // TODO 成功 do something
-    console.log(file, "file");
-  } else if (fails.value.includes(uid)) {
-    // TODO 失败 重新上传
+function onFileClick(file) {
+  console.log(file, "file");
+  const result = results[file.uid];
+
+  if (result.status === status.SUCCESS) {
+    // TODO 成功
+  } else if (result.status === status.ERROR) {
+    // TODO 失败
+    ElMessageBox.confirm(`是否重新上传文件：${file.name}？`, "提示", {
+      confirmButtonText: "确认",
+      cancelButtonText: "取消",
+      type: "warning",
+    }).then(() => {
+      uploadFunc(result.option, true);
+    });
+  } else {
+    // TODO 加载
   }
 }
 
@@ -202,24 +330,36 @@ function onProgress(e) {
  * @param e
  */
 function onSuccess(e) {
-  console.log(e, "成功");
-  if (bindValue.value["show-file-list"] || props["show-file-list"]) {
-    success.value.push(loadingFile.value.uid);
+  results[loadingFile.value.uid].status = status.SUCCESS;
+
+  if (isShowFileList.value) {
+    model.value = files.value;
   } else {
     model.value = e.data.ossFullPath;
   }
 
+  emits("success", e);
   onFinish();
 }
 
 function onError(e) {
-  console.log(e, "e");
-  if (bindValue.value["show-file-list"] || props["show-file-list"]) {
-    fails.value.push(loadingFile.value.uid);
-  }
+  results[loadingFile.value.uid].status = status.ERROR;
+  emits("error", e);
 
   onFinish();
 }
+
+function onPreview(file) {
+  console.log(file, "preview");
+}
+
+function onDelete(file) {
+  upload.value.handleRemove(file);
+}
+
+// function onCancel(file) {
+//   upload.value.abort(file);
+// }
 
 function onFinish() {
   loadingFile.value = {};
@@ -229,7 +369,7 @@ function onFinish() {
 </script>
 
 <style lang="scss">
-@import "src/styles/variables";
+@use "src/styles/variables" as vars;
 .upload-file-container {
   .avatar-layout {
     border: 1px dashed var(--el-border-color);
@@ -255,60 +395,78 @@ function onFinish() {
       text-align: center;
     }
   }
-  .file-list-box {
-    display: flex;
-    flex-direction: column;
+}
+
+.file-card {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  padding: 5px;
+  flex-shrink: 0;
+  border: 1px dashed transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+  .icon {
+    width: 22px;
+    height: 25px;
+    flex-shrink: 0;
+    margin-right: 4px;
+    border-radius: 4px;
+  }
+  .label {
+    flex: 1;
+    font-size: 12px;
+    @include vars.text-ellipsis(1);
+  }
+  .status {
+    &.success {
+      color: #67c23a;
+    }
+    &.fail {
+      color: #f56c6c;
+    }
+  }
+  .close-btn {
+    display: none;
+  }
+  &:hover {
+    .close-btn {
+      display: block;
+    }
+    .status {
+      display: none;
+    }
+  }
+}
+
+.file-card-img-layout {
+  img {
     width: 100%;
-    max-width: 100%;
-    padding: 10px 0;
-    overflow: auto;
-    .file-card {
-      position: relative;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      width: 100%;
-      padding: 5px;
-      flex-shrink: 0;
-      border: 1px dashed transparent;
-      border-radius: 6px;
+    height: 100%;
+    object-fit: cover;
+  }
+  .func {
+    .icon {
       cursor: pointer;
-      transition: all 0.3s;
-      & + .file-card {
-        margin-left: 15px;
-      }
-      .icon {
-        width: 22px;
-        height: 25px;
-        flex-shrink: 0;
-        margin-right: 4px;
-      }
-      .label {
-        flex: 1;
-        font-size: 12px;
-        @include text-ellipsis(1);
-      }
-      .status {
-        &.success {
-          color: #67c23a;
-        }
-        &.fail {
-          color: #f56c6c;
-        }
-      }
-      .close-btn {
-        display: none;
-      }
-      &:hover {
-        border-color: var(--el-border-color);
-        .close-btn {
-          display: block;
-        }
-        .status {
-          display: none;
-        }
+      & + .icon {
+        margin-left: 10px;
       }
     }
+  }
+}
+
+.upload-progress-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
   }
 }
 </style>

@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from "vue-router";
 import views from "./views/index.js";
 import pages from "./page/index.js";
 import website from "@/config/website.js";
+import { isURL } from "@/utils/validate.js";
 import { menuStore } from "@/store/index.js";
 import { getStore } from "@/utils/store.js";
 
@@ -25,11 +26,6 @@ const router = createRouter({
 });
 
 const modules = import.meta.glob("../**/**/*.vue");
-
-function isURL(s) {
-  if (s.includes("html")) return true;
-  return /^http[s]?:\/\/.*/.test(s);
-}
 
 export function addRoute(aMenu = [], first) {
   const aRouter = [];

@@ -44,6 +44,7 @@ export function isPhone(s) {
  * @param {*} s
  */
 export function isURL(s) {
+  if (s.includes("html")) return true;
   return /^http[s]?:\/\/.*/.test(s);
 }
 

@@ -6,6 +6,6 @@ defineOptions({
 
 <template>
   <div>
-    <upload-file type="avatar" :size="40" />
+    <upload-file type="drag" />
   </div>
 </template>
