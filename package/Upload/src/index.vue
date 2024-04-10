@@ -82,7 +82,7 @@
         </div>
 
         <div v-else class="file-card-img-layout">
-          <img :src="file.url" alt="" />
+          <el-image :src="file.url" fit="cover" lazy />
           <span class="el-upload-list__item-status-label">
             <el-icon :size="12"><Check /></el-icon>
           </span>
@@ -101,6 +101,17 @@
         <slot name="tip"> </slot>
       </template>
     </el-upload>
+    <el-image-viewer
+      v-if="visible"
+      :zoom-rate="1.2"
+      :max-scale="7"
+      :min-scale="0.2"
+      :initial-index="
+        previewSrcList.findIndex((item) => item === previewFile.url)
+      "
+      :zIndex="nextZIndex()"
+      :urlList="previewSrcList"
+      @close="closeViewer" />
   </section>
 </template>
 
@@ -127,6 +138,8 @@ import request from "@/router/axios.js";
 import website from "@/config/website.js";
 import SvgIcon from "package/SvgIcon/src/index.vue";
 import { ElMessageBox } from "element-plus";
+import { useZIndex } from "element-plus";
+const { nextZIndex } = useZIndex();
 
 const emits = defineEmits({
   success: null,
@@ -188,6 +201,10 @@ const files = ref([]);
 const results = reactive({});
 // 正在上传文件
 const loadingFile = ref({});
+// preview
+const visible = ref(false);
+// preview file
+const previewFile = ref({});
 // 组件绑定值
 const bindValue = computed(() => {
   let properties = {};
@@ -216,6 +233,10 @@ const bindValue = computed(() => {
     ...attrs,
     ...properties,
   };
+});
+
+const previewSrcList = computed(() => {
+  return files.value.map((item) => item.url);
 });
 
 const isShowFileList = computed(() => {
@@ -339,7 +360,8 @@ function onError(e, file, files) {
 }
 
 function onPreview(file) {
-  console.log(file, "preview");
+  visible.value = true;
+  previewFile.value = file;
 }
 
 function onDelete(file) {
@@ -369,6 +391,11 @@ function onFinish() {
   loadingFile.value = {};
   isUpload.value = false;
   progress.value = 0;
+}
+
+function closeViewer() {
+  visible.value = false;
+  previewFile.value = {};
 }
 
 defineExpose({
@@ -451,10 +478,9 @@ defineExpose({
 }
 
 .file-card-img-layout {
-  img {
+  .el-image {
     width: 100%;
     height: 100%;
-    object-fit: cover;
   }
   .func {
     .icon {

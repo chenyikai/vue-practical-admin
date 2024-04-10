@@ -6,6 +6,6 @@ defineOptions({
 
 <template>
   <div>
-    <upload-file type="drag" />
+    <upload-file type="pictureCard" />
   </div>
 </template>
