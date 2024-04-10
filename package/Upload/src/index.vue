@@ -3,11 +3,13 @@
     <el-upload
       ref="upload"
       action="#"
-      :file-list="files"
+      v-model:file-list="files"
       :http-request="uploadFunc"
       :before-upload="onBeforeUpload"
       :on-progress="onProgress"
       :on-success="onSuccess"
+      :on-remove="onRemove"
+      :on-change="onChange"
       :on-error="onError"
       :disabled="isUpload"
       v-bind="bindValue">
@@ -63,13 +65,13 @@
             ><SuccessFilled
           /></el-icon>
           <el-icon
-            v-if="results[file.uid].status === status.ERROR"
+            v-if="results[file.uid].status === status.FAIL"
             :size="20"
             class="status fail"
             ><CircleCloseFilled
           /></el-icon>
           <el-icon
-            v-if="results[file.uid].status === status.LOADING"
+            v-if="results[file.uid].status === status.READY"
             :size="20"
             class="status loading"
             ><Loading
@@ -128,13 +130,15 @@ import { ElMessageBox } from "element-plus";
 
 const emits = defineEmits({
   success: null,
-  error: null,
+  fail: null,
   "file-click": null,
+  select: null,
 });
 const status = readonly({
   SUCCESS: "success",
-  ERROR: "error",
-  LOADING: "loading",
+  FAIL: "fail",
+  UPLOADING: "uploading",
+  READY: "ready",
 });
 const attrs = useAttrs();
 const slots = useSlots();
@@ -254,12 +258,7 @@ function isImg(url) {
   return url.indexOf("http") !== -1;
 }
 
-function onClose(val) {
-  const index = files.value.findIndex((item) => item.uid === val.uid);
-  files.value.splice(index, 1);
-}
-
-function uploadFunc(option, reload = false) {
+function uploadFunc(option) {
   const formData = new FormData();
   if (option.data) {
     for (const [key, value] of Object.entries(option.data)) {
@@ -270,21 +269,12 @@ function uploadFunc(option, reload = false) {
   formData.append("file", option.file);
   formData.append("ossType", props.ossType || website.upload.ossType);
 
-  results[option.file.uid] = {
-    status: status.LOADING,
-    file: option.file,
-    option,
-  };
-
-  if (isShowFileList.value && !reload) {
-    files.value.push(option.file);
-  }
-
   return request({
     url: props.action || website.upload.url,
     method: "post",
     onUploadProgress: option.onProgress,
     data: formData,
+    timeout: 0,
   });
 }
 
@@ -293,24 +283,24 @@ function onBeforeUpload(file) {
   isUpload.value = true;
 
   loadingFile.value = file;
+  emits("select", loadingFile.value);
 
   return isUpload.value;
 }
 
 function onFileClick(file) {
-  console.log(file, "file");
   const result = results[file.uid];
 
   if (result.status === status.SUCCESS) {
     // TODO 成功
-  } else if (result.status === status.ERROR) {
+  } else if (result.status === status.FAIL) {
     // TODO 失败
     ElMessageBox.confirm(`是否重新上传文件：${file.name}？`, "提示", {
       confirmButtonText: "确认",
       cancelButtonText: "取消",
       type: "warning",
     }).then(() => {
-      uploadFunc(result.option, true);
+      uploadFunc({ file: result.file, data: attrs.data });
     });
   } else {
     // TODO 加载
@@ -342,10 +332,9 @@ function onSuccess(e) {
   onFinish();
 }
 
-function onError(e) {
-  results[loadingFile.value.uid].status = status.ERROR;
-  emits("error", e);
-
+function onError(e, file, files) {
+  // files.push(file);
+  emits("fail", e, file, files);
   onFinish();
 }
 
@@ -357,15 +346,34 @@ function onDelete(file) {
   upload.value.handleRemove(file);
 }
 
-// function onCancel(file) {
-//   upload.value.abort(file);
-// }
+function onRemove(file, list) {
+  console.log(file, list, files.value, "dadas");
+}
+
+function onChange(file) {
+  if (results[file.uid]) {
+    results[file.uid].status = file.status;
+  } else {
+    results[file.uid] = {
+      status: status.READY,
+      file: file,
+    };
+  }
+}
+
+function onCancel(file) {
+  upload.value.abort(file);
+}
 
 function onFinish() {
   loadingFile.value = {};
   isUpload.value = false;
   progress.value = 0;
 }
+
+defineExpose({
+  cancel: onCancel,
+});
 </script>
 
 <style lang="scss">
