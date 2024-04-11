@@ -27,12 +27,14 @@ function initMenu() {
         menuName: "组件展示",
         icon: "show",
         path: "/show/index",
+        sort: 9,
         children: [],
       },
       {
         id: 1,
         menuName: "设置",
         icon: "setting",
+        sort: -1,
         path: "/Layout",
         children: [
           {
@@ -98,6 +100,7 @@ function initMenu() {
         menuName: "表单配置",
         icon: "form-config",
         path: "/form/index",
+        sort: 8,
         children: [],
       },
     ]);
