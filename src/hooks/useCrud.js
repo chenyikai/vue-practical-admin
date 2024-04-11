@@ -2,14 +2,22 @@ import { ref, reactive, computed, nextTick } from "vue";
 import { cleanVal, clearVal } from "@/utils/util.js";
 
 export default () => {
+  /**
+   * 页面获取数据方法 page-分页 list-列表 callback-自定义事件 需要返回promise resolve含 mainData total
+   * @type {UnwrapNestedRefs<{callback: null, page: null, list: null}>}
+   */
   const funcList = reactive({
     page: null,
     list: null,
     callback: null,
   });
+  // 表格实例（需表格组件绑定好ref）
   const crud = ref({});
+  // 表格数据
   const mainTableData = ref([]);
+  // 弹窗实例（需弹窗组件绑定好ref）
   const dialog = ref({});
+  // 分页数据
   const pagination = reactive({
     pageIndex: 1,
     pageSize: 15,
@@ -17,9 +25,13 @@ export default () => {
     pageSizes: [15, 30, 50, 100],
     orders: [],
   });
+  // 搜索条件数据
   let listQuery = reactive({});
+  // 冻结数据（不会被清理）
   const freezeData = reactive({});
+  // 表单加载状态
   const tableLoading = ref(false);
+  // 查询参数
   const queryParams = computed(() => {
     const { pageIndex, pageSize } = pagination;
     return {
