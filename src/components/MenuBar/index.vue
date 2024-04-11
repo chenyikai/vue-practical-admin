@@ -30,7 +30,7 @@ function handleClick(menu) {
       v-for="menu in sortMenu"
       :key="menu.id"
       @click="handleClick(menu)">
-      <svg-icon class="icon" name="setting" />
+      <svg-icon class="icon" :name="menu.icon" />
       <span class="title">{{ menu[menuProps["label"]] }}</span>
     </div>
   </div>
@@ -62,7 +62,7 @@ function handleClick(menu) {
     .icon {
       width: 25px;
       height: 25px;
-      margin-bottom: 5px;
+      margin-bottom: 7px;
     }
     .title {
       font-size: 14px;

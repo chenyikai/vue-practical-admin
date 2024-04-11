@@ -263,3 +263,8 @@ export function validPassword(textVal) {
   const patt = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/;
   return patt.test(textVal);
 }
+
+export function validateArrEmpty(list) {
+  if (!Array.isArray(list)) return true;
+  return list.length === 0;
+}

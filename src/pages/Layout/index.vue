@@ -23,6 +23,13 @@ function initMenu() {
   return new Promise((resolve) => {
     resolve([
       {
+        id: 0,
+        menuName: "组件展示",
+        icon: "show",
+        path: "/show/index",
+        children: [],
+      },
+      {
         id: 1,
         menuName: "设置",
         icon: "setting",
@@ -86,13 +93,13 @@ function initMenu() {
           // },
         ],
       },
-      // {
-      //   id: 2,
-      //   menuName: "表单配置",
-      //   icon: "form-config.svg",
-      //   path: "/form/index",
-      //   children: [],
-      // },
+      {
+        id: 2,
+        menuName: "表单配置",
+        icon: "form-config",
+        path: "/form/index",
+        children: [],
+      },
     ]);
   });
 }
