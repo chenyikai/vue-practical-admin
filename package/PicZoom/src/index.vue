@@ -97,7 +97,6 @@ export default defineComponent({
       this.zoomVisible = false;
     },
     move({ offsetX, offsetY }) {
-      console.log(offsetX, offsetY);
       this.zoomVisible = true;
 
       const top = this.getMoveScope(offsetY - this.base / 2, this.maxHeight);
