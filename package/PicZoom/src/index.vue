@@ -38,10 +38,16 @@
 </template>
 
 <script>
-export default {
+import { defineComponent } from "vue";
+
+export default defineComponent({
   name: "PicZoom",
   props: {
-    src: String,
+    src: {
+      type: String,
+      default: null,
+      required: true,
+    },
     coefficient: {
       type: Number,
       default: 4,
@@ -71,7 +77,7 @@ export default {
       return offsetHeight - this.base;
     },
   },
-  beforeUnmount() {
+  unmounted() {
     this.destroy();
   },
   mounted() {
@@ -91,6 +97,7 @@ export default {
       this.zoomVisible = false;
     },
     move({ offsetX, offsetY }) {
+      console.log(offsetX, offsetY);
       this.zoomVisible = true;
 
       const top = this.getMoveScope(offsetY - this.base / 2, this.maxHeight);
@@ -107,7 +114,7 @@ export default {
       return distance;
     },
   },
-};
+});
 </script>
 
 <style lang="scss">
