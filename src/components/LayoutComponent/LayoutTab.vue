@@ -8,11 +8,11 @@ export default {
 import draggable from "vuedraggable";
 import { computed } from "vue";
 import { useRouter } from "vue-router";
-const router = useRouter();
 import { tabStore } from "@/store/index.js";
 import website from "@/config/website.js";
 import { getPath } from "@/router/index.js";
 import { CloseBold } from "@element-plus/icons-vue";
+const router = useRouter();
 const TabStore = tabStore();
 
 const tabList = computed({

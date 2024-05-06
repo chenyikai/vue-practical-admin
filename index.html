@@ -38,5 +38,42 @@
     </div>
     <script src="/ehhGis/EhhGis.min.js"></script>
     <script type="module" src="/src/main.js"></script>
+    <script>
+      function setRem() {
+        const htmlDom = document.getElementsByTagName("html")[0];
+        htmlDom.style.fontSize = `62.5%`;
+        let screenWidth = window.top.document.documentElement.clientWidth || window.top.document.body.clientWidth;
+        let screenHeight = window.top.document.documentElement.clientHeight || window.top.document.body.clientHeight;
+        // // //超宽屏
+        // if (screenWidth > screenHeight * 2) {
+        //   screenWidth = (screenHeight * 16) / 9;
+        // } else if (screenHeight > screenWidth * 2) {
+        //   //竖屏
+        //   screenHeight = (screenWidth * 16) / 9;
+        // }
+        //设计图比例
+        let baseScale = 16 / 9;
+
+        let maxScreenSize = Math.max(screenWidth, screenHeight);
+        let minScreenSize = Math.min(screenWidth, screenHeight);
+        if (maxScreenSize / minScreenSize !== baseScale) {
+          maxScreenSize = (16 * minScreenSize) / 9;
+        }
+
+        if (maxScreenSize >= 1920) {
+          htmlDom.style.fontSize = `${(maxScreenSize * 100 * 0.625) / 1920}%`;
+        }
+        if (maxScreenSize <= 1440) {
+          htmlDom.style.fontSize = `${(maxScreenSize * 100 * 0.625) / 1280}%`;
+        }
+        if (window.top.document.documentElement.clientWidth < 1400) {
+          htmlDom.style.fontSize = `${(maxScreenSize * 100 * 0.625) / 1280 / 1.5}%`;
+        }
+      }
+      setRem();
+      window.onresize = function () {
+        setRem();
+      };
+    </script>
   </body>
 </html>

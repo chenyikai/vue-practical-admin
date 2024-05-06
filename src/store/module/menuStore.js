@@ -26,7 +26,8 @@ const menuStore = defineStore("menu", {
             Array.isArray(menuDatum[children]) &&
             menuDatum[children].length !== 0
           ) {
-            return loop(menuDatum[children]);
+            const menu = loop(menuDatum[children]);
+            if (menu) return menu;
           }
         }
       };
