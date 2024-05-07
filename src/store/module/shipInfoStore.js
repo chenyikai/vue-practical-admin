@@ -1,14 +1,14 @@
 import { defineStore } from "pinia";
-import { getShipByKeyword } from "@/api/map/search.js";
 import { popupManageStore } from "@/store";
+import { getShipPoiByMmsi } from "@/api/map/ship.js";
 
-const searchStore = defineStore("search", {
+const shipInfoStore = defineStore("shipInfo", {
   state: () => {
     return {
-      visible: false,
+      visible: true,
       loading: false,
-      results: [],
       zIndex: 0,
+      shipData: {},
     };
   },
   getters: {
@@ -27,21 +27,10 @@ const searchStore = defineStore("search", {
       this.visible = false;
       this.zIndex = 0;
     },
-    search(keyword) {
-      this.loading = true;
-      getShipByKeyword({
-        keyword,
-        page: 1,
-        pageSize: 20,
-      })
-        .then(({ data }) => {
-          this.results = data.data.data;
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+    getData(mmsi) {
+      getShipPoiByMmsi();
     },
   },
 });
 
-export default searchStore;
+export default shipInfoStore;

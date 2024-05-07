@@ -36,7 +36,10 @@ defineExpose({
 </script>
 
 <template>
-  <component-box class="search-result-list" :loading="SearchStore.loading">
+  <component-box
+    class="search-result-list"
+    :loading="SearchStore.loading"
+    :zIndex="SearchStore.zIndex">
     <template v-if="!SearchStore.isEmpty">
       <ul class="result-list" :class="{ empty: SearchStore.isEmpty }">
         <li

@@ -8,6 +8,7 @@ export default {
 import MapLayout from "@/components/MapLayout/index.vue";
 import MapBox from "@/pages/Map/components/Mapbox/index.vue";
 import SearchBar from "./components/SearchBar/index.vue";
+import ShipInfo from "@/pages/Map/components/ShipInfo/index.vue";
 
 defineOptions({
   name: "MapPage",
@@ -21,6 +22,7 @@ defineOptions({
     </template>
     <template #control>
       <search-bar />
+      <ship-info />
     </template>
   </map-layout>
 </template>

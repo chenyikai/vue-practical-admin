@@ -11,8 +11,9 @@ import ComponentBox from "@/pages/Map/ComponentBox.vue";
 import SearchInput from "./SearchInput.vue";
 import ResultList from "./ResultList.vue";
 import { validatenull } from "@/utils/validate.js";
-import { searchStore } from "@/store";
+import { searchStore, shipInfoStore } from "@/store";
 const SearchStore = searchStore();
+const ShipInfoStore = shipInfoStore();
 
 defineOptions({
   name: "SearchBar",
@@ -41,7 +42,7 @@ const onSearch = debounce(
 
 function onNodeClick(node) {
   SearchStore.hide();
-  console.log(node, "node");
+  ShipInfoStore.show(node.mmsi);
 }
 </script>
 

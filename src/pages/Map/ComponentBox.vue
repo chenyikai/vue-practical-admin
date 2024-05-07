@@ -14,11 +14,15 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  zIndex: {
+    type: Number,
+    default: 2000,
+  },
 });
 </script>
 
 <template>
-  <section class="component-box">
+  <section class="component-box" :style="{ zIndex }">
     <main
       class="component-box-main"
       v-loading="loading"
