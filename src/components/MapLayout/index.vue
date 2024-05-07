@@ -20,7 +20,7 @@ defineProps({
   },
 });
 
-const title = ref({});
+const titleRef = ref({});
 const titleLayout = ref({});
 const decorationCount = ref(0);
 const nowDate = ref("");
@@ -51,7 +51,7 @@ onBeforeUnmount(() => {
 
 onMounted(() => {
   decorationCount.value = Math.round(
-    (titleLayout.value.offsetWidth - title.value.offsetWidth - 26 - 70) / 28,
+    (titleLayout.value.offsetWidth - titleRef.value.offsetWidth - 26 - 70) / 28,
   );
 });
 </script>
@@ -74,7 +74,7 @@ onMounted(() => {
             class="decoration"
             src="@/assets/images/map/title-decoration-left.png"
             alt="" />
-          <h1 ref="title" class="title">浙江某某船务有限公司</h1>
+          <h1 ref="titleRef" class="title">浙江某某船务有限公司</h1>
           <img
             v-for="item in decorationCount"
             :key="item"
@@ -90,7 +90,10 @@ onMounted(() => {
     <main class="map-page-container-main">
       <span class="rounded-border" v-for="item in 4" :key="item"></span>
       <div class="map-container">
-        <slot></slot>
+        <slot name="map"></slot>
+        <div class="control-container">
+          <slot name="control"></slot>
+        </div>
       </div>
     </main>
     <footer class="map-page-container-footer">
@@ -215,19 +218,30 @@ onMounted(() => {
     position: relative;
     width: 100%;
     height: calc(100% - 92px);
-    margin-top: 92px;
+    margin: {
+      top: 92px;
+    }
     padding: {
       top: 0;
       left: 15px;
       right: 15px;
       bottom: 0;
     }
-    border-bottom: none;
     .map-container {
+      position: relative;
       width: 100%;
       height: 100%;
       border: 1px solid #0cc6f5;
+      padding: 2px;
       overflow: hidden;
+      .control-container {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+      }
     }
     @include rounded-border();
   }

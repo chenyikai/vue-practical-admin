@@ -42,3 +42,10 @@
     background-color: var(--theme-menu-hover-bg);
   }
 }
+
+.el-loading-mask {
+  border-radius: 6px;
+  .el-loading-text {
+    color: #fff !important;
+  }
+}

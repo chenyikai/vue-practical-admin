@@ -1,0 +1,102 @@
+<script>
+export default {
+  name: "ResultList",
+};
+</script>
+
+<script setup>
+import { ref, onUnmounted } from "vue";
+import ComponentBox from "@/pages/Map/ComponentBox.vue";
+import { getShipByKeyword } from "@/api/map/search.js";
+
+defineOptions({
+  name: "ResultList",
+});
+
+const emits = defineEmits(["node-click"]);
+
+const baseHeight = ref("500px");
+const resultList = ref([]);
+const loading = ref(false);
+
+function getList(keyword) {
+  loading.value = true;
+  getShipByKeyword({
+    keyword,
+    page: 1,
+    pageSize: 20,
+  })
+    .then(({ data }) => {
+      resultList.value = data.data.data;
+    })
+    .finally(() => {
+      loading.value = false;
+    });
+}
+
+function onClick(val) {
+  emits("node-click", val);
+}
+
+onUnmounted(() => {
+  resultList.value = [];
+  loading.value = false;
+});
+
+defineExpose({
+  search: getList,
+});
+</script>
+
+<template>
+  <component-box class="search-result-list" :loading="loading">
+    <template v-if="resultList.length > 0">
+      <ul class="result-list" :class="{ empty: resultList.length === 0 }">
+        <li
+          class="result"
+          v-for="item in resultList"
+          :key="item.mmsi"
+          @click.stop="onClick(item)">
+          <span class="label">{{
+            `船名：${item.cnname || item.enname || item.mmsi}`
+          }}</span>
+          <span class="mmsi">{{ `MMSI：${item.mmsi}` }}</span>
+        </li>
+      </ul>
+    </template>
+    <el-empty v-else description="暂无结果" />
+  </component-box>
+</template>
+
+<style scoped lang="scss">
+.search-result-list {
+  position: absolute;
+  top: 65px;
+  right: 12px;
+  width: 340px;
+  .result-list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-height: v-bind(baseHeight);
+    overflow: auto;
+    padding: 5px;
+    &.empty {
+      height: v-bind(baseHeight);
+    }
+    .result {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      height: 30px;
+      flex-shrink: 0;
+      padding: 0 5px;
+      cursor: pointer;
+      &:hover {
+        background-color: rgba($color: #ffffff, $alpha: 0.2);
+      }
+    }
+  }
+}
+</style>
