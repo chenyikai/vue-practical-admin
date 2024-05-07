@@ -212,9 +212,9 @@ onMounted(() => {
           > div {
             width: 14px;
             height: 17px;
-            background-size: 100% 100%;
             background: url(@/assets/images/map/title-decoration-left.png)
               no-repeat;
+            background-size: 100% 100%;
           }
         }
         .right-arrow {

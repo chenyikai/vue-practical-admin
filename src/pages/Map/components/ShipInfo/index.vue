@@ -27,22 +27,13 @@ const detailTypeList = [
     label: "AIS信息",
     component: "AisInfoComponent",
   },
-  {
-    id: 3,
-    label: "每日油耗",
-    component: "DailyOilComponent",
-  },
-  {
-    id: 4,
-    label: "气象信息",
-    component: "MeteorologicalInfoComponent",
-  },
 ];
 
-const translateX = computed(
-  () =>
-    `translateX(${detailTypeList.findIndex((t) => t.id === activeStep.value) * 80 + 12}px)`,
-);
+const translateX = computed(() => {
+  const width =
+    detailTypeList.findIndex((t) => t.id === activeStep.value) * 80 + 12;
+  return `translateX(${width * (window.innerWidth / 1920)}px)`;
+});
 
 function onChange(val) {
   activeStep.value = val.id;
@@ -123,7 +114,6 @@ function onChange(val) {
       width: 100%;
       height: 32px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
       color: #fff;
       font-size: 14px;
