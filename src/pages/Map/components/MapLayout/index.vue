@@ -5,15 +5,15 @@ export default {
 </script>
 
 <script setup>
-import { ref, onMounted, onBeforeMount, onBeforeUnmount } from "vue";
+import { ref, onMounted, onBeforeMount, onBeforeUnmount, computed } from "vue";
 import moment from "moment";
-import UserInfo from "@/components/UserInfo/index.vue";
+import UserInfo from "../UserInfo/index.vue";
 
 defineOptions({
   name: "MapLayout",
 });
 
-defineProps({
+const props = defineProps({
   title: {
     type: String,
     default: "浙江某某船务有限公司",
@@ -23,7 +23,6 @@ defineProps({
 const titleRef = ref({});
 const headerRef = ref({});
 const titleLayout = ref({});
-const decorationCount = ref(0);
 const nowDate = ref("");
 const nowTime = ref("");
 const weekArr = [
@@ -35,6 +34,7 @@ const weekArr = [
   "星期五",
   "星期六",
 ];
+const arrowLength = computed(() => 16 - props.title.length);
 let timer = null;
 
 onBeforeMount(() => {
@@ -51,9 +51,6 @@ onBeforeUnmount(() => {
 });
 
 onMounted(() => {
-  decorationCount.value = Math.round(
-    (titleLayout.value.offsetWidth - titleRef.value.offsetWidth - 26 - 70) / 28,
-  );
   setTimeout(() => {
     const height = headerRef.value.offsetHeight;
     const root = document.documentElement;
@@ -74,19 +71,13 @@ onMounted(() => {
           </div>
         </div>
         <div class="title-layout" ref="titleLayout">
-          <img
-            v-for="item in decorationCount"
-            :key="item"
-            class="decoration"
-            src="@/assets/images/map/title-decoration-left.png"
-            alt="" />
-          <h1 ref="titleRef" class="title">浙江某某船务有限公司</h1>
-          <img
-            v-for="item in decorationCount"
-            :key="item"
-            class="decoration"
-            src="@/assets/images/map/title-decoration-right.png"
-            alt="" />
+          <div class="left-arrow">
+            <div v-for="item in arrowLength" :key="item"></div>
+          </div>
+          <h1 ref="titleRef" class="title">{{ title }}</h1>
+          <div class="right-arrow">
+            <div v-for="item in arrowLength" :key="item"></div>
+          </div>
         </div>
         <div class="right-layout">
           <user-info />
@@ -200,6 +191,7 @@ onMounted(() => {
         justify-content: center;
         align-items: center;
         width: 29%;
+        overflow: hidden;
         .title {
           width: max-content;
           background-image: linear-gradient(180deg, #8dd5ff 0%, #ffffff 100%);
@@ -209,13 +201,34 @@ onMounted(() => {
           font-size: 28px;
           letter-spacing: 2px;
           line-height: 1;
+          white-space: nowrap;
           -webkit-background-clip: text;
         }
-        .decoration {
+        .left-arrow {
           position: relative;
           top: 3px;
-          width: 14px;
-          height: 16px;
+          display: flex;
+          align-items: center;
+          > div {
+            width: 14px;
+            height: 17px;
+            background-size: 100% 100%;
+            background: url(@/assets/images/map/title-decoration-left.png)
+              no-repeat;
+          }
+        }
+        .right-arrow {
+          position: relative;
+          top: 3px;
+          display: flex;
+          align-items: center;
+          > div {
+            width: 14px;
+            height: 17px;
+            background: url(@/assets/images/map/title-decoration-right.png)
+              no-repeat;
+            background-size: 100% 100%;
+          }
         }
       }
     }

@@ -25,6 +25,16 @@ export default [
     },
   },
   {
+    path: "/test",
+    name: "测试",
+    component: () => import(/* webpackChunkName: "map" */ "@/mobile/index.vue"),
+    meta: {
+      keepAlive: true,
+      isTab: false,
+      isAuth: true,
+    },
+  },
+  {
     path: "/",
     redirect: { path: website.indexPage },
   },

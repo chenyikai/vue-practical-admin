@@ -56,7 +56,7 @@ function onNodeClick(node) {
     @node-click="onNodeClick" />
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 .search-bar-control {
   position: absolute;
   top: 12px;

@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup>
-import MapLayout from "@/components/MapLayout/index.vue";
+import MapLayout from "@/pages/Map/components/MapLayout/index.vue";
 import MapBox from "@/pages/Map/components/Mapbox/index.vue";
 import SearchBar from "./components/SearchBar/index.vue";
 import ShipInfo from "@/pages/Map/components/ShipInfo/index.vue";
