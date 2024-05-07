@@ -21,6 +21,7 @@ defineProps({
 });
 
 const titleRef = ref({});
+const headerRef = ref({});
 const titleLayout = ref({});
 const decorationCount = ref(0);
 const nowDate = ref("");
@@ -53,12 +54,17 @@ onMounted(() => {
   decorationCount.value = Math.round(
     (titleLayout.value.offsetWidth - titleRef.value.offsetWidth - 26 - 70) / 28,
   );
+  setTimeout(() => {
+    const height = headerRef.value.offsetHeight;
+    const root = document.documentElement;
+    root.style.setProperty("--header-height", height + "px");
+  }, 0);
 });
 </script>
 
 <template>
   <section class="map-page-container">
-    <header class="map-page-container-header">
+    <header ref="headerRef" class="map-page-container-header">
       <img src="@/assets/images/map/map-header.png" alt="" />
       <div class="header-box">
         <div class="left-layout">
@@ -217,9 +223,9 @@ onMounted(() => {
   &-main {
     position: relative;
     width: 100%;
-    height: calc(100% - 92px);
+    height: calc(100% - var(--header-height));
     margin: {
-      top: 92px;
+      top: var(--header-height);
     }
     padding: {
       top: 0;

@@ -20,6 +20,8 @@ function initMap() {
   };
   Mapbox.init(options, (data) => {
     addSwitch(data);
+
+    Mapbox.getMap().resize();
   });
 }
 

@@ -23,7 +23,7 @@ defineOptions({
       <header class="ship-info-container-header">
         <div class="title-layout">
           <span class="ship-name">{{
-            `${ShipInfoStore.shipData.cnname || "暂无中文船名"} - ${ShipInfoStore.shipData.enname || "暂无英文船名"}`
+            `${ShipInfoStore.shipData.cnname || ShipInfoStore.shipData.enname || ShipInfoStore.shipData.mmsi || "暂无数据"}`
           }}</span>
         </div>
         <div class="func-layout"></div>
@@ -47,7 +47,7 @@ defineOptions({
       display: flex;
       flex-direction: column;
       width: 100%;
-      height: 50px;
+      //height: 50px;
       border-bottom: 1px solid;
       padding: 7px 13px 0;
       border-image: linear-gradient(
