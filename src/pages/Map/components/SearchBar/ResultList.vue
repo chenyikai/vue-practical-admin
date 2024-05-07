@@ -7,7 +7,8 @@ export default {
 <script setup>
 import { ref, onUnmounted } from "vue";
 import ComponentBox from "@/pages/Map/ComponentBox.vue";
-import { getShipByKeyword } from "@/api/map/search.js";
+import { searchStore } from "@/store";
+const SearchStore = searchStore();
 
 defineOptions({
   name: "ResultList",
@@ -16,22 +17,9 @@ defineOptions({
 const emits = defineEmits(["node-click"]);
 
 const baseHeight = ref("500px");
-const resultList = ref([]);
-const loading = ref(false);
 
 function getList(keyword) {
-  loading.value = true;
-  getShipByKeyword({
-    keyword,
-    page: 1,
-    pageSize: 20,
-  })
-    .then(({ data }) => {
-      resultList.value = data.data.data;
-    })
-    .finally(() => {
-      loading.value = false;
-    });
+  SearchStore.search(keyword);
 }
 
 function onClick(val) {
@@ -39,8 +27,7 @@ function onClick(val) {
 }
 
 onUnmounted(() => {
-  resultList.value = [];
-  loading.value = false;
+  SearchStore.hide();
 });
 
 defineExpose({
@@ -49,12 +36,12 @@ defineExpose({
 </script>
 
 <template>
-  <component-box class="search-result-list" :loading="loading">
-    <template v-if="resultList.length > 0">
-      <ul class="result-list" :class="{ empty: resultList.length === 0 }">
+  <component-box class="search-result-list" :loading="SearchStore.loading">
+    <template v-if="!SearchStore.isEmpty">
+      <ul class="result-list" :class="{ empty: SearchStore.isEmpty }">
         <li
           class="result"
-          v-for="item in resultList"
+          v-for="item in SearchStore.results"
           :key="item.mmsi"
           @click.stop="onClick(item)">
           <span class="label">{{

@@ -11,21 +11,26 @@ import ComponentBox from "@/pages/Map/ComponentBox.vue";
 import SearchInput from "./SearchInput.vue";
 import ResultList from "./ResultList.vue";
 import { validatenull } from "@/utils/validate.js";
+import { searchStore } from "@/store";
+const SearchStore = searchStore();
 
 defineOptions({
   name: "SearchBar",
 });
 
 const keyword = ref("");
-const isSearch = ref(false);
 const list = ref({});
 
 const onSearch = debounce(
   function () {
-    isSearch.value = !validatenull(keyword.value);
-    nextTick().then(() => {
-      isSearch.value && list.value.search(keyword.value);
-    });
+    if (validatenull(keyword.value)) {
+      SearchStore.hide();
+    } else {
+      SearchStore.show();
+      nextTick().then(() => {
+        list.value.search(keyword.value);
+      });
+    }
   },
   300,
   {
@@ -35,7 +40,7 @@ const onSearch = debounce(
 );
 
 function onNodeClick(node) {
-  isSearch.value = false;
+  SearchStore.hide();
   console.log(node, "node");
 }
 </script>
@@ -44,7 +49,10 @@ function onNodeClick(node) {
   <component-box class="search-bar-control">
     <search-input v-model="keyword" @search="onSearch" />
   </component-box>
-  <result-list v-if="isSearch" ref="list" @node-click="onNodeClick" />
+  <result-list
+    v-if="SearchStore.visible"
+    ref="list"
+    @node-click="onNodeClick" />
 </template>
 
 <style scoped lang="scss">
