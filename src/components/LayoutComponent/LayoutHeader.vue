@@ -5,6 +5,7 @@ import website from "@/config/website.js";
 import ThemeButton from "@/components/ThemeButton/index.vue";
 import NotificationCenter from "@/components/NotificationCenter/index.vue";
 import FullScreen from "@/components/FullScreen/index.vue";
+import MonitorButton from "@/components/MonitorButton/index.vue";
 const router = useRouter();
 defineOptions({
   name: "LayoutHeader",
@@ -26,6 +27,7 @@ function handleGo2Index() {
       <span class="system-title">{{ website.title }}</span>
     </div>
     <div class="right-layout">
+      <monitor-button />
       <notification-center />
       <full-screen />
       <theme-button />

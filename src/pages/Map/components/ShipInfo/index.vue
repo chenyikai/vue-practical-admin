@@ -45,6 +45,7 @@ function onChange(val) {
     class="ship-info-control"
     v-draggable:ship-info-container-header
     v-if="ShipInfoStore.visible"
+    :loading="ShipInfoStore.loading"
     :zIndex="ShipInfoStore.zIndex">
     <section class="ship-info-container">
       <header class="ship-info-container-header">
@@ -84,7 +85,7 @@ function onChange(val) {
   width: 340px;
   .ship-info-container {
     width: 100%;
-    padding: 5px 0;
+    padding: 5px 0 0;
     &-header {
       display: flex;
       justify-content: space-between;
@@ -163,7 +164,9 @@ function onChange(val) {
       align-items: center;
       width: 100%;
       height: 52px;
+      border-radius: 0 0 6px 6px;
       background-color: rgba($color: #191929, $alpha: 0.8);
+      overflow: hidden;
       &-item {
         display: flex;
         flex-direction: column;

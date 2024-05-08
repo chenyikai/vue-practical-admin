@@ -71,6 +71,7 @@ defineExpose({
     max-height: v-bind(baseHeight);
     overflow: auto;
     padding: 5px;
+    font-size: 14px;
     &.empty {
       height: v-bind(baseHeight);
     }
