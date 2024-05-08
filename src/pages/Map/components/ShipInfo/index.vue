@@ -69,7 +69,9 @@ function onChange(val) {
         <div class="slider-tab" :style="{ transform: translateX }" />
       </nav>
       <main class="ship-info-container-main"></main>
-      <footer class="ship-info-container-footer"></footer>
+      <footer class="ship-info-container-footer">
+        <div class="ship-info-container-footer-item"></div>
+      </footer>
     </section>
   </component-box>
 </template>
@@ -82,14 +84,14 @@ function onChange(val) {
   width: 340px;
   .ship-info-container {
     width: 100%;
-    padding: 5px;
+    padding: 5px 0;
     &-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       width: 100%;
       height: 30px;
-      padding: 0 13px;
+      padding: 0 10px;
       border-bottom: 1px solid;
       border-image: linear-gradient(
           90deg,
@@ -116,7 +118,7 @@ function onChange(val) {
       display: flex;
       align-items: center;
       color: #fff;
-      font-size: 14px;
+      font-size: 12px;
       border-bottom: 1px solid;
       border-image: linear-gradient(
           90deg,
@@ -137,7 +139,7 @@ function onChange(val) {
         position: absolute;
         bottom: 0;
         width: 56px;
-        height: 5px;
+        height: 4px;
         background: linear-gradient(90deg, #5887d4 0%, #65cbe4 100%);
         z-index: 1;
         transition: transform 0.5s;
@@ -162,6 +164,29 @@ function onChange(val) {
       width: 100%;
       height: 52px;
       background-color: rgba($color: #191929, $alpha: 0.8);
+      &-item {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 25%;
+        height: 100%;
+        color: #fff;
+        cursor: pointer;
+        &.cur {
+          background-color: #4f576a;
+        }
+        &:hover {
+          background-color: #4f576a;
+        }
+        .icon {
+          font-size: 18px;
+          margin-bottom: 4px;
+        }
+        .label {
+          font-size: 12px;
+        }
+      }
     }
   }
 }

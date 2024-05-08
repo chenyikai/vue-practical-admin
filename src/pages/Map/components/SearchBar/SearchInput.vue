@@ -50,7 +50,7 @@ function onSearch() {
     padding-right: 5px;
     .el-input__inner {
       height: 100%;
-      font-size: 12px;
+      font-size: 14px;
     }
   }
 
