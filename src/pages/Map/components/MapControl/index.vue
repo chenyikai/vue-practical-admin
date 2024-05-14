@@ -6,7 +6,7 @@ export default {
 
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
-import Mapbox from "plugins/composition/mapbox.js";
+import { Mapbox } from "plugins";
 import { formatLatitudeAndLongitude } from "@/utils/util.js";
 defineOptions({
   name: "MapControl",

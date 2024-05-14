@@ -15,7 +15,11 @@ export default defineConfig(({ mode }) => {
   return {
     // publicDir: env.VITE_API_PREFIX,
     plugins: [
-      vue(),
+      vue({
+        script: {
+          defineModel: true,
+        },
+      }),
       vueJsx({}),
       TurboConsole(),
       viteCompression({
@@ -51,7 +55,7 @@ export default defineConfig(({ mode }) => {
             mediaQuery: false, // (Boolean) 媒体查询里的单位是否需要转换单位
             replace: true, // (Boolean) 是否直接更换属性值，而不添加备用属性
             exclude: null, // (Array or Regexp) 忽略某些文件夹下的文件或特定文件，例如 'node_modules' 下的文件
-            include: /\/src\/pages\/Map\//,
+            include: [/\/src\/pages\/Map\//, /\/src\/viewport\//],
             landscape: false,
             landscapeUnit: "vw",
             landscapeWidth: 568,

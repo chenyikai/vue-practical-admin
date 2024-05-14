@@ -1,6 +1,6 @@
 import LonLatBox from "../components/LonLatBox";
 import { polygon, centerOfMass, bbox } from "@turf/turf";
-import MapboxDraw, { MapboxDrawClass } from "./mapbox-draw";
+import MapboxDraw, { MapboxDrawClass } from "./Draw/mapbox-draw.js";
 import EventEmitter from "eventemitter3";
 import Mapbox from "@/plugins/composition/mapbox";
 

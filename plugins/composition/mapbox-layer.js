@@ -1,11 +1,6 @@
-import EventEmitter from "eventemitter3";
-import { point, polygon, feature } from "@turf/turf";
-import { kvToJson } from "@/util/util";
-import { parse } from "wellknown";
-import { validatenull } from "@/util/validate";
-import MapboxDraw, { MapboxDrawClass } from "@/plugins/composition/mapbox-draw";
+import MapboxDraw from "./Draw/mapbox-draw.js";
 
-class MapboxLayer extends EventEmitter {
+class MapboxLayer extends MapboxDraw {
   map = null;
   ehhGis = null;
 
@@ -73,7 +68,7 @@ class MapboxLayer extends EventEmitter {
 
   isLayer(type) {
     return [MapboxLayer.Port, MapboxLayer.Warn, MapboxLayer.Anchorage].includes(
-      type
+      type,
     );
   }
 
@@ -83,68 +78,6 @@ class MapboxLayer extends EventEmitter {
 
   _removeEvents() {
     MapboxDraw.off("graphical_click", this.clickFunc);
-  }
-
-  handlePort(data) {
-    return data.map((item) => {
-      const _point = point([item.coordX, item.coordY], {
-        ...MapboxLayer.POINT_STYLE,
-        "graphical-type": MapboxLayer.Port,
-        "icon-image": "port",
-        ...item,
-      });
-      return {
-        id: item.id,
-        ..._point,
-      };
-    });
-  }
-
-  handleAnchorage(data) {
-    return data.map((item) => {
-      const lonLat = item.path.split("|").map((ele) => {
-        const [lon, lat] = ele.split(",");
-        return [Number(lon), Number(lat)];
-      });
-      const _polygon = polygon([[...lonLat, lonLat[0]]], {
-        ...MapboxLayer.POINT_STYLE,
-        ...item,
-      });
-      return {
-        id: item.id,
-        ..._polygon,
-      };
-    });
-  }
-
-  handleNav({ k, v }) {
-    const data = kvToJson(k, v);
-    return data
-      .map((item) => {
-        if (item.geom) {
-          let properties = {};
-          const geom = parse(item.geom);
-          if (geom["type"] === MapboxDrawClass.POINT) {
-            properties = MapboxLayer.POINT_STYLE;
-          } else if (geom["type"] === MapboxDrawClass.LINE) {
-            properties = MapboxLayer.LINE_STYLE;
-          } else if (geom["type"] === MapboxDrawClass.POLYGON) {
-            properties = MapboxLayer.POLYGON_STYLE;
-          }
-
-          const _feature = feature(geom, {
-            ...properties,
-            "graphical-type": MapboxLayer.Warn,
-            name: item.title,
-          });
-          return {
-            id: item.id,
-            ..._feature,
-          };
-        }
-      })
-      .filter((item) => !validatenull(item))
-      .flat();
   }
 
   render(val) {
@@ -160,5 +93,4 @@ class MapboxLayer extends EventEmitter {
   }
 }
 
-export default new MapboxLayer();
-export { MapboxLayer as MapboxLayerClass };
+export default MapboxLayer;

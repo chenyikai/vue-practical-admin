@@ -1,34 +1,26 @@
 import { set } from "lodash";
-import { validatenull } from "@/util/validate";
+import Store from "./store";
 
 class Callback {
   static CLICK = "click";
-
-  static instance = null;
+  static MOUSE_MOVE = "mousemove";
 
   eventList = {};
   openFn = [];
 
-  constructor(map) {
-    this.map = map;
+  constructor() {
     this.clickFn = this._click.bind(this);
+    this.mouseMoveFn = this._mouseMove.bind(this);
 
     this.init();
   }
 
-  static getInstance(map) {
-    if (validatenull(Callback.instance)) {
-      Callback.instance = new Callback(map);
-    }
-    return Callback.instance;
-  }
-
   init() {
-    this.map.on(Callback.CLICK, this.clickFn);
+    Store.getMap().on(Callback.CLICK, this.clickFn);
   }
 
   destroy() {
-    this.map.off(Callback.CLICK, this.clickFn);
+    Store.getMap().off(Callback.CLICK, this.clickFn);
   }
 
   addEventListener(event, id, fn) {
@@ -57,11 +49,23 @@ class Callback {
   }
 
   _click() {
-    if (this.openFn.map(({ event }) => event).includes(Callback.CLICK)) return;
+    this.trigger(Callback.CLICK);
+  }
+
+  _mouseMove() {
+    this.trigger(Callback.MOUSE_MOVE);
+  }
+
+  isTrigger(name) {
+    return this.openFn.map(({ event }) => event).includes(name);
+  }
+
+  trigger(name) {
+    if (!this.isTrigger(name)) return;
 
     this.openFn.forEach((id) => {
       const { event, fn } = this.eventList[id];
-      event === Callback.CLICK && fn();
+      event === name && fn();
     });
   }
 }

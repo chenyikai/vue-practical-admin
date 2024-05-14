@@ -5,11 +5,9 @@ export default {
 </script>
 
 <script setup>
-import { cloneDeep } from "lodash";
-import { baseMap } from "plugins/mapConfig.js";
 import { ref, onMounted } from "vue";
-import Mapbox from "plugins/composition/mapbox.js";
-import MapboxSwitch from "plugins/composition/mapbox-switch.js";
+import init, { Mapbox } from "plugins/index.js";
+import Plot from "plugins/composition/Plot";
 
 const map = ref({});
 const loading = ref(false);
@@ -18,17 +16,11 @@ function initMap() {
   const options = {
     container: "map",
   };
-  Mapbox.init(options, (data) => {
-    addSwitch(data);
-
+  init(options, () => {
     Mapbox.getMap().resize();
-  });
-}
 
-function addSwitch({ map, ehhGis }) {
-  MapboxSwitch.setData({
-    map,
-    mapSwitch: new ehhGis.MapLayerSwitch(map, cloneDeep(baseMap)),
+    const plot = new Plot({ map: Mapbox.getMap() });
+    plot.start(Plot.DRAW_POINT, {});
   });
 }
 

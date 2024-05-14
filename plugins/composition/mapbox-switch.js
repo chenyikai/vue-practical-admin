@@ -14,4 +14,4 @@ class MapboxSwitch extends EventEmitter {
   }
 }
 
-export default new MapboxSwitch();
+export default MapboxSwitch;

@@ -1,10 +1,17 @@
 import EventEmitter from "eventemitter3";
 import { set } from "lodash";
-import { validatenull } from "@/util/validate";
+import { validatenull } from "@/utils/validate.js";
 import { area, featureCollection } from "@turf/turf";
 
 class MapboxDraw extends EventEmitter {
+  /**
+   * @type { mapboxgl.Map }
+   */
   map = null;
+  /**
+   *
+   * @type {MapboxGlDraw}
+   */
   draw = null;
   ehhGis = null;
   graphicalData = {};
@@ -30,7 +37,9 @@ class MapboxDraw extends EventEmitter {
   static DRAW_POLYGON = "draw_polygon";
   static DRAW_SECTOR = "draw_sector";
 
-  setData({ map, draw, ehhGis }) {
+  constructor({ map, draw, ehhGis }) {
+    super();
+
     this.map = map;
     this.draw = draw;
     this.ehhGis = ehhGis;
@@ -197,6 +206,4 @@ class MapboxDraw extends EventEmitter {
   }
 }
 
-export default new MapboxDraw();
-
-export { MapboxDraw as MapboxDrawClass };
+export default MapboxDraw;

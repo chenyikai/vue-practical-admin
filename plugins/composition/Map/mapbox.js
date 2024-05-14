@@ -1,15 +1,25 @@
 import EventEmitter from "eventemitter3";
 import { cloneDeep } from "lodash";
-import { mapConfig } from "plugins/mapConfig";
+import { mapConfig } from "plugins/mapConfig.js";
 
 class Mapbox extends EventEmitter {
+  /**
+   * @type { mapboxgl.Map }
+   */
   map = null;
   ehhGis = new window.EhhGis();
   mapTimer = null;
   center = [122.106863, 30.216028];
   zoom = 9;
 
-  init(options, callback) {
+  /**
+   * 地图操作对象构造器
+   * @constructor
+   * @param options { MapboxOptions }
+   * @callback cb
+   */
+  constructor(options, cb) {
+    super();
     window.map = this.map = new this.ehhGis.Map({
       center: this.center,
       zoom: this.zoom,
@@ -18,11 +28,7 @@ class Mapbox extends EventEmitter {
     });
 
     this.map.on("load", () => {
-      callback &&
-        callback({
-          map: this.map,
-          ehhGis: this.ehhGis,
-        });
+      cb && cb(this.getInstances());
     });
   }
 
@@ -91,6 +97,12 @@ class Mapbox extends EventEmitter {
     });
   }
 
+  /**
+   *
+   * @param { Array | Object } data
+   * @param { String } data.source
+   * @param { Array } data.features
+   */
   setSource(data) {
     if (Array.isArray(data)) {
       data.forEach(({ source, features }) => {
@@ -151,4 +163,4 @@ class Mapbox extends EventEmitter {
   }
 }
 
-export default new Mapbox();
+export default Mapbox;
