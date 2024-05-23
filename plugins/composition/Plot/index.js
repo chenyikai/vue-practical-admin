@@ -1,7 +1,7 @@
 import * as vars from "./config/vars.js";
 import Store from "./store";
 import * as styles from "./config/styles.js";
-import Point from "plugins/composition/Plot/modes/Point.js";
+import Point from "./modes/Point.js";
 
 class Plot {
   static POINT = "Point";
@@ -10,6 +10,7 @@ class Plot {
 
   static SIMPLE_SELECT = "simple_select";
   static DIRECT_SELECT = "direct_select";
+
   static DRAW_POINT = "draw_point";
   static DRAW_CUSTOM_POINT = "draw_custom_point";
   static DRAW_TEXT = "draw_text";
@@ -22,7 +23,6 @@ class Plot {
 
   constructor(options) {
     Store.setData(options.map);
-
     Store.loaded().then(() => {
       this._init();
     });
@@ -33,17 +33,17 @@ class Plot {
    * @param {string} mode 模式
    * @param {object}options
    */
-  start(mode, options) {
+  changeMode(mode, options) {
     console.log(mode, options, "mode, options");
     const point = new Point();
-    point.start();
+    point.begin();
   }
 
   /**
    * 删除
    */
   delete() {
-    this.map.fire(vars.DELETE);
+    Store.getMap().fire(vars.DELETE);
   }
 
   /**
@@ -60,14 +60,14 @@ class Plot {
    * 选择
    */
   select() {
-    this.map.fire(vars.SELECTION_CHANGE);
+    Store.getMap().fire(vars.SELECTION_CHANGE);
   }
 
   /**
    * 渲染
    */
   render() {
-    this.map.fire(vars.RENDER);
+    Store.getMap().fire(vars.RENDER);
   }
 
   /**

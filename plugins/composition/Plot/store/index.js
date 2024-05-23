@@ -1,6 +1,8 @@
 import EventEmitter from "eventemitter3";
 import { featureCollection } from "@turf/turf";
 import * as styles from "../config/styles.js";
+import * as vars from "../config/vars.js";
+import { set } from "lodash";
 
 let mapTimer = null;
 
@@ -9,6 +11,12 @@ class Store extends EventEmitter {
    * @type { mapboxgl.Map }
    */
   map = null;
+
+  /**
+   *
+   * @type {null}
+   */
+  point = null;
 
   features = [];
 
@@ -25,7 +33,48 @@ class Store extends EventEmitter {
   }
 
   setFeature(feature) {
-    this.features.push(feature);
+    const i = this.getFeatureIndex(feature.id);
+    if (i === -1) {
+      this.features.push(feature);
+    } else {
+      set(this.features, i, feature);
+    }
+  }
+
+  deleteFeature(feature) {
+    const i = this.getFeatureIndex(feature.id);
+    if (i !== -1) {
+      return this.features.splice(i, 1);
+    }
+  }
+
+  getFeature(id) {
+    return this.feature.find((item) => item.id === id);
+  }
+
+  getFeatureIndex(id) {
+    return this.feature.findIndex((item) => item.id === id);
+  }
+
+  /**
+   *
+   * @param {Feature} feature1
+   * @param {Feature} feature2
+   */
+  isSameFeature(feature1, feature2) {
+    if (feature1.geometry.type !== feature2.geometry.type) return false;
+
+    if (
+      JSON.stringify(feature1.geometry.coordinates) !==
+      JSON.stringify(feature2.geometry.coordinates)
+    ) {
+      return false;
+    }
+
+    for (const key in feature1.properties) {
+      const value1 = feature1[key];
+      const value2 = feature2[key];
+    }
   }
 
   render(type) {
@@ -34,6 +83,8 @@ class Store extends EventEmitter {
       type === styles.COLD ? styles.SOURCES.COLD : styles.SOURCES.HOT;
 
     this.getMap().getSource(source).setData(collection);
+
+    this.getMap().fire(vars.RENDER);
   }
 
   loaded() {

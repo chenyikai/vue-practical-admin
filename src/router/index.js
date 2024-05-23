@@ -125,9 +125,9 @@ export function go2MenuPage(menu) {
   if (menu.children.length !== 0) {
     router.push({
       name: "MenuPage",
-      params: {
-        name: menu["menuName"],
-      },
+      // params: {
+      //   name: menu["menuName"],
+      // },
       query: { id: menu["id"] },
     });
   } else {

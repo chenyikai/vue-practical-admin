@@ -20,7 +20,7 @@ function initMap() {
     Mapbox.getMap().resize();
 
     const plot = new Plot({ map: Mapbox.getMap() });
-    plot.start(Plot.DRAW_POINT, {});
+    plot.changeMode(Plot.DRAW_POINT, {});
   });
 }
 

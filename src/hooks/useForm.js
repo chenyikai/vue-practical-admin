@@ -22,6 +22,8 @@ export default () => {
   const isDetail = computed(
     () => formStatus.value === website.pageStatus.DETAIL,
   );
+  // 是否渲染表单
+  const render = ref(false);
 
   /**
    * 设置数据
@@ -50,6 +52,7 @@ export default () => {
           .value(form.id)
           .then(({ data }) => {
             formData.value = data.data;
+            render.value = true;
             resolve(formData);
           })
           .catch((e) => reject(e))
@@ -109,6 +112,7 @@ export default () => {
     formData,
     formStatus,
     detailFunc,
+    render,
     setData,
     setDisabled,
     setColumnData,
