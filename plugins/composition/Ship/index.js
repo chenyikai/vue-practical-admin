@@ -92,10 +92,15 @@ class MapboxShip extends EventEmitter {
       }
 
       // if (shipData.length > 0) {
+
       this.ship.addShips({
         k: this.keys,
         v: this._unique(this.keys, shipData, "mmsi"),
       });
+
+      // if (this.focusShip) {
+      //   this.ship.setSelectedShip(this.focusShip.mmsi, true);
+      // }
       // }
     });
   }
@@ -131,12 +136,15 @@ class MapboxShip extends EventEmitter {
       return;
     }
 
-    this._addGhost(val);
-    const [lat, lon] = val.location.split(",");
-    this.map.flyTo({
-      center: [lon, lat],
-      zoom,
-    });
+    if (val.location) {
+      this._addGhost(val);
+      this.ship.setSelectedShip(this.focusShip.mmsi, true);
+      const [lat, lon] = val.location.split(",");
+      this.map.flyTo({
+        center: [lon, lat],
+        zoom,
+      });
+    }
   }
 
   _addGreenDot() {
@@ -148,9 +156,9 @@ class MapboxShip extends EventEmitter {
   _addGhost(data) {
     this.focusShip = data;
 
-    const v = [];
+    let v = [];
     this.keys.forEach((key) => {
-      v.push(data[key] || null);
+      v.push(data[this._convertKey(key)] || null);
     });
     set(this.shipData, GHOST_SHIP, [v]);
   }
@@ -165,7 +173,7 @@ class MapboxShip extends EventEmitter {
           shipData.forEach((ship) => {
             let v = [];
             keys.forEach((key) => {
-              v.push(ship[key] || null);
+              v.push(ship[this._convertKey(key)] || null);
             });
             v = [...v, "imageName", OWN_SHIP, "my"];
             vs.push(v);
@@ -301,18 +309,32 @@ class MapboxShip extends EventEmitter {
   }
 
   _keyMap(keys) {
-    const newKeys = keys.map((item) => {
-      if (item === "hdg") return "trueHeadOverGround";
-      if (item === "cog") return "courseOverGround";
-      if (item === "rot") return "rateOfTurn";
-      if (item === "ts0") return "updateTime";
-      if (item === "sog") return "speedOverGround";
-      if (item === "enname") return "enName";
-      if (item === "cnname") return "cnName";
-      return item;
+    const newKeys = keys.map((key) => {
+      return this._convertKey(key);
     });
-
+    // console.log(newKeys);
     return [...newKeys, ...properties];
+  }
+
+  _convertKey(key) {
+    // 新转旧
+    if (key === "hdg") return "trueHeadOverGround";
+    if (key === "cog") return "courseOverGround";
+    if (key === "rot") return "rateOfTurn";
+    // if (key === "ts0") return "updateTime";
+    if (key === "sog") return "speedOverGround";
+    if (key === "enname") return "enName";
+    if (key === "cnname") return "cnName";
+
+    // 旧转新
+    if (key === "trueHeadOverGround") return "hdg";
+    if (key === "courseOverGround") return "cog";
+    if (key === "rateOfTurn") return "rot";
+    // if (key === "updateTime") return "ts0";
+    if (key === "speedOverGround") return "sog";
+    if (key === "enName") return "enname";
+    if (key === "cnName") return "cnname";
+    return key;
   }
 
   _onMoveStart() {

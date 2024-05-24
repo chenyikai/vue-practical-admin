@@ -42,7 +42,7 @@ let mapboxTrackInstance = null;
  * MapboxTrack实例
  * @type {MapboxShip}
  */
-let mapboxShipIntance = null;
+let mapboxShipInstance = null;
 
 function addDraw({ map, ehhGis }) {
   if (mapboxDrawInstance) return;
@@ -79,7 +79,7 @@ function addTrack({ map }) {
 }
 
 function addShip({ map, ehhGis }) {
-  mapboxShipIntance = new MapboxShip({
+  mapboxShipInstance = new MapboxShip({
     map,
     ehhGis,
     ship: new ehhGis.Ship({ map }),
@@ -108,5 +108,5 @@ export {
   mapboxDrawInstance as MapboxDraw,
   mapboxSwitchInstance as MapboxSwitch,
   mapboxTrackInstance as MapboxTrack,
-  mapboxShipIntance as MapboxShip,
+  mapboxShipInstance as MapboxShip,
 };

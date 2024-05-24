@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { popupManageStore } from "@/store";
 import { getShipPoiByMmsi } from "@/api/map/ship.js";
+import { MapboxShip } from "plugins/index.js";
 
 const shipInfoStore = defineStore("shipInfo", {
   state: () => {
@@ -34,7 +35,7 @@ const shipInfoStore = defineStore("shipInfo", {
       getShipPoiByMmsi(mmsi)
         .then(({ data }) => {
           this.shipData = data.data;
-          console.log(this.shipData, "shipData");
+          MapboxShip.setFocus(this.shipData);
         })
         .finally(() => {
           this.loading = false;
