@@ -6,8 +6,9 @@ export default {
 
 <script setup>
 import { ref, onMounted } from "vue";
-import init, { Mapbox } from "plugins/index.js";
-import Plot from "plugins/composition/Plot";
+import init, { Mapbox, MapboxShip } from "plugins/index.js";
+// import { trackData, shipData } from "./data.js";
+// import Plot from "plugins/composition/Plot";
 
 const map = ref({});
 const loading = ref(false);
@@ -17,10 +18,13 @@ function initMap() {
     container: "map",
   };
   init(options, () => {
+    MapboxShip.init();
+
     Mapbox.getMap().resize();
 
-    const plot = new Plot({ map: Mapbox.getMap() });
-    plot.changeMode(Plot.DRAW_POINT, {});
+    // MapboxTrack.trackSetData(trackData, shipData, true);
+    // const plot = new Plot({ map: Mapbox.getMap() });
+    // plot.changeMode(Plot.DRAW_POINT, {});
   });
 }
 

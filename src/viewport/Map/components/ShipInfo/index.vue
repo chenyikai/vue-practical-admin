@@ -7,7 +7,7 @@ export default {
 <script setup>
 import { ref, computed } from "vue";
 import { CircleClose } from "@element-plus/icons-vue";
-import ComponentBox from "@/pages/Map/ComponentBox.vue";
+import ComponentBox from "../../../Map/ComponentBox.vue";
 import { shipInfoStore } from "@/store";
 const ShipInfoStore = shipInfoStore();
 

@@ -2,6 +2,9 @@ import Mapbox from "./composition/Map/mapbox.js";
 import MapboxDraw from "./composition/Draw/mapbox-draw.js";
 import MapboxLayer from "./composition/mapbox-layer.js";
 import MapboxSwitch from "./composition/mapbox-switch.js";
+import MapboxTrack from "./composition/Track/index.js";
+import MapboxShip from "./composition/Ship/index.js";
+import "./composition/Ship/index.scss";
 import { cloneDeep } from "lodash";
 import { baseMap } from "./mapConfig.js";
 
@@ -28,6 +31,18 @@ let mapboxDrawInstance = null;
  * @type {null}
  */
 let mapboxSwitchInstance = null;
+
+/**
+ * MapboxTrack实例
+ * @type {MapboxTrack}
+ */
+let mapboxTrackInstance = null;
+
+/**
+ * MapboxTrack实例
+ * @type {MapboxShip}
+ */
+let mapboxShipIntance = null;
 
 function addDraw({ map, ehhGis }) {
   if (mapboxDrawInstance) return;
@@ -58,6 +73,19 @@ function addSwitch({ map, ehhGis }) {
   mapboxSwitchInstance = new MapboxSwitch(options);
 }
 
+function addTrack({ map }) {
+  mapboxTrackInstance = new MapboxTrack(map);
+  mapboxTrackInstance.init();
+}
+
+function addShip({ map, ehhGis }) {
+  mapboxShipIntance = new MapboxShip({
+    map,
+    ehhGis,
+    ship: new ehhGis.Ship({ map }),
+  });
+}
+
 /**
  *
  * @param options { MapboxOptions }
@@ -66,7 +94,9 @@ function addSwitch({ map, ehhGis }) {
 export default function init(options, callback) {
   mapboxInstance = new Mapbox(options, (params) => {
     addSwitch(params);
-    // addDraw(params);
+    addDraw(params);
+    addTrack(params);
+    addShip(params);
 
     callback && callback();
   });
@@ -77,4 +107,6 @@ export {
   mapboxLayerInstance as MapboxLayer,
   mapboxDrawInstance as MapboxDraw,
   mapboxSwitchInstance as MapboxSwitch,
+  mapboxTrackInstance as MapboxTrack,
+  mapboxShipIntance as MapboxShip,
 };

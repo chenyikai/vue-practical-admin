@@ -5,12 +5,12 @@ export default {
 </script>
 
 <script setup>
-import MapLayout from "@/pages/Map/components/MapLayout/index.vue";
-import MapBox from "@/pages/Map/components/Mapbox/index.vue";
+import MapLayout from "./components/MapLayout/index.vue";
+import MapBox from "./components/Mapbox/index.vue";
 import SearchBar from "./components/SearchBar/index.vue";
-import ShipInfo from "@/pages/Map/components/ShipInfo/index.vue";
-import MapControl from "@/pages/Map/components/MapControl/index.vue";
-import SideBar from "@/pages/Map/components/SideBar/index.vue";
+import ShipInfo from "./components/ShipInfo/index.vue";
+import MapControl from "./components/MapControl/index.vue";
+import SideBar from "./components/SideBar/index.vue";
 
 defineOptions({
   name: "MapPage",

@@ -17,7 +17,7 @@ export default [
     path: "/map",
     name: "监管一张图",
     component: () =>
-      import(/* webpackChunkName: "map" */ "@/pages/Map/index.vue"),
+      import(/* webpackChunkName: "map" */ "@/viewport/Map/index.vue"),
     meta: {
       keepAlive: true,
       isTab: false,

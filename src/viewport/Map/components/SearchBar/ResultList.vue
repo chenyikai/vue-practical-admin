@@ -6,7 +6,7 @@ export default {
 
 <script setup>
 import { ref, onUnmounted } from "vue";
-import ComponentBox from "@/pages/Map/ComponentBox.vue";
+import ComponentBox from "../../ComponentBox.vue";
 import { searchStore } from "@/store";
 const SearchStore = searchStore();
 

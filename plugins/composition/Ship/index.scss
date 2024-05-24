@@ -1,0 +1,84 @@
+@function getShipPopupColor($alpha) {
+  //@return rgba($color: #2B2C39, $alpha: $alpha)
+  @return rgba($color: #2B2C39, $alpha: $alpha)
+}
+
+.ship-popup {
+  border-radius: 5px;
+  &.mapboxgl-popup-anchor-top {
+    .mapboxgl-popup-tip {
+      border-bottom-color: getShipPopupColor(0.5) !important;
+    }
+  }
+
+  &.mapboxgl-popup-anchor-bottom {
+    .mapboxgl-popup-tip {
+      border-top-color: getShipPopupColor(0.5) !important;
+    }
+  }
+
+  &.mapboxgl-popup-anchor-left {
+    .mapboxgl-popup-tip {
+      border-right-color: getShipPopupColor(0.5) !important;
+    }
+  }
+
+  &.mapboxgl-popup-anchor-right {
+    .mapboxgl-popup-tip {
+      border-left-color: getShipPopupColor(0.5) !important;
+    }
+  }
+
+  .mapboxgl-popup-content {
+    background-color: getShipPopupColor(0.5) !important;
+    padding: 5px !important;
+    border-radius: 5px;
+
+    .mapboxgl-popup-close-button {
+      //display: flex;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      top: -5px;
+      right: -5px;
+      background-color: getShipPopupColor(0.5) !important;
+      padding: 0;
+      font-size: 16px;
+      color: #fff;
+    }
+
+    .ship-form {
+      background-color: getShipPopupColor(0.8) !important;
+      color: #fff;
+      font-size: 12px;
+      border-radius: 10px;
+      padding: 0 10px;
+
+      &-item {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        line-height: 30px;
+        border-bottom: 1px dashed #ececec;
+
+        &:last-child {
+          border: 0;
+        }
+
+        .ship-label {
+          width: 6em;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+
+        .ship-value {
+          margin-left: 4px;
+        }
+      }
+    }
+  }
+}

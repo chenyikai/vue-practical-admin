@@ -5,7 +5,7 @@ import { getShipPoiByMmsi } from "@/api/map/ship.js";
 const shipInfoStore = defineStore("shipInfo", {
   state: () => {
     return {
-      visible: true,
+      visible: false,
       loading: false,
       zIndex: 0,
       shipData: {},

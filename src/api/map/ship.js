@@ -7,3 +7,26 @@ export function getShipPoiByMmsi(mmsi) {
     data: { mmsi },
   });
 }
+
+export function getGreenDot(data) {
+  return request({
+    url: "/rest/ehhship/getGreenPoiByRange",
+    method: "post",
+    data,
+  });
+}
+
+export function getInternalShip() {
+  return request({
+    url: "/rest/onemap/getNbShipDataListNew",
+    method: "post",
+  });
+}
+
+export function getExternalShip(data) {
+  return request({
+    url: "/rest/ehhship/getShipDataList",
+    method: "post",
+    data,
+  });
+}
