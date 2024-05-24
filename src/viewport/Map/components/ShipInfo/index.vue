@@ -9,6 +9,7 @@ import { ref, computed } from "vue";
 import { CircleClose } from "@element-plus/icons-vue";
 import ComponentBox from "../../../Map/ComponentBox.vue";
 import { shipInfoStore } from "@/store";
+
 const ShipInfoStore = shipInfoStore();
 
 defineOptions({

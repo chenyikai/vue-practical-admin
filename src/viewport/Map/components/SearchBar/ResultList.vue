@@ -84,8 +84,15 @@ defineExpose({
       flex-shrink: 0;
       padding: 0 5px;
       cursor: pointer;
+      font-size: 12px;
       &:hover {
         background-color: rgba($color: #ffffff, $alpha: 0.2);
+      }
+      .label {
+        width: 12em;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
     }
   }

@@ -5,13 +5,19 @@ export default {
 </script>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import init, { Mapbox, MapboxShip } from "plugins/index.js";
+import { shipInfoStore } from "@/store";
+const ShipInfoStore = shipInfoStore();
 // import { trackData, shipData } from "./data.js";
 // import Plot from "plugins/composition/Plot";
 
 const map = ref({});
 const loading = ref(false);
+
+function onClick(e) {
+  ShipInfoStore.show(e.id);
+}
 
 function initMap() {
   const options = {
@@ -25,8 +31,13 @@ function initMap() {
     // MapboxTrack.trackSetData(trackData, shipData, true);
     // const plot = new Plot({ map: Mapbox.getMap() });
     // plot.changeMode(Plot.DRAW_POINT, {});
+    MapboxShip.on("click", onClick);
   });
 }
+
+onBeforeUnmount(() => {
+  MapboxShip.off("click", onClick);
+});
 
 onMounted(() => {
   initMap();

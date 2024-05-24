@@ -12,7 +12,7 @@ import {
   getInternalShip,
 } from "@/api/map/ship.js";
 import { validatenull } from "@/utils/validate.js";
-import { set } from "lodash";
+import { cloneDeep, set } from "lodash";
 
 const properties = ["imageName", "shipDataType", "shipFrom"];
 
@@ -175,7 +175,7 @@ class MapboxShip extends EventEmitter {
             keys.forEach((key) => {
               v.push(ship[this._convertKey(key)] || null);
             });
-            v = [...v, "imageName", OWN_SHIP, "my"];
+            v = this._addExtraField(OWN_SHIP, v);
             vs.push(v);
           });
 
@@ -193,7 +193,7 @@ class MapboxShip extends EventEmitter {
           set(
             this.shipData,
             OUT_SHIP,
-            data.data.v.map((v) => [...v, null, OUT_SHIP, "ais"]),
+            data.data.v.map((v) => this._addExtraField(OUT_SHIP, v)),
           );
           resolve(this.shipData[OUT_SHIP]);
         })
@@ -201,7 +201,15 @@ class MapboxShip extends EventEmitter {
     });
   }
 
-  _addExtraField(v) {}
+  _addExtraField(type, v) {
+    if (type === OUT_SHIP) {
+      return [...cloneDeep(v), null, OUT_SHIP, "ais"];
+    } else if (type === OWN_SHIP) {
+      return [...cloneDeep(v), "imageName", OWN_SHIP, "my"];
+    } else if (type === GHOST_SHIP) {
+      return [...cloneDeep(v), null, OUT_SHIP, "ais"];
+    }
+  }
 
   _addEvents() {
     this.map.on("movestart", this.moveStartFun);
