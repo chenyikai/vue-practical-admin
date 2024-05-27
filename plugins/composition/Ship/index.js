@@ -75,6 +75,7 @@ class MapboxShip extends EventEmitter {
 
   getData() {
     let shipData = [...this.shipData[GHOST_SHIP]];
+    console.log(shipData);
     this._getDataKey().then(async (keys) => {
       if (this.map.getZoom() < 12) {
         this._addGreenDot();
@@ -98,9 +99,9 @@ class MapboxShip extends EventEmitter {
         v: this._unique(this.keys, shipData, "mmsi"),
       });
 
-      // if (this.focusShip) {
-      //   this.ship.setSelectedShip(this.focusShip.mmsi, true);
-      // }
+      if (this.focusShip) {
+        this.ship.setSelectedShip(this.focusShip.mmsi, true);
+      }
       // }
     });
   }
@@ -138,12 +139,13 @@ class MapboxShip extends EventEmitter {
 
     if (val.location) {
       this._addGhost(val);
-      this.ship.setSelectedShip(this.focusShip.mmsi, true);
       const [lat, lon] = val.location.split(",");
-      this.map.flyTo({
-        center: [lon, lat],
-        zoom,
-      });
+      this.map.setCenter([lon, lat]);
+      this.map.setZoom(zoom);
+      // this.map.flyTo({
+      //   center: [lon, lat],
+      //   zoom,
+      // });
     }
   }
 
