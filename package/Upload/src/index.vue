@@ -11,7 +11,7 @@
       :on-remove="onRemove"
       :on-change="onChange"
       :on-error="onError"
-      :disabled="isUpload"
+      :disabled="isDisabled"
       v-bind="bindValue">
       <div class="upload-layout" v-if="type === 'drag'">
         <template v-if="!isUpload">
@@ -51,27 +51,22 @@
           class="file-card"
           :key="file.uid"
           @click.stop="onFileClick(file)">
-          <img
-            v-if="isImg(getIcon(file))"
-            :src="getIcon(file)"
-            alt=""
-            class="icon" />
-          <svg-icon v-else class="icon" :name="getIcon(file)" />
+          <svg-icon class="icon" :name="getIcon(file)" />
           <span class="label">{{ file.name }}</span>
           <el-icon
-            v-if="results[file.uid].status === status.SUCCESS"
+            v-if="getStatus(file, status.SUCCESS)"
             :size="20"
             class="status success"
             ><SuccessFilled
           /></el-icon>
           <el-icon
-            v-if="results[file.uid].status === status.FAIL"
+            v-if="getStatus(file, status.FAIL)"
             :size="20"
             class="status fail"
             ><CircleCloseFilled
           /></el-icon>
           <el-icon
-            v-if="results[file.uid].status === status.READY"
+            v-if="getStatus(file, status.READY)"
             :size="20"
             class="status loading"
             ><Loading
@@ -146,6 +141,7 @@ const emits = defineEmits({
   fail: null,
   "file-click": null,
   select: null,
+  change: null,
 });
 const status = readonly({
   SUCCESS: "success",
@@ -164,6 +160,10 @@ const props = defineProps({
     validator(value) {
       return ["drag", "avatar", "pictureCard"].includes(value);
     },
+  },
+  action: {
+    type: String,
+    default: null,
   },
   colors: {
     type: Array,
@@ -247,15 +247,24 @@ const isShowFileList = computed(() => {
   );
 });
 
+const isDisabled = computed(() => {
+  return isUpload.value || attrs.disabled;
+});
+
 // 头像
 const avatarSize = ref(props.size + "px");
 
+function getFileExtension(filename) {
+  const parts = filename.split(".");
+  return parts.length > 1 ? parts.pop() : undefined;
+}
+
 function getIcon(file) {
-  const suffix = file.name.split(".")[1];
+  const suffix = getFileExtension(file.name);
   const fileType = {
     // word
-    doc: "doc",
-    docs: "doc",
+    doc: "file-document",
+    docs: "file-document",
 
     // excel
     xls: "file-excel",
@@ -266,17 +275,32 @@ function getIcon(file) {
 
     // zip
     zip: "file-zip",
-  };
 
-  if (["png", "jpg", "jpeg"].includes(suffix)) {
-    return URL.createObjectURL(file.raw);
-  }
+    png: "file-pic",
+    jpg: "file-pic",
+    jpeg: "file-pic",
+  };
 
   return fileType[suffix] || "file-document";
 }
 
-function isImg(url) {
-  return url.indexOf("http") !== -1;
+function getStatus(file, status) {
+  return results[file.uid].status === status;
+}
+
+function setData(val) {
+  files.value = val;
+  files.value.forEach((file) => {
+    results[file.uid] = {
+      status: status.SUCCESS,
+      file,
+    };
+  });
+}
+
+function clearData() {
+  files.value = [];
+  results.value = [];
 }
 
 function uploadFunc(option) {
@@ -313,7 +337,7 @@ function onFileClick(file) {
   const result = results[file.uid];
 
   if (result.status === status.SUCCESS) {
-    // TODO 成功
+    window.open(file.url);
   } else if (result.status === status.FAIL) {
     // TODO 失败
     ElMessageBox.confirm(`是否重新上传文件：${file.name}？`, "提示", {
@@ -337,6 +361,23 @@ function onProgress(e) {
 }
 
 /**
+ * 改变
+ */
+function onChangeFilesFormat() {
+  files.value = files.value.map((item) => {
+    if (item.response) {
+      return {
+        ...item,
+        ...item.response.data,
+        url: item.response.data.ossFullPath,
+      };
+    } else {
+      return item;
+    }
+  });
+}
+
+/**
  * 成功事件
  * @param e
  */
@@ -344,6 +385,7 @@ function onSuccess(e) {
   results[loadingFile.value.uid].status = status.SUCCESS;
 
   if (isShowFileList.value) {
+    onChangeFilesFormat();
     model.value = files.value;
   } else {
     model.value = e.data.ossFullPath;
@@ -355,7 +397,8 @@ function onSuccess(e) {
 
 function onError(e, file, files) {
   // files.push(file);
-  emits("fail", e, file, files);
+  onChangeFilesFormat();
+  emits("fail", e, file, files.value);
   onFinish();
 }
 
@@ -365,6 +408,8 @@ function onPreview(file) {
 }
 
 function onDelete(file) {
+  if (isDisabled.value) return;
+
   upload.value.handleRemove(file);
 }
 
@@ -400,6 +445,8 @@ function closeViewer() {
 
 defineExpose({
   cancel: onCancel,
+  set: setData,
+  clear: clearData,
 });
 </script>
 

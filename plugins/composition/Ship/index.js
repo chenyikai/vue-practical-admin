@@ -75,12 +75,10 @@ class MapboxShip extends EventEmitter {
 
   getData() {
     let shipData = [...this.shipData[GHOST_SHIP]];
-    console.log(shipData);
     this._getDataKey().then(async (keys) => {
       if (this.map.getZoom() < 12) {
         this._addGreenDot();
         this._addInternal(keys).then((ownV) => {
-          set(this.shipData, OWN_SHIP, ownV);
           shipData = [...ownV];
         });
       } else {
