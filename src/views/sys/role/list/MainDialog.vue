@@ -75,7 +75,7 @@ defineExpose({
 
 <template>
   <page-dialog
-    title="用户管理"
+    title="角色管理"
     ref="dialog"
     @submit="onDialogSubmit"
     @close="onClose"

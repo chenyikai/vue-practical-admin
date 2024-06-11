@@ -7,7 +7,7 @@ export default {
 <script setup>
 import { CloseBold, Select } from "@element-plus/icons-vue";
 import { ref } from "vue";
-import { updateRole } from "@/api/sys/role/index.js";
+import { updateRoleLitmit } from "@/api/sys/role/index.js";
 import { getRoleMenuById } from "@/api/sys/menu/index.js";
 import { ElMessage } from "element-plus";
 import { debounce } from "lodash";
@@ -44,7 +44,7 @@ function init(info) {
 }
 
 function updateRoleMenuData() {
-  updateRole({
+  updateRoleLitmit({
     id: currentRoleInfo.value.id,
     menuIds: [
       ...tree.value.getCheckedKeys(),
