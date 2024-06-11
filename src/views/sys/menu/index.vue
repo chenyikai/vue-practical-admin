@@ -13,7 +13,7 @@ import MainDialog from "./MainDialog.vue";
 import {
   createMenu,
   deleteMenuById,
-  getUserMenuAll,
+  getMenuAll,
   updateMenu,
 } from "@/api/sys/menu/index.js";
 import useOptions from "./useOptions.js";
@@ -123,7 +123,7 @@ function onSearch() {
 }
 
 onBeforeMount(() => {
-  funcList.list = getUserMenuAll;
+  funcList.list = getMenuAll;
   getList();
 });
 </script>

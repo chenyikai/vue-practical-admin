@@ -13,8 +13,12 @@ export function createRole(formData) {
 }
 
 // 修改角色
-export function updateRole(formData) {
+export function updateRoleLitmit(formData) {
   return request.post(`${BASE_URL}/updateRole`, formData);
+}
+
+export function updateRole(formData) {
+  return request.post(`${BASE_URL}/update`, formData);
 }
 
 // 根据ID删除角色

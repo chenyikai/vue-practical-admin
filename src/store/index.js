@@ -5,6 +5,7 @@ import userStore from "./module/userStore.js";
 import searchStore from "./module/searchStore.js";
 import shipInfoStore from "./module/shipInfoStore.js";
 import popupManageStore from "./module/popupManage.js";
+import mapStore from "./module/mapStore.js";
 
 const pinia = createPinia();
 
@@ -16,4 +17,5 @@ export {
   userStore,
   searchStore,
   shipInfoStore,
+  mapStore,
 };
