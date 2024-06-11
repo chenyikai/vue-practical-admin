@@ -17,10 +17,12 @@ export const crudOption = {
     {
       label: "用户名",
       prop: "username",
+      width: 200,
     },
     {
       label: "姓名",
       prop: "name",
+      width: 200,
     },
     {
       label: "性别",
@@ -28,22 +30,29 @@ export const crudOption = {
       type: "select",
       dataType: "number",
       dicData: getDictData("gender"),
+      width: 100,
     },
     {
       label: "联系方式",
       prop: "mobile",
+      width: 150,
     },
     {
       label: "状态",
       prop: "status",
       dataType: "number",
       dicData: getDictData("user_status"),
+      width: 100,
+    },
+    {
+      label: "备注",
+      prop: "description",
     },
     {
       label: "操作",
       prop: "menu",
       slot: true,
-      width: 250,
+      width: 300,
     },
   ],
 };
@@ -88,22 +97,22 @@ export const formOption = {
       span: 12,
       rules: [{ required: true, message: "不能为空", trigger: "change" }],
     },
-    {
-      label: "是否数据权限",
-      prop: "isAdmin",
-      type: "select",
-      rules: [{ required: true, message: "不能为空", trigger: "change" }],
-      dicData: [
-        {
-          label: "是",
-          value: 1,
-        },
-        {
-          label: "否",
-          value: 0,
-        },
-      ],
-    },
+    // {
+    //   label: "是否数据权限",
+    //   prop: "isAdmin",
+    //   type: "select",
+    //   rules: [{ required: true, message: "不能为空", trigger: "change" }],
+    //   dicData: [
+    //     {
+    //       label: "是",
+    //       value: 1,
+    //     },
+    //     {
+    //       label: "否",
+    //       value: 0,
+    //     },
+    //   ],
+    // },
     {
       label: "邮箱",
       prop: "email",
@@ -131,11 +140,11 @@ export const formOption = {
     // },
     {
       label: "用户角色",
-      prop: "roleList",
+      prop: "source",
       type: "select",
-      multiple: true,
       dicMethod: "post",
       dicUrl: "/rest/sys/role/getList",
+      dataType: "number",
       span: 24,
       props: {
         label: "roleName",
@@ -148,6 +157,37 @@ export const formOption = {
       prop: "description",
       type: "textarea",
       span: 24,
+    },
+  ],
+};
+export const apiFormOption = {
+  menuBtn: false,
+  labelWidth: 120,
+  labelPosition: "right",
+  column: [
+    // {
+    // label: "接口分配",
+    // prop: "apiId",
+    // type: "select",
+    // dicMethod: "post",
+    // dicUrl: `/rest/ptApiInfo/getPage?pageSize=99&pageIndex=1`,
+    // dicFormatter: (res) => {
+    //     return res.data.rows;
+    // },
+    // props: {
+    //     label: "name",
+    //     value: "id",
+    // },
+    // multiple: true,
+    // span: 24,
+    // rules: [{ required: true, message: "不能为空", trigger: "blur" }],
+    // },
+    {
+      label: "接口分配",
+      prop: "apiId",
+      slot: true,
+      span: 24,
+      rules: [{ required: true, message: "不能为空", trigger: "blur" }],
     },
   ],
 };

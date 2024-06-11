@@ -7,10 +7,11 @@ export default {
 <script setup>
 import website from "@/config/website.js";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { onBeforeMount } from "vue";
+import { onBeforeMount, ref } from "vue";
 import useCrud from "@/hooks/useCrud.js";
 import { crudOption } from "./options.js";
 import MainDialog from "./MainDialog.vue";
+import ApiDialog from "./apiDialog.vue";
 import { useClipboard } from "@vueuse/core";
 import {
   createUser,
@@ -19,6 +20,7 @@ import {
   resetPwd,
   updateUser,
 } from "@/api/sys/user/index.js";
+import { getUserApiDetail, createApi, updateApi } from "./api.js";
 
 const {
   dialog,
@@ -34,7 +36,7 @@ const {
   currentChange,
   handelResetSearchForm,
 } = useCrud();
-
+const apiDialog = ref({});
 function onAdd() {
   dialog.value.open(website.pageStatus.CREATE);
 }
@@ -66,7 +68,94 @@ function onDetail(rowData) {
 }
 
 function onCreateSubmit(formData, done) {
-  createUser(formData)
+  createUser({
+    ...formData,
+    source: formData.source,
+    roleList: [formData.source],
+  })
+    .then(({ data }) => {
+      done(true);
+      ElMessage({
+        message: "新增成功",
+        type: "success",
+      });
+      ElMessageBox.alert(`您的密码为${data.data}`, "初始密码", {
+        confirmButtonText: "复制",
+        cancelButtonText: "取消",
+        callback: (action) => {
+          if (action !== "confirm") return;
+
+          const { copy, isSupported } = useClipboard();
+          if (!isSupported) {
+            ElMessage({
+              message: "复制失败，您的浏览器不支持Clipboard API",
+              type: "error",
+            });
+            return;
+          }
+
+          copy(data.data);
+
+          ElMessage({
+            message: "已复制到剪贴板",
+            type: "success",
+          });
+        },
+      });
+      getList();
+    })
+    .catch(() => {
+      ElMessage({
+        message: "新增失败",
+        type: "error",
+      });
+      done();
+    });
+}
+
+function onUpdateSubmit(formData, done) {
+  updateUser({
+    ...formData,
+    source: formData.source,
+    roleList: [formData.source],
+  })
+    .then(() => {
+      done(true);
+      ElMessage({
+        message: "修改成功",
+        type: "success",
+      });
+      getList();
+    })
+    .catch(() => {
+      ElMessage({
+        message: "修改失败",
+        type: "error",
+      });
+      done();
+    });
+}
+// apiDialog 打开
+function onChooseApi(rowData) {
+  //  调用详情接口
+  getUserApiDetail({ id: rowData.id }).then(({ data }) => {
+    if (data.data.length) {
+      let apiId = data.data.map((item) => item.apiId);
+      let userId = rowData.id;
+      apiDialog.value.open(website.pageStatus.UPDATE, {
+        apiId,
+        userId,
+      });
+    } else {
+      apiDialog.value.open(website.pageStatus.CREATE, {
+        userId: rowData.id,
+      });
+    }
+  });
+}
+// api 新增
+function onApiCreateSubmit(formData, done) {
+  createApi(formData)
     .then(() => {
       done(true);
       ElMessage({
@@ -84,8 +173,9 @@ function onCreateSubmit(formData, done) {
     });
 }
 
-function onUpdateSubmit(formData, done) {
-  updateUser(formData)
+// api  修改
+function onApiUpdateSubmit(formData, done) {
+  updateApi(formData)
     .then(() => {
       done(true);
       ElMessage({
@@ -113,7 +203,7 @@ function handleReset(rowData) {
       return resetPwd({ id: rowData.id });
     })
     .then(({ data }) => {
-      ElMessageBox.alert(data.data, "您的密码重置为", {
+      ElMessageBox.alert(`您的密码重置为${data.data}`, "密码重置", {
         confirmButtonText: "复制",
         cancelButtonText: "取消",
         callback: (action) => {
@@ -122,7 +212,7 @@ function handleReset(rowData) {
           const { copy, isSupported } = useClipboard();
           if (!isSupported) {
             ElMessage({
-              message: "重置失败，您的浏览器不支持Clipboard API",
+              message: "复制失败，您的浏览器不支持Clipboard API",
               type: "error",
             });
             return;
@@ -131,7 +221,7 @@ function handleReset(rowData) {
           copy(data.data);
 
           ElMessage({
-            message: "重置成功，已复制到剪贴板",
+            message: "已复制到剪贴板",
             type: "success",
           });
         },
@@ -209,6 +299,11 @@ onBeforeMount(() => {
             direction="horizontal"
             @click.stop="onUpdate(row)" />
           <page-button
+            label="api分配"
+            icon="api"
+            direction="horizontal"
+            @click.stop="onChooseApi(row)" />
+          <page-button
             type="delete"
             direction="horizontal"
             @click.stop="onDelete(row)" />
@@ -220,6 +315,10 @@ onBeforeMount(() => {
         ref="dialog"
         @[website.pageStatus.CREATE]="onCreateSubmit"
         @[website.pageStatus.UPDATE]="onUpdateSubmit" />
+      <ApiDialog
+        ref="apiDialog"
+        @[website.pageStatus.CREATE]="onApiCreateSubmit"
+        @[website.pageStatus.UPDATE]="onApiUpdateSubmit" />
     </template>
   </page-container>
 </template>
