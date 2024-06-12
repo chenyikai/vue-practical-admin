@@ -11,22 +11,36 @@ import SearchBar from "./components/SearchBar/index.vue";
 import ShipInfo from "./components/ShipInfo/index.vue";
 import MapControl from "./components/MapControl/index.vue";
 import SideBar from "./components/SideBar/index.vue";
+import GalesPack from "./components/GalesPack/index.vue";
+import HurricanePack from "./components/HurricanePack/index.vue";
+import { ref } from "vue";
 
 defineOptions({
   name: "MapPage",
 });
+
+const galesPack = ref();
+const hurricanePack = ref();
+
+function initMap() {
+  hurricanePack.value.init();
+  // galesPack.value.open(1);
+  // hurricanePack.value.open(2);
+}
 </script>
 
 <template>
   <map-layout>
     <template #map>
-      <map-box />
+      <map-box @init="initMap" />
     </template>
     <template #control>
       <search-bar />
       <ship-info />
       <map-control />
       <side-bar />
+      <GalesPack ref="galesPack" />
+      <HurricanePack ref="hurricanePack" />
     </template>
   </map-layout>
 </template>
