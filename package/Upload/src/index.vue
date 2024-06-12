@@ -152,6 +152,7 @@ const status = readonly({
 const attrs = useAttrs();
 const slots = useSlots();
 const model = defineModel();
+
 const props = defineProps({
   type: {
     type: String,

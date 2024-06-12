@@ -37,6 +37,9 @@ function initMap() {
 
 onBeforeUnmount(() => {
   MapboxShip.off("click", onClick);
+
+  MapboxShip.destroy();
+  Mapbox.destroy();
 });
 
 onMounted(() => {
