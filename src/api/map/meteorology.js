@@ -16,3 +16,19 @@ export function getEhhTxt(data) {
     data,
   });
 }
+
+export function findComplexByComplexId(codes) {
+  return request({
+    url: "/rest/ehhWeather/get_typhoons_detail",
+    method: "post",
+    data: { codes: codes },
+  });
+}
+
+export function findComplexByYear(year) {
+  return request({
+    url: "/rest/ehhWeather/get_typhoons",
+    method: "post",
+    data: { year },
+  });
+}
