@@ -19,6 +19,21 @@
         @click="packButton('up')" />
     </div>
   </transition>
+
+  <transition name="fade">
+    <div class="gales-legend" v-show="isShow">
+      <div class="title-top">图例 大风分布</div>
+      <div class="list-box">
+        <div class="color-box" v-for="(item, i) in palette" :key="item.level">
+          <div class="color" :style="`background-color:${item.color}`">
+            <span>{{
+              `${palette.length === i + 1 ? "≥" + item.level : item.level}级`
+            }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -33,6 +48,7 @@ import { getBigWindForecastList, getEhhTxt } from "@/api/map/meteorology.js";
 import { parse } from "wellknown";
 import { dateFormat } from "@/utils/date.js";
 import { ref } from "vue";
+import { Mapbox } from "plugins";
 import SvgIcon from "package/SvgIcon/src/index.vue";
 
 let loading = ref(false);
@@ -60,10 +76,12 @@ function handleGales(event) {
     key.value = 0;
     loading.value = true;
     getBigWindForecastList().then(({ data }) => {
-      dataList.value = data.data.v.map((item) => {
-        return [dateFormat(Number(item[0]), "yyyy年MM月dd日hh时"), item[1]];
-      });
-      renderGales();
+      if (data.code === 200) {
+        dataList.value = data.data.v.map((item) => {
+          return [dateFormat(Number(item[0]), "yyyy年MM月dd日hh时"), item[1]];
+        });
+        renderGales();
+      }
     });
   } else {
     closeGales();
@@ -122,9 +140,9 @@ function renderGales() {
 function closeGales() {
   let delList = [];
   windareaList.value.map((item) => {
-    if (window.map.getLayer(item)) {
-      window.map.removeLayer(item);
-      window.map.removeSource(item);
+    if (Mapbox.getMap().getLayer(item)) {
+      Mapbox.getMap().removeLayer(item);
+      Mapbox.getMap().removeSource(item);
     }
     delList.push(item);
   });
@@ -144,12 +162,12 @@ function InitPoints(row) {
       color = palette[palette.length - 1].color;
     }
   });
-  if (window.map.getLayer(properties.id)) {
-    window.map.removeLayer(properties.id);
-    window.map.removeSource(properties.id);
+  if (Mapbox.getMap().getLayer(properties.id)) {
+    Mapbox.getMap().removeLayer(properties.id);
+    Mapbox.getMap().removeSource(properties.id);
   }
-  window.map.addSource(properties.id, row);
-  window.map.addLayer({
+  Mapbox.getMap().addSource(properties.id, row);
+  Mapbox.getMap().addLayer({
     id: properties.id,
     type: "fill",
     source: properties.id,
@@ -160,7 +178,7 @@ function InitPoints(row) {
   });
 }
 function flyTo() {
-  window.map.flyTo({
+  Mapbox.getMap().flyTo({
     center: mapConfig.center,
     zoom: 2.5,
     speed: 5,
@@ -186,7 +204,7 @@ function flyTo() {
       rgba(1, 246, 255, 1)
     )
     1 1;
-  box-shadow: inset 0px 0px 33px 0px #2394e6;
+  box-shadow: inset 0 0 33px 0 #2394e6;
   color: white;
   padding: 10px 20px;
   display: flex;
@@ -201,6 +219,45 @@ function flyTo() {
     cursor: pointer;
   }
 }
+.gales-legend {
+  position: absolute;
+  bottom: 7%;
+  left: 0.7%;
+  font-size: 14px;
+  padding: 5px 8px;
+  background: rgba(0, 47, 68, 0.68);
+  border: 2px solid;
+  border-image: linear-gradient(
+      360deg,
+      rgba(32, 114, 238, 1),
+      rgba(1, 246, 255, 1)
+    )
+    1 1;
+  box-shadow: inset 0 0 33px 0 #2394e6;
+  .title-top {
+    margin-bottom: 12px;
+  }
+  .list-box {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 5px 5px;
+    .color-box {
+      .color {
+        width: 100%;
+        color: black;
+        padding: 5px 10px;
+        box-sizing: border-box;
+        text-shadow:
+          1px 1px 0 white,
+          -1px -1px 0 white,
+          1px -1px 0 white,
+          -1px 1px 0 white;
+      }
+    }
+  }
+}
+
 .fade-enter-active,
 .fade-leave-active {
   transition:
