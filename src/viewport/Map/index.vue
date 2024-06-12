@@ -12,23 +12,30 @@ import ShipInfo from "./components/ShipInfo/index.vue";
 import MapControl from "./components/MapControl/index.vue";
 import SideBar from "./components/SideBar/index.vue";
 import GalesPack from "./components/GalesPack/index.vue";
+import { ref } from "vue";
 
 defineOptions({
   name: "MapPage",
 });
+
+const galesPack = ref();
+
+function initMap() {
+  // galesPack.value.open(1);
+}
 </script>
 
 <template>
   <map-layout>
     <template #map>
-      <map-box />
+      <map-box @init="initMap" />
     </template>
     <template #control>
       <search-bar />
       <ship-info />
       <map-control />
       <side-bar />
-      <GalesPack />
+      <GalesPack ref="galesPack" />
     </template>
   </map-layout>
 </template>

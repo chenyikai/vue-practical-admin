@@ -36,12 +36,6 @@
   </transition>
 </template>
 
-<script>
-export default {
-  name: "GalesPack",
-};
-</script>
-
 <script setup>
 import { mapConfig } from "@/plugins/mapConfig.js";
 import { getBigWindForecastList, getEhhTxt } from "@/api/map/meteorology.js";
@@ -50,6 +44,10 @@ import { dateFormat } from "@/utils/date.js";
 import { ref } from "vue";
 import { Mapbox } from "plugins";
 import SvgIcon from "package/SvgIcon/src/index.vue";
+
+defineOptions({
+  name: "GalesPack",
+});
 
 let loading = ref(false);
 let isShow = ref(false);
@@ -185,6 +183,10 @@ function flyTo() {
     curve: 0.5,
   });
 }
+
+defineExpose({
+  open,
+});
 </script>
 
 <style lang="scss" scoped>

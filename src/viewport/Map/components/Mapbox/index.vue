@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { ref, onMounted, onBeforeUnmount, defineEmits } from "vue";
 import init, { Mapbox, MapboxShip, MapboxTrack } from "plugins/index.js";
 import { shipInfoStore } from "@/store";
 // import { trackData, shipData } from "./data.js";
@@ -14,6 +14,7 @@ const ShipInfoStore = shipInfoStore();
 
 const map = ref({});
 const loading = ref(false);
+const emit = defineEmits(["init"]);
 
 function onClick(e) {
   ShipInfoStore.show(e.id);
@@ -33,6 +34,8 @@ function initMap() {
     // const plot = new Plot({ map: Mapbox.getMap() });
     // plot.changeMode(Plot.DRAW_POINT, {});
     MapboxShip.on("click", onClick);
+
+    emit("init");
   });
 }
 
