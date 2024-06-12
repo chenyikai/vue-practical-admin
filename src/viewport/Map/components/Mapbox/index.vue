@@ -8,7 +8,7 @@ export default {
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import init, { Mapbox, MapboxShip, MapboxTrack } from "plugins/index.js";
 import { shipInfoStore } from "@/store";
-import { trackData, shipData } from "./data.js";
+// import { trackData, shipData } from "./data.js";
 // import Plot from "plugins/composition/Plot";
 const ShipInfoStore = shipInfoStore();
 

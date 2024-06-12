@@ -11,6 +11,7 @@ import SearchBar from "./components/SearchBar/index.vue";
 import ShipInfo from "./components/ShipInfo/index.vue";
 import MapControl from "./components/MapControl/index.vue";
 import SideBar from "./components/SideBar/index.vue";
+import GalesPack from "./components/GalesPack/index.vue";
 
 defineOptions({
   name: "MapPage",
@@ -27,6 +28,7 @@ defineOptions({
       <ship-info />
       <map-control />
       <side-bar />
+      <GalesPack />
     </template>
   </map-layout>
 </template>

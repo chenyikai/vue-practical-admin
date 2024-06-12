@@ -1,0 +1,223 @@
+<template>
+  <transition name="fade">
+    <div
+      class="legend-pack"
+      v-show="isShow"
+      element-loading-custom-class="legend-pack-loading"
+      element-loading-background="rgba(0, 0, 0, 0.8)"
+      v-loading.fullscreen.lock="loading">
+      <svg-icon
+        class="icon-box"
+        :name="'mapMeteorology-left'"
+        @click="packButton('down')" />
+      <div class="text-box">
+        {{ dataList[key] ? `${dataList[key][0]} 大风分布` : "暂无数据" }}
+      </div>
+      <svg-icon
+        class="icon-box"
+        :name="'mapMeteorology-right'"
+        @click="packButton('up')" />
+    </div>
+  </transition>
+</template>
+
+<script>
+export default {
+  name: "GalesPack",
+};
+</script>
+
+<script setup>
+import { mapConfig } from "@/plugins/mapConfig.js";
+import { getBigWindForecastList, getEhhTxt } from "@/api/map/meteorology.js";
+import { parse } from "wellknown";
+import { dateFormat } from "@/utils/date.js";
+import { ref } from "vue";
+import SvgIcon from "package/SvgIcon/src/index.vue";
+
+let loading = ref(false);
+let isShow = ref(false);
+let dataList = ref([]);
+let key = ref(0);
+let windareaList = ref([]);
+const palette = [
+  { color: "#f5ffd4", level: 7 },
+  { color: "#fff3d4", level: 8 },
+  { color: "#fffb9b", level: 9 },
+  { color: "#ffdec4", level: 10 },
+  { color: "#ffcc95", level: 11 },
+  { color: "#ff904b", level: 12 },
+  { color: "#c12c1f", level: 13 },
+];
+
+function open(type) {
+  type === 1 ? handleGales(true) : handleGales(false);
+  isShow.value = type === 1;
+}
+
+function handleGales(event) {
+  if (event) {
+    key.value = 0;
+    loading.value = true;
+    getBigWindForecastList().then(({ data }) => {
+      dataList.value = data.data.v.map((item) => {
+        return [dateFormat(Number(item[0]), "yyyy年MM月dd日hh时"), item[1]];
+      });
+      renderGales();
+    });
+  } else {
+    closeGales();
+  }
+}
+function packButton(type) {
+  const length = dataList.value.length;
+  switch (type) {
+    case "up":
+      if (key.value < length) {
+        key.value += 1;
+        renderGales();
+      }
+      break;
+    case "down":
+      if (key.value > 0) {
+        key.value -= 1;
+        renderGales();
+      }
+      break;
+  }
+}
+
+function renderGales() {
+  if (dataList.value[key.value][1]) {
+    getEhhTxt({ url: dataList.value[key.value][1] }).then(({ data }) => {
+      const e = JSON.parse(data.data);
+      e.windarea.v.map((item) => {
+        const list = {
+          type: "geojson",
+          data: {
+            type: "FeatureCollection",
+            features: [
+              {
+                type: "Feature",
+                properties: {
+                  id: `windarea-${item[0]}`,
+                  type: "windarea",
+                  value: Number(item[0]),
+                },
+                geometry: parse(item[1]),
+              },
+            ],
+          },
+        };
+        windareaList.value.push(`windarea-${item[0]}`);
+        InitPoints(list);
+        flyTo();
+        loading.value = false;
+      });
+    });
+  } else {
+    loading.value = false;
+  }
+}
+function closeGales() {
+  let delList = [];
+  windareaList.value.map((item) => {
+    if (window.map.getLayer(item)) {
+      window.map.removeLayer(item);
+      window.map.removeSource(item);
+    }
+    delList.push(item);
+  });
+  windareaList.value = windareaList.value.filter(
+    (item) => !delList.includes(item),
+  );
+}
+
+function InitPoints(row) {
+  // 初始化层&面数据
+  const properties = row.data.features[0].properties;
+  let color = "";
+  palette.map((item) => {
+    if (item.level === properties.value) {
+      color = item.color;
+    } else if (properties.value > 13) {
+      color = palette[palette.length - 1].color;
+    }
+  });
+  if (window.map.getLayer(properties.id)) {
+    window.map.removeLayer(properties.id);
+    window.map.removeSource(properties.id);
+  }
+  window.map.addSource(properties.id, row);
+  window.map.addLayer({
+    id: properties.id,
+    type: "fill",
+    source: properties.id,
+    paint: {
+      "fill-color": color,
+      "fill-opacity": 0.85,
+    },
+  });
+}
+function flyTo() {
+  window.map.flyTo({
+    center: mapConfig.center,
+    zoom: 2.5,
+    speed: 5,
+    curve: 0.5,
+  });
+}
+</script>
+
+<style lang="scss" scoped>
+.legend-pack {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin-bottom: 10px;
+  pointer-events: all;
+  width: 380px;
+  background: rgba(0, 47, 68, 0.68);
+  border: 2px solid;
+  border-image: linear-gradient(
+      360deg,
+      rgba(32, 114, 238, 1),
+      rgba(1, 246, 255, 1)
+    )
+    1 1;
+  box-shadow: inset 0px 0px 33px 0px #2394e6;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  .icon-box {
+    width: 19px;
+    height: 19px;
+    font-size: 19px;
+    cursor: pointer;
+  }
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition:
+    transform 0.25s ease-in-out,
+    opacity 0.25s ease-in-out;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateX(-50%) translateY(-30%);
+}
+</style>
+
+<style lang="scss">
+.legend-pack-loading {
+  .el-loading-spinner .path {
+    stroke: white;
+  }
+}
+</style>
