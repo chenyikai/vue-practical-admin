@@ -28,7 +28,8 @@ function initMap() {
 
     Mapbox.getMap().resize();
 
-    MapboxTrack.trackSetData(trackData, shipData, true);
+    // MapboxTrack.trackSetData(trackData, shipData, true);
+
     // const plot = new Plot({ map: Mapbox.getMap() });
     // plot.changeMode(Plot.DRAW_POINT, {});
     MapboxShip.on("click", onClick);

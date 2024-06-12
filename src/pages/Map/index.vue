@@ -1,6 +1,6 @@
 <script>
 export default {
-    name: "MapPage",
+  name: "MapPage",
 };
 </script>
 
@@ -13,27 +13,27 @@ import MapSwitch from "@/pages/Map/components/MapboxSwitch/index.vue";
 import Legend from "@/pages/Map/components/MapLegend/index.vue";
 
 defineOptions({
-    name: "MapPage",
+  name: "MapPage",
 });
 </script>
 
 <template>
-    <map-layout>
-        <template #map>
-            <map-box />
-        </template>
-        <template #control>
-            <map-control />
-            <side-bar />
-            <map-switch />
-            <Legend />
-        </template>
-    </map-layout>
+  <map-layout>
+    <template #map>
+      <map-box />
+    </template>
+    <template #control>
+      <map-control />
+      <side-bar />
+      <map-switch />
+      <Legend />
+    </template>
+  </map-layout>
 </template>
 
 <style lang="scss" scoped>
 #map {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 </style>

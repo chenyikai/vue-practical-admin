@@ -43,7 +43,8 @@ let mapbox = null;
 let mapboxDraw = null;
 let mapboxLayer = null;
 let mapSwitchInstance = null;
-// let control = null;
+// eslint-disable-next-line no-unused-vars
+let control = null;
 
 const customPoint = {
   "icon-image": "point", //图片名称  对应初始化时 icons中key
