@@ -49,6 +49,7 @@ import {
 import { set } from "lodash";
 import { parse } from "wellknown";
 import { ref, onBeforeUnmount } from "vue";
+import { Mapbox } from "plugins";
 
 defineOptions({
   name: "HurricanePack",
@@ -84,14 +85,13 @@ function open(type) {
 
 function init() {
   const ehhGis = window.EhhGis();
-  typhoonInstance = new ehhGis.Typhoon(window.map);
+  typhoonInstance = new ehhGis.Typhoon(Mapbox.getMap());
   typhoonEvent();
   setTimeout(() => {
     getFindComplexByYear();
   }, 500);
 }
 function getFindComplexByYear() {
-  console.log(typhoonYear.value);
   findComplexByYear(typhoonYear.value).then(({ data }) => {
     typhoonList.value = kvToJson(data.data.k, data.data.v);
     typhoonList.value.forEach((item) => {
@@ -159,7 +159,7 @@ function showTyphoon() {
 function flyToTyphoon(data) {
   if (Array.isArray(data.points)) {
     const { coordinates } = parse(data.points.at(-1).geom);
-    window.map.flyTo({
+    Mapbox.getMap().flyTo({
       center: coordinates,
       zoom: 5,
       speed: 10,
@@ -180,7 +180,7 @@ function removeTyphoon(id) {
   }
 }
 function typhoonEvent() {
-  const container = window.map.getContainer();
+  const container = Mapbox.getMap().getContainer();
   typhoonInstance.onMouseleave(() => {
     container.style.pointer = "";
   });
@@ -229,7 +229,7 @@ function addPopup(data) {
     })
     .setLngLat([lng, lat])
     .setHTML(html)
-    .addTo(window.map);
+    .addTo(Mapbox.getMap());
 }
 function formatLatitudeAndLongitude(
   longitude,
