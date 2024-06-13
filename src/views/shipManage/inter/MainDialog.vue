@@ -11,6 +11,7 @@ import { nextTick, computed } from "vue";
 import { formOption } from "./options.js";
 import website from "@/config/website.js";
 import PageDialog from "package/Dialog/src/index.vue";
+import useUserStore from "@/store/module/userStore.js";
 import {
   getShipTeamByDept,
   getDeptTree,
@@ -18,12 +19,15 @@ import {
   detailInnerShip,
 } from "./api.js";
 
+const selectloading = ref(false);
 const deptList = ref([]);
 const teamList = ref([]);
+const userStore = useUserStore();
 onMounted(() => {
   // 获取部门接口
   getDeptTree().then(({ data }) => {
     let deptArr = [];
+    const arr = userStore.userInfo.deptidsstr.split(",");
     for (let i = 0; i < data.data.length; i++) {
       if (!data.data[i].children.length) {
         deptArr.push(data.data[i]);
@@ -33,8 +37,9 @@ onMounted(() => {
         });
       }
     }
-    deptList.value = deptArr;
-    console.log(deptList.value, "   deptList.value");
+    deptList.value = arr.map((item) => {
+      return deptArr.find((i) => i.id === item);
+    });
   });
 });
 // 选择部门回调
@@ -48,9 +53,9 @@ const options = ref([]);
 // 船舶关键词远程搜索
 function remoteMethod(query) {
   if (query !== "") {
-    loading.value = true;
+    selectloading.value = true;
     getShipByKeyword({ keyword: query }).then(({ data }) => {
-      loading.value = false;
+      selectloading.value = false;
       const info = data.data.data;
       options.value = info.map((item) => {
         return {
@@ -176,7 +181,7 @@ defineExpose({
             @change="handleShipChange"
             :remote-method="remoteMethod"
             allow-create
-            :loading="loading">
+            :loading="selectloading">
             <el-option
               v-for="item in options"
               :key="item.mmsi"
