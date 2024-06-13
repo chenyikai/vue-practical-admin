@@ -1,4 +1,7 @@
 <script>
+import Meteorology from "./BarBox/meteorology.vue";
+import { ref } from "vue";
+
 export default {
   name: "SideBar",
 };
@@ -10,6 +13,7 @@ defineOptions({
   name: "SideBar",
 });
 
+const meteorology = ref();
 const sideBarList = reactive([
   {
     id: 1,
@@ -63,7 +67,15 @@ const sideBarList = reactive([
   },
 ]);
 
-function onClick() {}
+function onClick(item) {
+  switch (item.id) {
+    case 2:
+      meteorology.value.open();
+      break;
+    default:
+      break;
+  }
+}
 </script>
 
 <template>
@@ -79,6 +91,7 @@ function onClick() {}
       <div class="text-layout">{{ item.label }}</div>
     </li>
   </ul>
+  <Meteorology ref="meteorology" />
 </template>
 
 <style scoped lang="scss">
