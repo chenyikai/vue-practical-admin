@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 defineOptions({
-  name: "MeteorologyBox",
+  name: "ToolBox",
 });
 
 const drawer = ref(false);
@@ -24,7 +24,7 @@ defineExpose({
       size="20%">
       <template #header="{ titleId, titleClass }">
         <div :id="titleId" :class="`${titleClass} drawer-title-text`">
-          气象相关
+          工具功能
         </div>
       </template>
       <div>124</div>

@@ -47,7 +47,7 @@ const sideBarList = reactive([
   },
   {
     id: 4,
-    label: "工具",
+    label: "功能",
     type: "tool",
     icon: new URL("@/assets/images/map/sideBar/tool.png", import.meta.url)[
       "href"
