@@ -7,3 +7,12 @@ export function getPtShipFenceList() {
     method: "post",
   });
 }
+
+// 获取电子围栏表详情
+export function getPtShipFenceDetail(data) {
+  return request({
+    url: "/rest/ptShipFence/getDetail",
+    method: "post",
+    data,
+  });
+}
