@@ -64,13 +64,13 @@ export const formOption = {
     {
       label: "船队名称",
       prop: "name",
-      span: 24,
       maxlength: 100,
       rules: [{ required: true, message: "不能为空", trigger: "blur" }],
     },
     {
       label: "颜色设置",
       prop: "color",
+      rules: [{ required: true, message: "不能为空", trigger: "blur" }],
       slot: true,
       span: 24,
     },

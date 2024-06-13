@@ -12,12 +12,15 @@ import { formOption } from "./options.js";
 import website from "@/config/website.js";
 import PageDialog from "package/Dialog/src/index.vue";
 import { getDeptTree, reqGetShipTeamDetail } from "./api.js";
+import useUserStore from "@/store/module/userStore.js";
 
 const deptList = ref([]);
+const userStore = useUserStore();
 onMounted(() => {
   // 获取部门接口
   getDeptTree().then(({ data }) => {
     let deptArr = [];
+    const arr = userStore.userInfo.deptidsstr.split(",");
     for (let i = 0; i < data.data.length; i++) {
       if (!data.data[i].children.length) {
         deptArr.push(data.data[i]);
@@ -27,7 +30,9 @@ onMounted(() => {
         });
       }
     }
-    deptList.value = deptArr;
+    deptList.value = arr.map((item) => {
+      return deptArr.find((i) => i.id === item);
+    });
   });
 });
 
