@@ -8,6 +8,7 @@ import { fileURLToPath, URL } from "node:url";
 import { loadEnv } from "vite";
 import pxToViewport from "postcss-px-to-viewport";
 import path from "path";
+// import mkcert from "vite-plugin-mkcert";
 
 export default defineConfig(({ mode }) => {
   // eslint-disable-next-line no-undef
@@ -16,6 +17,7 @@ export default defineConfig(({ mode }) => {
     // publicDir: env.VITE_API_PREFIX,
     base: env.VITE_PUBLIC_PATH,
     plugins: [
+      // mkcert(),
       vue({
         script: {
           defineModel: true,
@@ -66,6 +68,7 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       port: 9999,
+      // https: true,
       proxy: {
         [env.VITE_API_PREFIX]: {
           target: env.VITE_API_URL,

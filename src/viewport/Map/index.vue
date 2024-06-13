@@ -13,6 +13,7 @@ import MapControl from "./components/MapControl/index.vue";
 import SideBar from "./components/SideBar/index.vue";
 import GalesPack from "./components/GalesPack/index.vue";
 import HurricanePack from "./components/HurricanePack/index.vue";
+import MapChannelMonitor from "@/viewport/Map/components/ChannelMonitor/index.vue";
 import { ref } from "vue";
 
 defineOptions({
@@ -21,11 +22,13 @@ defineOptions({
 
 const galesPack = ref();
 const hurricanePack = ref();
+const channelMonitor = ref();
 
 function initMap() {
   hurricanePack.value.init();
   // galesPack.value.open(1);
   // hurricanePack.value.open(2);
+  channelMonitor.value.init();
 }
 </script>
 
@@ -39,8 +42,10 @@ function initMap() {
       <ship-info />
       <map-control />
       <side-bar />
+
       <GalesPack ref="galesPack" />
       <HurricanePack ref="hurricanePack" />
+      <map-channel-monitor ref="channelMonitor" />
     </template>
   </map-layout>
 </template>

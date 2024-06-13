@@ -24,7 +24,7 @@ defineExpose({
       size="20%">
       <template #header="{ titleId, titleClass }">
         <div :id="titleId" :class="`${titleClass} drawer-title-text`">
-          工具功能
+          功能列表
         </div>
       </template>
       <div>124</div>

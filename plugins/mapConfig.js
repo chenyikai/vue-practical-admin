@@ -23,8 +23,8 @@ export const mapConfig = {
       },
     ],
   },
-  center: [122.106863, 30.016028],
-  zoom: 13,
+  center: [121.786863, 31.316028],
+  zoom: 11,
 };
 
 export const iconData = [

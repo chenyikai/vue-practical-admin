@@ -1,19 +1,13 @@
-<script>
-import Meteorology from "./BarBox/meteorology.vue";
-import { ref } from "vue";
-
-export default {
-  name: "SideBar",
-};
-</script>
-
 <script setup>
-import { reactive } from "vue";
+import Meteorology from "./BarBox/meteorology.vue";
+import ToolBox from "./BarBox/toolbox.vue";
+import { ref, reactive } from "vue";
 defineOptions({
   name: "SideBar",
 });
 
 const meteorology = ref();
+const toolbox = ref();
 const sideBarList = reactive([
   {
     id: 1,
@@ -72,6 +66,9 @@ function onClick(item) {
     case 2:
       meteorology.value.open();
       break;
+    case 4:
+      toolbox.value.open();
+      break;
     default:
       break;
   }
@@ -92,6 +89,7 @@ function onClick(item) {
     </li>
   </ul>
   <Meteorology ref="meteorology" />
+  <ToolBox ref="toolbox" />
 </template>
 
 <style scoped lang="scss">
