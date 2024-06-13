@@ -16,7 +16,7 @@ defineOptions({
 const props = defineProps({
   title: {
     type: String,
-    default: "浙江某某船务有限公司",
+    default: "电子航道图系统",
   },
 });
 

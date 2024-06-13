@@ -17,9 +17,15 @@ defineExpose({
 
 <template>
   <div class="meteorology-box">
-    <el-drawer v-model="drawer" direction="rtl" size="30%">
-      <template v-slot:[header]>
-        <teleport></teleport>
+    <el-drawer
+      :append-to-body="true"
+      v-model="drawer"
+      direction="rtl"
+      size="20%">
+      <template #header="{ titleId, titleClass }">
+        <div :id="titleId" :class="`${titleClass} drawer-title-text`">
+          气象工具
+        </div>
       </template>
       <div>124</div>
     </el-drawer>
@@ -29,5 +35,9 @@ defineExpose({
 <style scoped lang="scss">
 .meteorology-box {
   position: relative;
+  ::v-global(.drawer-title-text) {
+    font-size: 17px;
+    color: #bdc3c7;
+  }
 }
 </style>
