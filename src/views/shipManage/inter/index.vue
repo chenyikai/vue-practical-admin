@@ -110,29 +110,27 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <page-container class="attribute-manage-box">
+  <page-container>
     <template #search>
-      <div class="index-page-container-header">
-        <el-form
-          ref="searchForm"
-          :model="listQuery"
-          :inline="true"
-          label-suffix=":">
-          <el-form-item label="船名" prop="name">
-            <el-input
-              v-model="listQuery.shipName"
-              placeholder="请输入船名"
-              clearable></el-input>
-          </el-form-item>
-          <el-form-item>
-            <page-button type="search" @click.stop="onSearch" />
-            <page-button type="reset" @click.prevent="handelResetSearchForm" />
-          </el-form-item>
-        </el-form>
-        <div class="button-group">
-          <page-button class="btn" type="create" @click.stop="onAdd()" />
-        </div>
-      </div>
+      <el-form
+        ref="searchForm"
+        :model="listQuery"
+        :inline="true"
+        label-suffix=":">
+        <el-form-item label="船名" prop="name">
+          <el-input
+            v-model="listQuery.shipName"
+            placeholder="请输入船名"
+            clearable></el-input>
+        </el-form-item>
+        <el-form-item>
+          <page-button type="search" @click.stop="onSearch" />
+          <page-button type="reset" @click.prevent="handelResetSearchForm" />
+        </el-form-item>
+      </el-form>
+    </template>
+    <template #button>
+      <page-button class="btn" type="create" @click.stop="onAdd()" />
     </template>
     <template #crud>
       <avue-crud
@@ -165,27 +163,3 @@ onBeforeMount(() => {
     </template>
   </page-container>
 </template>
-
-<style scoped lang="scss">
-.attribute-manage-box {
-  .index-page-container-header {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    .button-group {
-      display: flex;
-      align-content: flex-start;
-      justify-content: flex-end;
-      flex-wrap: wrap;
-      gap: 12px;
-      flex-shrink: 0;
-      width: 324px;
-      height: 100%;
-      .btn {
-        margin: 0;
-      }
-    }
-  }
-}
-</style>
