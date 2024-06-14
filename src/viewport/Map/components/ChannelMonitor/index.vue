@@ -1,14 +1,16 @@
 <script setup>
 import { MapboxDraw } from "plugins";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { parse } from "wellknown";
 import Dialog from "./dialog.vue";
 import { getPtShipFenceList } from "@/api/map/ptfence.js";
+import { mapStore } from "@/store/index.js";
 
 defineOptions({
   name: "ChannelMonitor",
 });
 
+const MapStore = mapStore();
 const dialogBox = ref();
 let dataList = ref([]);
 
@@ -43,9 +45,16 @@ function init() {
     MapboxDraw.on("graphical_click", ({ feature }) => {
       dialogBox.value.open(feature.properties.uid);
     });
-    console.log(MapboxDraw);
   });
 }
+
+watch(
+  () => MapStore.initMap,
+  (news) => {
+    if (news) init();
+  },
+  { deep: true },
+);
 
 defineExpose({
   init,

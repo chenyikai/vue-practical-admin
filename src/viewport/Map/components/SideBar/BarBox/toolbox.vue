@@ -16,7 +16,7 @@ defineExpose({
 </script>
 
 <template>
-  <div class="meteorology-box">
+  <div class="tool-box">
     <el-drawer
       :append-to-body="true"
       v-model="drawer"
@@ -24,7 +24,7 @@ defineExpose({
       size="20%">
       <template #header="{ titleId, titleClass }">
         <div :id="titleId" :class="`${titleClass} drawer-title-text`">
-          功能列表
+          工具列表
         </div>
       </template>
       <div>124</div>
@@ -33,7 +33,7 @@ defineExpose({
 </template>
 
 <style scoped lang="scss">
-.meteorology-box {
+.tool-box {
   position: relative;
   ::v-global(.drawer-title-text) {
     font-size: 17px;

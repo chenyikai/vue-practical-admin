@@ -1,6 +1,7 @@
 <script setup>
 import Meteorology from "./BarBox/meteorology.vue";
 import ToolBox from "./BarBox/toolbox.vue";
+import SourceBox from "./BarBox/source.vue";
 import { ref, reactive } from "vue";
 defineOptions({
   name: "SideBar",
@@ -8,6 +9,7 @@ defineOptions({
 
 const meteorology = ref();
 const toolbox = ref();
+const sourcebox = ref();
 const sideBarList = reactive([
   {
     id: 1,
@@ -41,7 +43,7 @@ const sideBarList = reactive([
   },
   {
     id: 4,
-    label: "功能",
+    label: "工具",
     type: "tool",
     icon: new URL("@/assets/images/map/sideBar/tool.png", import.meta.url)[
       "href"
@@ -69,6 +71,9 @@ function onClick(item) {
     case 4:
       toolbox.value.open();
       break;
+    case 5:
+      sourcebox.value.open();
+      break;
     default:
       break;
   }
@@ -90,6 +95,7 @@ function onClick(item) {
   </ul>
   <Meteorology ref="meteorology" />
   <ToolBox ref="toolbox" />
+  <SourceBox ref="sourcebox" />
 </template>
 
 <style scoped lang="scss">
