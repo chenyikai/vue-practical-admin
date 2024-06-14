@@ -7,11 +7,10 @@ export default {
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import init, { Mapbox, MapboxShip, MapboxDraw } from "plugins/index.js";
-import { shipInfoStore, mapStore } from "@/store";
+import { shipInfoStore } from "@/store";
 // import { trackData, shipData } from "./data.js";
 // import Plot from "plugins/composition/Plot";
 const ShipInfoStore = shipInfoStore();
-const MapStore = mapStore();
 
 const map = ref({});
 const loading = ref(false);
@@ -22,7 +21,6 @@ function onClick(e) {
 }
 
 function initMap() {
-  MapStore.$state.initMap = false;
   const options = {
     container: "map",
   };
@@ -37,7 +35,6 @@ function initMap() {
     // const plot = new Plot({ map: Mapbox.getMap() });
     // plot.changeMode(Plot.DRAW_POINT, {});
     MapboxShip.on("click", onClick);
-    MapStore.$state.initMap = true;
   });
 }
 

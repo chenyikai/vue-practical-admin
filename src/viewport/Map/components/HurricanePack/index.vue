@@ -48,15 +48,13 @@ import {
 } from "@/api/map/meteorology.js";
 import { set } from "lodash";
 import { parse } from "wellknown";
-import { ref, onBeforeUnmount, watch } from "vue";
+import { ref, onBeforeUnmount, onMounted } from "vue";
 import { Mapbox } from "plugins";
-import { mapStore } from "@/store/index.js";
 
 defineOptions({
   name: "HurricanePack",
 });
 
-const MapStore = mapStore();
 let isShow = ref(false);
 let typhoonYear = ref(moment().format("YYYY"));
 let typhoonInstance = undefined;
@@ -320,13 +318,9 @@ function kvToJson(k, v) {
   return list;
 }
 
-watch(
-  () => MapStore.initMap,
-  (news) => {
-    if (news) init();
-  },
-  { deep: true },
-);
+onMounted(() => {
+  Mapbox.mapLoaded().then(() => init());
+});
 
 onBeforeUnmount(() => {
   removeTyphoon();
