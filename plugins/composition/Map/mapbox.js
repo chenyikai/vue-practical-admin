@@ -2,6 +2,8 @@ import EventEmitter from "eventemitter3";
 import { cloneDeep } from "lodash";
 import { mapConfig } from "plugins/mapConfig.js";
 
+let cache = new Set();
+
 class Mapbox extends EventEmitter {
   /**
    * @type { mapboxgl.Map }
@@ -144,20 +146,26 @@ class Mapbox extends EventEmitter {
           this.mapTimer = setInterval(() => {
             load(resolve);
           }, 16);
+        } else {
+          cache.add(resolve);
         }
       } else {
         this.mapTimer && clearInterval(this.mapTimer);
         this.mapTimer = null;
+        if (cache.size > 0) {
+          cache.forEach((cb) => cb());
+          cache.clear();
+        }
         resolve();
       }
     };
     return new Promise((resolve, reject) => {
       try {
         load(resolve);
-      } catch {
+      } catch (e) {
         this.mapTimer && clearInterval(this.mapTimer);
         this.mapTimer = null;
-        reject();
+        reject(e);
       }
     });
   }
