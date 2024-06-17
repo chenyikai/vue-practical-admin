@@ -2,6 +2,7 @@
 import Meteorology from "./BarBox/meteorology.vue";
 import ToolBox from "./BarBox/toolbox.vue";
 import SourceBox from "./BarBox/source.vue";
+import LayerBox from "./BarBox/layerBox.vue";
 import { ref, reactive } from "vue";
 defineOptions({
   name: "SideBar",
@@ -9,6 +10,7 @@ defineOptions({
 
 const meteorology = ref();
 const toolbox = ref();
+const layerBox = ref();
 const sourcebox = ref();
 const sideBarList = reactive([
   {
@@ -68,6 +70,9 @@ function onClick(item) {
     case 2:
       meteorology.value.open();
       break;
+    case 3:
+      layerBox.value.open();
+      break;
     case 4:
       toolbox.value.open();
       break;
@@ -95,6 +100,7 @@ function onClick(item) {
   </ul>
   <Meteorology ref="meteorology" />
   <ToolBox ref="toolbox" />
+  <LayerBox ref="layerBox" />
   <SourceBox ref="sourcebox" />
 </template>
 
