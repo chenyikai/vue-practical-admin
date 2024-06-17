@@ -14,6 +14,7 @@ import SideBar from "./components/SideBar/index.vue";
 import GalesPack from "./components/GalesPack/index.vue";
 import HurricanePack from "./components/HurricanePack/index.vue";
 import MapChannelMonitor from "@/viewport/Map/components/ChannelMonitor/index.vue";
+import FisheryMeteorology from "@/viewport/Map/components/FisheryMeteorology/index.vue";
 
 defineOptions({
   name: "MapPage",
@@ -34,6 +35,7 @@ defineOptions({
 
       <GalesPack />
       <HurricanePack />
+      <FisheryMeteorology />
     </template>
   </map-layout>
 </template>
