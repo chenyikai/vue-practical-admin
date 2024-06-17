@@ -41,14 +41,16 @@ import { mapConfig } from "@/plugins/mapConfig.js";
 import { getBigWindForecastList, getEhhTxt } from "@/api/map/meteorology.js";
 import { parse } from "wellknown";
 import { dateFormat } from "@/utils/date.js";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { Mapbox } from "plugins";
 import SvgIcon from "package/SvgIcon/src/index.vue";
+import { mapStore } from "@/store/index.js";
 
 defineOptions({
   name: "GalesPack",
 });
 
+const MapStore = mapStore();
 let loading = ref(false);
 let isShow = ref(false);
 let dataList = ref([]);
@@ -183,6 +185,13 @@ function flyTo() {
     curve: 0.5,
   });
 }
+
+watch(
+  () => MapStore.$state.qxType,
+  (news) => {
+    open(news);
+  },
+);
 
 defineExpose({
   open,

@@ -5,6 +5,7 @@ const mapStore = defineStore("map", {
   state: () => {
     return {
       drawData: getStore({ name: "draw-data" }) || [],
+      qxType: null,
     };
   },
   actions: {

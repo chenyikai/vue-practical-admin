@@ -48,8 +48,9 @@ import {
 } from "@/api/map/meteorology.js";
 import { set } from "lodash";
 import { parse } from "wellknown";
-import { ref, onBeforeUnmount, onMounted } from "vue";
+import { ref, onBeforeUnmount, onMounted, watch } from "vue";
 import { Mapbox } from "plugins";
+import { mapStore } from "@/store/index.js";
 
 defineOptions({
   name: "HurricanePack",
@@ -61,6 +62,7 @@ let typhoonInstance = undefined;
 let typhoonList = ref([]);
 let typhoonData = ref({});
 let checkList = ref({});
+const MapStore = mapStore();
 
 const pickerOptions = ref({
   disabledDate(time) {
@@ -317,6 +319,13 @@ function kvToJson(k, v) {
   });
   return list;
 }
+
+watch(
+  () => MapStore.$state.qxType,
+  (news) => {
+    open(news);
+  },
+);
 
 onMounted(() => {
   Mapbox.mapLoaded().then(() => init());
