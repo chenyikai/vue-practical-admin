@@ -10,6 +10,8 @@ defineOptions({
   name: "SideBar",
 });
 
+const emits = defineEmits(["click"]);
+
 const sideBarList = reactive([
   {
     id: 1,
@@ -63,7 +65,9 @@ const sideBarList = reactive([
   },
 ]);
 
-function onClick() {}
+function onClick(val) {
+  emits("click", val);
+}
 </script>
 
 <template>
@@ -72,7 +76,7 @@ function onClick() {}
       class="side-bar-item"
       v-for="item in sideBarList"
       :key="item.id"
-      @click="onClick(item)">
+      @click.stop="onClick(item)">
       <div class="icon-layout">
         <img :src="item.icon" :alt="item.label" />
       </div>

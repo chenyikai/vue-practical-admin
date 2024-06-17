@@ -11,10 +11,16 @@ import SearchBar from "./components/SearchBar/index.vue";
 import ShipInfo from "./components/ShipInfo/index.vue";
 import MapControl from "./components/MapControl/index.vue";
 import SideBar from "./components/SideBar/index.vue";
+import { shipInfoStore } from "@/store";
+const ShipInfoStore = shipInfoStore();
 
 defineOptions({
   name: "MapPage",
 });
+
+function onClick() {
+  ShipInfoStore.show(412421079);
+}
 </script>
 
 <template>
@@ -24,9 +30,9 @@ defineOptions({
     </template>
     <template #control>
       <search-bar />
-      <ship-info />
+      <ship-info v-if="ShipInfoStore.visible" />
       <map-control />
-      <side-bar />
+      <side-bar @click="onClick" />
     </template>
   </map-layout>
 </template>

@@ -88,7 +88,7 @@ onMounted(() => {
       <span class="rounded-border" v-for="item in 4" :key="item"></span>
       <div class="map-container">
         <slot name="map"></slot>
-        <div class="control-container">
+        <div id="controlBox" class="control-container">
           <slot name="control"></slot>
         </div>
       </div>
