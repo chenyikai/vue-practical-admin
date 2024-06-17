@@ -14,7 +14,7 @@ import SideBar from "./components/SideBar/index.vue";
 import GalesPack from "./components/GalesPack/index.vue";
 import HurricanePack from "./components/HurricanePack/index.vue";
 import MapChannelMonitor from "@/viewport/Map/components/ChannelMonitor/index.vue";
-
+import ArbitraryPoint from "./components/ArbitraryPoint/index.vue";
 defineOptions({
   name: "MapPage",
 });
@@ -34,6 +34,7 @@ defineOptions({
 
       <GalesPack />
       <HurricanePack />
+      <ArbitraryPoint />
     </template>
   </map-layout>
 </template>
