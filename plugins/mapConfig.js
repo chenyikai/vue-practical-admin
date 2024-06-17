@@ -5,6 +5,7 @@ import electronicmap from "./assets/electronicmap.png";
 import seamap from "./assets/seamap.png";
 import satellitemap from "./assets/satellitemap.png";
 import roadmap from "./assets/roadmap.png";
+import EhhFishingGround from "plugins/composition/data/fishing-ground.json";
 
 export const mapConfig = {
   container: "map",
@@ -12,7 +13,13 @@ export const mapConfig = {
     version: 8,
     name: "Basic",
     glyphs: "https://objects.aochensoft.com/oss/{fontstack}/{range}.pbf",
-    sources: {},
+    sources: {
+      // 渔场数据
+      "ehh-fishing-ground": {
+        data: EhhFishingGround,
+        type: "geojson",
+      },
+    },
     layers: [
       {
         id: "background",
