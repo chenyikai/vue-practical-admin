@@ -41,7 +41,7 @@ function init() {
     MapboxDraw.render();
 
     MapboxDraw.on("graphical_click", ({ feature }) => {
-      dialogBox.value.open(feature.properties.uid);
+      dialogBox.value.open(feature.properties.uid, feature.properties.name);
     });
   });
 }
