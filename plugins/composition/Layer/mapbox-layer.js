@@ -5,6 +5,8 @@ import {
   polygonToLine,
   featureCollection,
 } from "@turf/turf";
+import { parse } from "wellknown";
+import { circle, feature } from "@turf/turf";
 import { validatenull } from "@/utils/validate.js";
 import { set, cloneDeep } from "lodash";
 
@@ -377,10 +379,11 @@ class MapboxLayer extends EventEmitter {
   }
 
   _draw(features) {
+    console.log(this.map.getSource(SOURCE), "this.map.getSource(SOURCE)");
     if (features.length === 0) {
       this.map.getSource(SOURCE).setData({
         type: "FeatureCollection",
-        features: [],
+        featurse: [],
       });
       return;
     }
@@ -509,6 +512,58 @@ class MapboxLayer extends EventEmitter {
   getOffset(name) {
     const coefficient = Math.floor(name.length / 10);
     return [0, 1 + coefficient * 0.5];
+  }
+  handleAllTypeLayer(data) {
+    return data
+      .map((item) => {
+        if (item.geom) {
+          let properties = {};
+          let geom = parse(item.geom);
+          if (geom["type"] === MapboxLayer.POINT && !item.radius) {
+            console.log(item.icon, "icon");
+            properties = {
+              ...MapboxLayer.POINT_STYLE,
+              "icon-image": item.icon || "point",
+            };
+          } else if (geom["type"] === MapboxLayer.POINT_STYLE) {
+            properties = MapboxLayer.LINE_STRING_STYLE;
+          } else if (geom["type"] === MapboxLayer.POLYGON) {
+            properties = MapboxLayer.POLYGON_STYLE;
+          } else if (geom["type"] === MapboxLayer.POINT && item.radius) {
+            properties = {
+              ...MapboxLayer.CIRCLE_STYLE,
+            };
+          }
+
+          let _feature = {};
+
+          if (geom["type"] === MapboxLayer.POINT && item.radius) {
+            _feature = circle(geom.coordinates, item.radius, {
+              units: "kilometers",
+
+              steps: 64,
+
+              properties: properties,
+            });
+          } else {
+            _feature = feature(geom, {
+              ...properties,
+              "graphical-type": MapboxLayer.Warn,
+              name: item.name,
+            });
+          }
+
+          return {
+            id: item.id,
+
+            ..._feature,
+          };
+        }
+      })
+
+      .filter((item) => !validatenull(item))
+
+      .flat();
   }
 }
 

@@ -78,7 +78,6 @@ function handleNodeClick(node) {
 }
 // 勾选图层的回调
 function handleCheckChange() {
-  console.log(MapboxLayer, "MapboxLayer");
   let nodes = tree.value.getCheckedNodes().filter((item) => !item.children);
   nodes = nodes.map((item) => {
     let ele = type.value.find((i) => i.code == item.typeCode);
