@@ -236,7 +236,6 @@ onMounted(() => {
   &-main {
     position: relative;
     width: 100%;
-    margin-bottom: 15px;
     height: calc(100% - var(--header-height));
     margin: {
       top: var(--header-height);

@@ -22,10 +22,6 @@ const ShipInfoStore = shipInfoStore();
 defineOptions({
   name: "MapPage",
 });
-
-function onClick() {
-  ShipInfoStore.show(412421079);
-}
 </script>
 
 <template>
@@ -43,7 +39,6 @@ function onClick() {
       <HurricanePack />
       <ArbitraryPoint />
       <FisheryMeteorology />
-      <side-bar @click="onClick" />
     </template>
   </map-layout>
 </template>
