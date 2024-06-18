@@ -17,6 +17,9 @@ import {
   getWindZlevelColors,
   getAreasWithSixHourForecast,
 } from "@/api/map/meteorology.js";
+import { dateFormat } from "@/utils/date.js";
+import ComponentBox from "@/viewport/Map/ComponentBox.vue";
+import SvgIcon from "package/SvgIcon/src/index.vue";
 
 defineOptions({
   name: "FisheryMeteorology",
@@ -24,6 +27,7 @@ defineOptions({
 
 const MapStore = mapStore();
 const isShow = ref(false);
+const loading = ref(false);
 const images = {
   4: wind4,
   5: wind5,
@@ -63,7 +67,6 @@ let vcolors = ref([]);
 
 function open(data) {
   if (data === 3) {
-    isShow.value = true;
     Mapbox.getMap()
       .getStyle()
       .layers.forEach((layer) => {
@@ -82,6 +85,10 @@ function open(data) {
       });
     isShow.value = false;
   }
+}
+
+function handleClose() {
+  isShow.value = false;
 }
 
 async function createFishingGroundIconImage(
@@ -391,25 +398,14 @@ function getFishingGroundData() {
     forecastData.value = data.dataset;
     groundList.value = kvToJson(data.responseData.k, data.responseData.v);
     onCurrentDataChange(data.datetimeList[0]);
-  });
-}
 
-function addListener(map) {
-  map.on("click", "ehh-fishing-ground-fill", (e) => {
-    const data = groundList.value.find(
-      (item) => item.areaCode === e.features[0].toJSON().properties.code,
-    );
-    handleResultClick({
-      name: e.features[0].toJSON().properties.name,
-      ...data,
+    Mapbox.getMap().flyTo({
+      center: [123.786863, 30],
+      zoom: 5.5,
+      speed: 10,
+      curve: 0.5,
     });
   });
-}
-
-function handleResultClick(data) {
-  activeGround.value = data.name;
-  weatherData.value = kvToJson(data.list.k, data.list.v);
-  console.log(activeGround.value, weatherData.value);
 }
 
 function onCurrentDataChange(val) {
@@ -436,6 +432,68 @@ function onCurrentDataChange(val) {
   });
 }
 
+function addListener(map) {
+  map.on("click", "ehh-fishing-ground-fill", (e) => {
+    const data = groundList.value.find(
+      (item) => item.areaCode === e.features[0].toJSON().properties.code,
+    );
+    handleResultClick({
+      name: e.features[0].toJSON().properties.name,
+      ...data,
+    });
+  });
+}
+
+function handleResultClick(data) {
+  activeGround.value = data.name;
+  const result = kvToJson(data.list.k, data.list.v).map((e) => {
+    const date = dateFormat(e.forecastTime * 1).slice(0, 10);
+    const time = dateFormat(e.forecastTime * 1).slice(11, 13);
+    return {
+      ...e,
+      forecastTime: dateFormat(e.forecastTime * 1),
+      timestrap: `${date.slice(5)} ${getWeekday(date)}`,
+      timesegment: getDateToKey(time),
+    };
+  });
+  const groupedData = result.reduce((acc, item) => {
+    const date = item.forecastTime.split(" ")[0];
+    if (!acc[date]) {
+      acc[date] = [];
+    }
+    acc[date].push(item);
+    return acc;
+  }, {});
+  weatherData.value = Object.values(groupedData).slice(0, 7);
+
+  console.log(activeGround.value, weatherData.value);
+  isShow.value = true;
+}
+
+function getWeekday(date) {
+  const weekdays = [
+    "星期日",
+    "星期一",
+    "星期二",
+    "星期三",
+    "星期四",
+    "星期五",
+    "星期六",
+  ];
+  const dayOfWeek = new Date(date).getDay();
+  return weekdays[dayOfWeek];
+}
+
+function getDateToKey(date) {
+  const Kv = {
+    0: "下半夜",
+    6: "上午",
+    12: "下午",
+    18: "上半夜",
+  };
+  return Kv[Number(date)];
+}
+
 onMounted(() => {
   Mapbox.mapLoaded().then(() => initMap());
 });
@@ -449,7 +507,95 @@ watch(
 </script>
 
 <template>
-  <div></div>
+  <component-box
+    class="fishery-meteorology-control"
+    v-draggable:fishery-meteorology-container-header
+    v-if="isShow"
+    :loading="loading"
+    :zIndex="99">
+    <section class="fishery-meteorology-container">
+      <header class="fishery-meteorology-container-header">
+        {{ activeGround || "未知渔场" }}天气预报
+        <svg-icon class="btn" :name="'stop'" @click.stop="handleClose" />
+      </header>
+      <footer class="fishery-meteorology-container-footer">
+        <div
+          class="fishery-meteorology-container-footer-item"
+          v-for="(item, i) in weatherData"
+          :key="i">
+          <div class="item-top-text">{{ item[0].timestrap }}</div>
+          <el-table :data="item" style="width: 100%">
+            <el-table-column prop="timesegment" label="" width="70" />
+            <el-table-column prop="windDirection" label="风向" width="90" />
+            <el-table-column prop="windLevel" label="风力" width="60" />
+            <el-table-column prop="windZLevel" label="阵风" width="60" />
+            <el-table-column prop="wave" label="风浪" width="60" />
+          </el-table>
+        </div>
+      </footer>
+    </section>
+  </component-box>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.fishery-meteorology-control {
+  position: absolute;
+  top: 15px;
+  left: 12px;
+  width: 390px;
+  .fishery-meteorology-container {
+    width: 100%;
+    padding: 5px 0 0;
+    &-header {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      padding: 2px 10px 5px;
+      border-bottom: 1px solid;
+      font-size: 16px;
+      line-height: 22px;
+      border-image: linear-gradient(
+          90deg,
+          rgba($color: #959595, $alpha: 0.2),
+          rgba($color: #fff, $alpha: 0.5),
+          rgba($color: #959595, $alpha: 0.2)
+        )
+        1 1;
+      .btn {
+        position: absolute;
+        right: 7px;
+        top: 1px;
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+        background: white;
+        border-radius: 50px;
+      }
+    }
+    &-footer {
+      width: 100%;
+      max-height: 500px;
+      border-radius: 0 0 6px 6px;
+      background-color: rgba($color: #191929, $alpha: 0.8);
+      padding: 10px 10px;
+      box-sizing: border-box;
+      overflow: hidden auto;
+      &-item {
+        display: flex;
+        flex-direction: column;
+        color: #fff;
+        margin-bottom: 15px;
+        .item-top-text {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          font-size: 14px;
+          line-height: 20px;
+        }
+      }
+    }
+  }
+}
+</style>
