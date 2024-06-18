@@ -27,6 +27,7 @@ defineOptions({
 
 const MapStore = mapStore();
 const isShow = ref(false);
+const isLegendPack = ref(false);
 const loading = ref(false);
 const images = {
   4: wind4,
@@ -62,6 +63,8 @@ let promiseList = ref([]);
 let groundList = ref([]);
 let forecastData = ref(new Map());
 let weatherData = ref([]);
+let historyNode = ref([]);
+let nodeKey = ref(0);
 let activeGround = ref(undefined);
 let vcolors = ref([]);
 
@@ -84,6 +87,7 @@ function open(data) {
         }
       });
     isShow.value = false;
+    isLegendPack.value = false;
   }
 }
 
@@ -397,7 +401,10 @@ function getFishingGroundData() {
   getAreasWithSixHourForecast({ needAreaFields: 1 }).then(({ data }) => {
     forecastData.value = data.dataset;
     groundList.value = kvToJson(data.responseData.k, data.responseData.v);
-    onCurrentDataChange(data.datetimeList[0]);
+    historyNode.value = data.datetimeList;
+    nodeKey.value = 0;
+    isLegendPack.value = true;
+    onCurrentDataChange(historyNode.value[nodeKey.value]);
 
     Mapbox.getMap().flyTo({
       center: [123.786863, 30],
@@ -420,6 +427,8 @@ function onCurrentDataChange(val) {
       item.properties.timestrap = val;
     }
   });
+
+  console.log(features, val);
   createFishingGroundIconImage(
     Mapbox.getMap(),
     val,
@@ -465,8 +474,6 @@ function handleResultClick(data) {
     return acc;
   }, {});
   weatherData.value = Object.values(groupedData).slice(0, 7);
-
-  console.log(activeGround.value, weatherData.value);
   isShow.value = true;
 }
 
@@ -492,6 +499,24 @@ function getDateToKey(date) {
     18: "上半夜",
   };
   return Kv[Number(date)];
+}
+
+function packButton(type) {
+  const length = historyNode.value.length;
+  switch (type) {
+    case "up":
+      if (nodeKey.value < length) {
+        nodeKey.value += 1;
+        onCurrentDataChange(historyNode.value[nodeKey.value]);
+      }
+      break;
+    case "down":
+      if (nodeKey.value > 0) {
+        nodeKey.value -= 1;
+        onCurrentDataChange(historyNode.value[nodeKey.value]);
+      }
+      break;
+  }
 }
 
 onMounted(() => {
@@ -535,6 +560,26 @@ watch(
       </footer>
     </section>
   </component-box>
+
+  <transition name="fade">
+    <div class="legend-pack" v-show="isLegendPack">
+      <svg-icon
+        class="icon-box"
+        :name="'mapMeteorology-left'"
+        @click="packButton('down')" />
+      <div class="text-box">
+        {{
+          historyNode[nodeKey]
+            ? `${dateFormat(historyNode[nodeKey] * 1).slice(0, 13)}时 渔场预报`
+            : "暂无数据"
+        }}
+      </div>
+      <svg-icon
+        class="icon-box"
+        :name="'mapMeteorology-right'"
+        @click="packButton('up')" />
+    </div>
+  </transition>
 </template>
 
 <style scoped lang="scss">
@@ -597,5 +642,50 @@ watch(
       }
     }
   }
+}
+
+.legend-pack {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin-bottom: 10px;
+  pointer-events: all;
+  width: 380px;
+  background: rgba(0, 47, 68, 0.68);
+  border: 2px solid;
+  border-image: linear-gradient(
+      360deg,
+      rgba(32, 114, 238, 1),
+      rgba(1, 246, 255, 1)
+    )
+    1 1;
+  box-shadow: inset 0 0 33px 0 #2394e6;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+  .icon-box {
+    width: 19px;
+    height: 19px;
+    font-size: 19px;
+    cursor: pointer;
+  }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition:
+    transform 0.25s ease-in-out,
+    opacity 0.25s ease-in-out;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateX(-50%) translateY(-30%);
 }
 </style>
