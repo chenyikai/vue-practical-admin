@@ -316,7 +316,7 @@ class MapboxShip extends EventEmitter {
     });
   }
 
-  _keyMap(keys) {
+  _keyMap(keys = []) {
     const newKeys = keys.map((key) => {
       return this._convertKey(key);
     });
