@@ -70,6 +70,7 @@ class MapboxShip extends EventEmitter {
     this.shipData = {
       [OUT_SHIP]: [],
       [OWN_SHIP]: [],
+      [GHOST_SHIP]: [],
     };
   }
 
@@ -102,6 +103,13 @@ class MapboxShip extends EventEmitter {
       }
       // }
     });
+  }
+
+  async isOwnShip(ship) {
+    const k = await this._getDataKey();
+    const index = this._getIndex(k, "mmsi");
+    const mmsiList = this.shipData[OWN_SHIP].map((item) => item[index]);
+    return mmsiList.findIndex((mmsi) => mmsi === ship.mmsi) !== -1;
   }
 
   refresh() {
@@ -316,7 +324,7 @@ class MapboxShip extends EventEmitter {
     });
   }
 
-  _keyMap(keys) {
+  _keyMap(keys = []) {
     const newKeys = keys.map((key) => {
       return this._convertKey(key);
     });

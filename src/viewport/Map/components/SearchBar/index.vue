@@ -47,7 +47,7 @@ function onNodeClick(node) {
 </script>
 
 <template>
-  <component-box class="search-bar-control">
+  <component-box id="search-bar" class="search-bar-control">
     <search-input v-model="keyword" @search="onSearch" />
   </component-box>
   <result-list

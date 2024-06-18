@@ -1,11 +1,15 @@
 <script setup>
 import { ref, reactive, onBeforeMount } from "vue";
-import { reqSeaData, reqAnjiData } from "./api.js";
+import { reqSeaData, reqAnJiData, reqSeaType, reqAnjiType } from "./api.js";
+import { parse } from "wellknown";
+import { bbox } from "@turf/turf";
+import { MapboxLayer } from "plugins/index.js";
 defineOptions({
   name: "layerBox",
 });
 
 const drawer = ref(false);
+let type = ref([]);
 const tree = ref("");
 function open(type = true) {
   drawer.value = type;
@@ -14,17 +18,25 @@ onBeforeMount(() => {
   reqLayerData();
 });
 function reqLayerData() {
-  Promise.all([reqSeaData(), reqAnjiData()]).then(([seaData, anjiData]) => {
-    layerList[0].children = setDataLabel(seaData.data.data.rows);
-    layerList[1].children = setDataLabel(anjiData.data.data.rows);
-  });
+  Promise.all([reqSeaData(), reqAnJiData(), reqSeaType(), reqAnjiType()]).then(
+    ([seaData, anjiData, seaType, anJiType]) => {
+      layerList[0].children = setDataLabel(seaData.data.data);
+      layerList[1].children = setDataLabel(anjiData.data.data);
+      type.value = [...seaType.data.data.rows, ...anJiType.data.data.rows];
+    },
+  );
 }
 // 处理图层数据
 function setDataLabel(val) {
   return val.map((item) => {
     const arr = [];
-    if (item.attributeVoList && item.attributeVoList.length) {
-      item.attributeVoList.forEach((element) => {
+    if (item.poiTInfoList && item.poiTInfoList.length) {
+      item.poiTInfoList.forEach((element) => {
+        arr.push({ id: element.id, label: element.name, ...element });
+      });
+    }
+    if (item.shorePoiTInfoList && item.shorePoiTInfoList.length) {
+      item.shorePoiTInfoList.forEach((element) => {
         arr.push({ id: element.id, label: element.name, ...element });
       });
     }
@@ -51,31 +63,33 @@ const layerList = reactive([
   },
 ]);
 function handleNodeClick(node) {
-  // if (node.geom) {
-  //   let _bbox = bbox(parse(node.geom));
-  //   window.map.fitBounds(
-  //     [
-  //       [_bbox[0], _bbox[1]],
-  //       [_bbox[2], _bbox[3]],
-  //     ],
-  //     {
-  //       padding: { top: 70, bottom: 80, left: 30, right: 30 },
-  //     },
-  //   );
-  // }
+  if (node.geom) {
+    let _bbox = bbox(parse(node.geom));
+    window.map.fitBounds(
+      [
+        [_bbox[0], _bbox[1]],
+        [_bbox[2], _bbox[3]],
+      ],
+      {
+        padding: { top: 70, bottom: 80, left: 30, right: 30 },
+      },
+    );
+  }
 }
+// 勾选图层的回调
 function handleCheckChange() {
-  // MapboxLayer.clear();
-  // let nodes = tree.value.getCheckedNodes().filter((item) => !item.children);
-  // nodes = nodes.map((item) => {
-  //   let ele = type.value.find((i) => i.code == item.typeCode);
-  //   return {
-  //     ...item,
-  //     icon: ele.icon || "",
-  //   };
-  // });
-  // const features = MapboxLayer.handleAllTypeLayer(nodes);
-  // features.length !== 0 && MapboxLayer.render(features);
+  console.log(MapboxLayer, "MapboxLayer");
+  let nodes = tree.value.getCheckedNodes().filter((item) => !item.children);
+  nodes = nodes.map((item) => {
+    let ele = type.value.find((i) => i.code == item.typeCode);
+    return {
+      ...item,
+      icon: ele.icon || "",
+    };
+  });
+
+  const features = MapboxLayer.handleAllTypeLayer(nodes);
+  features.length !== 0 && MapboxLayer.render(features);
 }
 defineExpose({
   open,
