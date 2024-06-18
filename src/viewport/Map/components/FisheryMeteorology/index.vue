@@ -1,7 +1,6 @@
 <script setup>
 import { ref, watch, onMounted } from "vue";
 import { mapStore } from "@/store/index.js";
-// import { Mapbox } from "plugins/index.js";
 import wind4 from "@/assets/images/map/wind/4.png";
 import wind5 from "@/assets/images/map/wind/5.png";
 import wind6 from "@/assets/images/map/wind/6.png";
@@ -29,36 +28,6 @@ const MapStore = mapStore();
 const isShow = ref(false);
 const isLegendPack = ref(false);
 const loading = ref(false);
-const images = {
-  4: wind4,
-  5: wind5,
-  6: wind6,
-  7: wind7,
-  8: wind8,
-  9: wind9,
-  10: wind10,
-  11: wind11,
-  12: wind12,
-  "12-": wind12,
-};
-const rotateList = {
-  北: 0,
-  东北偏北: 30,
-  东北: 45,
-  东北偏东: 60,
-  东: 90,
-  东南偏东: 120,
-  东南: 135,
-  东南偏南: 150,
-  南: 180,
-  西南偏南: 210,
-  西南: 225,
-  西南偏西: 240,
-  西: 270,
-  西北偏西: 300,
-  西北偏北: 315,
-};
-let promiseList = ref([]);
 
 let groundList = ref([]);
 let forecastData = ref(new Map());
@@ -101,19 +70,54 @@ async function createFishingGroundIconImage(
   dataList = [],
   colors,
 ) {
+  const promiseList = [];
+  const images = {
+    4: wind4,
+    5: wind5,
+    6: wind6,
+    7: wind7,
+    8: wind8,
+    9: wind9,
+    10: wind10,
+    11: wind11,
+    12: wind12,
+    "12-": wind12,
+  };
+  const rotateList = {
+    北: 0,
+    东北偏北: 30,
+    东北: 45,
+    东北偏东: 60,
+    东: 90,
+    东南偏东: 120,
+    东南: 135,
+    东南偏南: 150,
+    南: 180,
+    西南偏南: 210,
+    西南: 225,
+    西南偏西: 240,
+    西: 270,
+    西北偏西: 300,
+    西北偏北: 315,
+  };
+
   for (const key of Object.keys(images)) {
-    promiseList.value.push(
-      new Promise((resolve) => {
+    promiseList.push(
+      new Promise((resolve, reject) => {
         const src = images[key];
+        console.log(src);
         images[key] = new Image();
         images[key].src = src;
-        images[key].onload = () => {
-          resolve();
-        };
+        images[key].onload = () => resolve();
+        images[key].onerror = (err) => reject(err);
       }),
     );
   }
-  await Promise.all(promiseList.value);
+  try {
+    await Promise.all(promiseList);
+  } catch (error) {
+    console.error("图片加载失败:", error);
+  }
 
   const canvas = document.createElement("canvas");
   canvas.width = 169;
@@ -427,8 +431,6 @@ function onCurrentDataChange(val) {
       item.properties.timestrap = val;
     }
   });
-
-  console.log(features, val);
   createFishingGroundIconImage(
     Mapbox.getMap(),
     val,
@@ -473,7 +475,8 @@ function handleResultClick(data) {
     acc[date].push(item);
     return acc;
   }, {});
-  weatherData.value = Object.values(groupedData).slice(0, 7);
+  // weatherData.value = Object.values(groupedData).slice(0, 7);
+  weatherData.value = Object.values(groupedData);
   isShow.value = true;
 }
 
