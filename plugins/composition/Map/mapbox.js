@@ -46,8 +46,8 @@ class Mapbox extends EventEmitter {
 
   getInstances() {
     return {
-      map: this.map,
-      ehhGis: this.ehhGis,
+      map: this.getMap(),
+      ehhGis: this.getEhhGis(),
     };
   }
 

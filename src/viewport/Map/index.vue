@@ -16,10 +16,16 @@ import HurricanePack from "./components/HurricanePack/index.vue";
 import MapChannelMonitor from "@/viewport/Map/components/ChannelMonitor/index.vue";
 import ArbitraryPoint from "./components/ArbitraryPoint/index.vue";
 import FisheryMeteorology from "@/viewport/Map/components/FisheryMeteorology/index.vue";
+import { shipInfoStore } from "@/store";
+const ShipInfoStore = shipInfoStore();
 
 defineOptions({
   name: "MapPage",
 });
+
+function onClick() {
+  ShipInfoStore.show(412421079);
+}
 </script>
 
 <template>
@@ -29,7 +35,7 @@ defineOptions({
     </template>
     <template #control>
       <search-bar />
-      <ship-info />
+      <ship-info v-if="ShipInfoStore.visible" />
       <map-control />
       <map-channel-monitor />
       <side-bar />
@@ -37,6 +43,7 @@ defineOptions({
       <HurricanePack />
       <ArbitraryPoint />
       <FisheryMeteorology />
+      <side-bar @click="onClick" />
     </template>
   </map-layout>
 </template>

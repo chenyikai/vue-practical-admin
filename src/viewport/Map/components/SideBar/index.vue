@@ -12,6 +12,8 @@ const meteorology = ref();
 const toolbox = ref();
 const layerBox = ref();
 const sourcebox = ref();
+const emits = defineEmits(["click"]);
+
 const sideBarList = reactive([
   {
     id: 1,
@@ -82,6 +84,8 @@ function onClick(item) {
     default:
       break;
   }
+function onClick(val) {
+  emits("click", val);
 }
 </script>
 
@@ -91,7 +95,7 @@ function onClick(item) {
       class="side-bar-item"
       v-for="item in sideBarList"
       :key="item.id"
-      @click="onClick(item)">
+      @click.stop="onClick(item)">
       <div class="icon-layout">
         <img :src="item.icon" :alt="item.label" />
       </div>

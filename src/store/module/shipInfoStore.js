@@ -10,6 +10,7 @@ const shipInfoStore = defineStore("shipInfo", {
       loading: false,
       zIndex: 0,
       shipData: {},
+      isOwn: false,
     };
   },
   getters: {
@@ -36,6 +37,9 @@ const shipInfoStore = defineStore("shipInfo", {
         .then(({ data }) => {
           this.shipData = data.data;
           MapboxShip.setFocus(this.shipData);
+          MapboxShip.isOwnShip(this.shipData).then((flag) => {
+            this.isOwn = flag;
+          });
         })
         .finally(() => {
           this.loading = false;

@@ -5,11 +5,16 @@ export default {
 </script>
 
 <script setup>
+import { popupManageStore } from "@/store/index.js";
 import loadingIcon from "@/icons/loading.svg?raw";
+import { validatenull } from "@/utils/validate.js";
+import { onMounted } from "vue";
+
+const PopupManageStore = popupManageStore();
 defineOptions({
   name: "ComponentBox",
 });
-defineProps({
+const props = defineProps({
   loading: {
     type: Boolean,
     default: false,
@@ -18,11 +23,29 @@ defineProps({
     type: Number,
     default: 2000,
   },
+  autoRange: {
+    type: Boolean,
+    default: false,
+  },
+  id: {
+    type: String,
+    default: null,
+  },
+});
+
+onMounted(() => {
+  if (props.autoRange) {
+    if (!validatenull(props.id)) {
+      PopupManageStore.setPopup(props.id);
+    } else {
+      console.warn("未传入id，无法自动排列");
+    }
+  }
 });
 </script>
 
 <template>
-  <section class="component-box" :style="{ zIndex }">
+  <section class="component-box" :style="{ zIndex }" :id="id">
     <main
       class="component-box-main"
       v-loading="loading"

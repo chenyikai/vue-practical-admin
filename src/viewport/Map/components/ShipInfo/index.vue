@@ -5,10 +5,11 @@ export default {
 </script>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { CircleClose } from "@element-plus/icons-vue";
 import ComponentBox from "../../../Map/ComponentBox.vue";
 import { shipInfoStore } from "@/store";
+import { ElMessageBox } from "element-plus";
 
 const ShipInfoStore = shipInfoStore();
 
@@ -17,6 +18,7 @@ defineOptions({
 });
 
 const activeStep = ref(1);
+const attention = ref(0);
 const detailTypeList = [
   {
     id: 1,
@@ -39,13 +41,35 @@ const translateX = computed(() => {
 function onChange(val) {
   activeStep.value = val.id;
 }
+
+function onAttentionChange(val) {
+  const label = val === 0 ? "取消关注" : "关注";
+
+  ElMessageBox.confirm(
+    `请确认是否${label}${ShipInfoStore.shipData.cnname || ShipInfoStore.shipData.enname || ShipInfoStore.shipData.mmsi}？`,
+    "提示",
+    {
+      confirmButtonText: "确认",
+      cancelButtonText: "取消",
+      type: "warning",
+    },
+  )
+    .then(() => {})
+    .catch(() => {
+      attention.value = val === 0 ? 1 : 0;
+    });
+}
+
+onMounted(() => {
+  attention.value = ShipInfoStore.isOwn ? 1 : 0;
+});
 </script>
 
 <template>
   <component-box
     class="ship-info-control"
+    id="shipInfo"
     v-draggable:ship-info-container-header
-    v-if="ShipInfoStore.visible"
     :loading="ShipInfoStore.loading"
     :zIndex="ShipInfoStore.zIndex">
     <section class="ship-info-container">
@@ -56,6 +80,11 @@ function onChange(val) {
           }}</span>
         </div>
         <div class="func-layout">
+          <el-rate
+            v-model="attention"
+            :max="1"
+            clearable
+            @change="onAttentionChange" />
           <el-icon class="close-btn"><CircleClose /></el-icon>
         </div>
       </header>
