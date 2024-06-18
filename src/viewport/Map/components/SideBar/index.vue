@@ -12,7 +12,6 @@ const meteorology = ref();
 const toolbox = ref();
 const layerBox = ref();
 const sourcebox = ref();
-const emits = defineEmits(["click"]);
 
 const sideBarList = reactive([
   {
@@ -84,8 +83,6 @@ function onClick(item) {
     default:
       break;
   }
-function onClick(val) {
-  emits("click", val);
 }
 </script>
 
