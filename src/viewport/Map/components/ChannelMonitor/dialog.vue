@@ -78,7 +78,7 @@ defineExpose({
             <el-col :span="24" class="row-text-box">
               航道最大能见度:
               <span>{{
-                formData.visibility ? `${formData.visibility} cm` : "--"
+                formData.visibility ? `${formData.visibility} m` : "--"
               }}</span>
             </el-col>
           </el-row>
