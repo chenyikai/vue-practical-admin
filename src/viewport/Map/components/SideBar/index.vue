@@ -84,8 +84,6 @@ function onClick(item) {
     default:
       break;
   }
-function onClick(val) {
-  emits("click", val);
 }
 </script>
 
