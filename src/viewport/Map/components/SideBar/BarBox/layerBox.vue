@@ -94,76 +94,35 @@ function handleNodeClick(node) {
     );
   }
 }
-// 勾选图层的回调
-function handleCheckChange(data) {
-  console.log(data, "data");
-  let ids = [];
-  const nodes = tree.value.getCheckedKeys();
 
+// 勾选回调
+function handleCheckChange(data) {
+  let ids = []; //触发id
+  const nodes = tree.value.getCheckedKeys(); //勾选id
   if (data.children && data.children.length) {
-    ids = data.children
-      .map((item) => {
-        if (item.children) {
-          return item.children.map((i) => i.id);
-        } else {
-          return item.id;
-        }
-      })
-      .flat();
-  } else if (data && data.geom) {
+    //  递归获取所有id
+    ids = data.children.map((item) => handleChildren(item)).flat();
+  } else {
     ids = data.id;
   }
-
-  if (nodes.includes(data.id) && ids.length) {
+  let showId = ids.filter((item) => nodes.includes(item));
+  // 根据showId长度 判断显示/隐藏图层
+  if (Array.isArray(showId) && showId.length) {
     MapboxLayer.showById(ids);
   } else {
-    ids.length && MapboxLayer.hideById(ids);
+    MapboxLayer.hideById(ids);
   }
 }
-function handleChildren(val) {
-  return val.children.map((item) => {
-    if (item.children && item.children.length) {
-      handleChildren(item);
-    } else {
-      return item.id;
-    }
-  });
+// 递归函数 递归id
+function handleChildren(item, ids = []) {
+  if (item.children && item.children.length) {
+    item.children.map((i) => handleChildren(i, ids));
+  } else {
+    ids.push(item.id);
+  }
+  return ids;
 }
 
-// const ids = reactive([]);
-// function handleShowId(data) {
-//   if (data.children && data.children.length) {
-//     data.children.map((item) => {
-//       if (item.children && item.children.length) {
-//         handleShowId(item);
-//       } else if (item.geom) {
-//         ids.push(item.id);
-
-//         // MapboxLayer.showById(item.id);
-//       }
-//     });
-//   } else if (data.id && !data.children && data.geom) {
-//     MapboxLayer.showById(data.id);
-//     ids.push(data.id);
-//   }
-//   return ids;
-// }
-// function handleHideId(data) {
-//   if (data.children && data.children.length) {
-//     data.children.map((item) => {
-//       if (item.children && item.children.length) {
-//         handleHideId(item);
-//       } else if (item.geom) {
-//         ids.push(item.id);
-//         // MapboxLayer.hideById(item.id);
-//       }
-//     });
-//   } else if (data.id && !data.children && data.geom) {
-//     // MapboxLayer.hideById(data.id);
-//     ids.push(data.id);
-//   }
-//   return ids;
-// }
 // 渲染图层
 function renderLayer(val) {
   Mapbox.mapLoaded().then(() => {
