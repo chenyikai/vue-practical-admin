@@ -1,6 +1,6 @@
 import Mapbox from "./composition/Map/mapbox.js";
 import MapboxDraw from "./composition/Draw/mapbox-draw.js";
-import MapboxLayer from "./composition/mapbox-layer.js";
+import MapboxLayer from "./composition/Layer/mapbox-layer.js";
 import MapboxSwitch from "./composition/mapbox-switch.js";
 import MapboxTrack from "./composition/Track/index.js";
 import MapboxShip from "./composition/Ship/index.js";
@@ -63,6 +63,7 @@ function addDraw({ map, ehhGis }) {
 
   mapboxDrawInstance = new MapboxDraw(options);
   mapboxLayerInstance = new MapboxLayer(options);
+  mapboxLayerInstance.init();
 }
 
 function addSwitch({ map, ehhGis }) {
