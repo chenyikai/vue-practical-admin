@@ -105,7 +105,6 @@ async function createFishingGroundIconImage(
     promiseList.push(
       new Promise((resolve, reject) => {
         const src = images[key];
-        console.log(src);
         images[key] = new Image();
         images[key].src = src;
         images[key].onload = () => resolve();
@@ -505,7 +504,7 @@ function getDateToKey(date) {
 }
 
 function packButton(type) {
-  const length = historyNode.value.length;
+  const length = historyNode.value.length - 1;
   switch (type) {
     case "up":
       if (nodeKey.value < length) {
