@@ -5,6 +5,8 @@ import {
   polygonToLine,
   featureCollection,
 } from "@turf/turf";
+import { parse } from "wellknown";
+import { circle, feature } from "@turf/turf";
 import { validatenull } from "@/utils/validate.js";
 import { set, cloneDeep } from "lodash";
 
@@ -386,6 +388,7 @@ class MapboxLayer extends EventEmitter {
     }
 
     const showFeatures = features.filter((item) => item.properties.visible);
+    console.log(features, showFeatures);
 
     const titleFeature = showFeatures
       .map((item) => this.getTitleFeature(item))
@@ -422,7 +425,7 @@ class MapboxLayer extends EventEmitter {
   showById(id) {
     const features = Object.values(this.layerData);
     features.forEach((feature) => {
-      if (feature.properties.id === id) {
+      if (feature.properties.id === id || feature.id === id) {
         feature.properties.visible = true;
       }
     });
@@ -433,7 +436,7 @@ class MapboxLayer extends EventEmitter {
   hideById(id) {
     const features = Object.values(this.layerData);
     features.forEach((feature) => {
-      if (feature.properties.id === id) {
+      if (feature.properties.id === id || feature.id === id) {
         feature.properties.visible = false;
       }
     });
@@ -484,12 +487,14 @@ class MapboxLayer extends EventEmitter {
   }
 
   render(features) {
+    console.log(features);
     if (features && Array.isArray(features) && features.length > 0) {
       this.changeVisible(features, true).forEach((feature) => {
         this.set(feature);
       });
     }
 
+    console.log(this.layerData, "this.layerData");
     const _features = cloneDeep(Object.values(this.layerData));
     this._draw(_features);
   }
@@ -509,6 +514,57 @@ class MapboxLayer extends EventEmitter {
   getOffset(name) {
     const coefficient = Math.floor(name.length / 10);
     return [0, 1 + coefficient * 0.5];
+  }
+  handleAllTypeLayer(data) {
+    return data
+      .map((item) => {
+        if (item.geom) {
+          let properties = {};
+          let geom = parse(item.geom);
+          if (geom["type"] === MapboxLayer.POINT && !item.radius) {
+            properties = {
+              ...MapboxLayer.POINT_STYLE,
+              "icon-image": item.icon || "point",
+            };
+          } else if (geom["type"] === MapboxLayer.LINE_STRING) {
+            properties = MapboxLayer.LINE_STRING_STYLE;
+          } else if (geom["type"] === MapboxLayer.POLYGON) {
+            properties = MapboxLayer.POLYGON_STYLE;
+          } else if (geom["type"] === MapboxLayer.POINT && item.radius) {
+            properties = {
+              ...MapboxLayer.CIRCLE_STYLE,
+            };
+          }
+
+          let _feature = {};
+
+          if (geom["type"] === MapboxLayer.POINT && item.radius) {
+            _feature = circle(geom.coordinates, item.radius, {
+              units: "kilometers",
+
+              steps: 64,
+
+              properties: properties,
+            });
+          } else {
+            _feature = feature(geom, {
+              ...properties,
+              "graphical-type": MapboxLayer.Warn,
+              name: item.name,
+            });
+          }
+
+          return {
+            id: item.id,
+
+            ..._feature,
+          };
+        }
+      })
+
+      .filter((item) => !validatenull(item))
+
+      .flat();
   }
 }
 
