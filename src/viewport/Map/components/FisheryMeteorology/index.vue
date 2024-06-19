@@ -411,7 +411,7 @@ function getFishingGroundData() {
 
     Mapbox.getMap().flyTo({
       center: [123.786863, 30],
-      zoom: 5.5,
+      zoom: 6.2125,
       speed: 10,
       curve: 0.5,
     });
