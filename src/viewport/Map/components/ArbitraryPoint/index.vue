@@ -5,7 +5,7 @@ import { ref, onMounted, reactive } from "vue";
 import { Mapbox, MapboxDraw } from "plugins";
 import { dateFormat } from "@/utils/date.js";
 import { get_random_point_weather } from "./api.js";
-// import * as echarts from "echarts";
+import WindChart from "./windChart.vue";
 defineOptions({
   name: "ArbitraryPoint",
 });
@@ -106,7 +106,7 @@ watch(
             降水
           </div>
         </div>
-        <div id="myChart" :style="{ width: '300px', height: '300px' }"></div>
+        <WindChart />
       </div>
     </el-dialog>
   </div>
@@ -157,9 +157,5 @@ watch(
 .my-header {
   padding: 10px 0 10px 20px;
   background-color: #546279;
-}
-.wind {
-  width: 200px;
-  height: 200px;
 }
 </style>
