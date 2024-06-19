@@ -111,7 +111,7 @@ export const baseMap = [
         name: "sea1",
         type: "raster",
         tiles: [
-          "https://seamap.ehanghai.cn/ehhht/{z}/{y}/{x}.png?appKey=ec021f83c8b14084b90726dbb120e307",
+          "https://seamap.ehanghai.cn/ehhht/{z}/{y}/{x}.png?appKey=sqm8vc2747a411eda8dc00163e0rtbbs",
         ],
         tileSize: 256,
         layer: {

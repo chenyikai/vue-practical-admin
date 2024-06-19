@@ -1,4 +1,5 @@
 <script setup>
+import ShipBox from "./BarBox/shipbox.vue";
 import Meteorology from "./BarBox/meteorology.vue";
 import ToolBox from "./BarBox/toolbox.vue";
 import SourceBox from "./BarBox/source.vue";
@@ -8,6 +9,7 @@ defineOptions({
   name: "SideBar",
 });
 
+const shipbox = ref();
 const meteorology = ref();
 const toolbox = ref();
 const layerBox = ref();
@@ -68,6 +70,9 @@ const sideBarList = reactive([
 
 function onClick(item) {
   switch (item.id) {
+    case 1:
+      shipbox.value.open();
+      break;
     case 2:
       meteorology.value.open();
       break;
@@ -99,6 +104,7 @@ function onClick(item) {
       <div class="text-layout">{{ item.label }}</div>
     </li>
   </ul>
+  <ShipBox ref="shipbox" />
   <Meteorology ref="meteorology" />
   <ToolBox ref="toolbox" />
   <LayerBox ref="layerBox" />

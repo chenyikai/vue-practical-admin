@@ -57,9 +57,16 @@ export function getAreasWithSixHourForecast(params) {
     url: "/rest/ehhWeather/fishing_ground_get_areas_with_six_hour_forecast",
     params,
     transformResponse: function (data) {
+      const day7 =
+        new Date().setHours(23, 59, 59, 999) + 1000 * 60 * 60 * 24 * 6;
       const map = new Map();
       const datetimeSet = new Set();
-      const responseData = JSON.parse(data).data;
+      let responseData = JSON.parse(data).data;
+      responseData.v.forEach((v) => {
+        v[1] = v[1].filter((v1) => {
+          return Number(v1[0]) <= day7;
+        });
+      });
       for (let values of responseData.v) {
         const [areaCode, list] = values;
         // const areaCode = values[4];

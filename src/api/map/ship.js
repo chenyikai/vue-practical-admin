@@ -30,3 +30,12 @@ export function getExternalShip(data) {
     data,
   });
 }
+
+// 获取全部的船队及其下面船舶
+export function getTeamAndShipList(data) {
+  return request({
+    url: "/rest/shipTeam/getTeamAndShipList",
+    method: "post",
+    data,
+  });
+}

@@ -63,6 +63,7 @@ function addDraw({ map, ehhGis }) {
 
   mapboxDrawInstance = new MapboxDraw(options);
   mapboxLayerInstance = new MapboxLayer(options);
+  mapboxLayerInstance.init();
 }
 
 function addSwitch({ map, ehhGis }) {

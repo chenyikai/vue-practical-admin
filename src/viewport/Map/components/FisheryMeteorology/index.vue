@@ -105,7 +105,6 @@ async function createFishingGroundIconImage(
     promiseList.push(
       new Promise((resolve, reject) => {
         const src = images[key];
-        console.log(src);
         images[key] = new Image();
         images[key].src = src;
         images[key].onload = () => resolve();
@@ -317,7 +316,7 @@ function getColorMap() {
   return new Promise((resolve) => {
     getWindZlevelColors().then(({ data }) => {
       const colors = data.data;
-      vcolors.value = colors;
+      vcolors.value = colors.reverse();
       const fillColorExpressions = [
         "case",
         ["has", "windZLevel"],
@@ -412,7 +411,7 @@ function getFishingGroundData() {
 
     Mapbox.getMap().flyTo({
       center: [123.786863, 30],
-      zoom: 5.5,
+      zoom: 6.2125,
       speed: 10,
       curve: 0.5,
     });
@@ -505,7 +504,7 @@ function getDateToKey(date) {
 }
 
 function packButton(type) {
-  const length = historyNode.value.length;
+  const length = historyNode.value.length - 1;
   switch (type) {
     case "up":
       if (nodeKey.value < length) {
@@ -563,6 +562,19 @@ watch(
       </footer>
     </section>
   </component-box>
+
+  <transition name="fade">
+    <div class="gales-legend" v-show="isLegendPack">
+      <div class="title-top">图例 风力等级</div>
+      <div class="list-box">
+        <div class="color-box" v-for="item in vcolors" :key="item.color">
+          <div class="color" :style="`background-color:${item.color}`">
+            <span>{{ `${item.label}` }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </transition>
 
   <transition name="fade">
     <div class="legend-pack" v-show="isLegendPack">
@@ -677,6 +689,45 @@ watch(
     height: 19px;
     font-size: 19px;
     cursor: pointer;
+  }
+}
+
+.gales-legend {
+  position: absolute;
+  bottom: 7%;
+  left: 0.7%;
+  font-size: 14px;
+  padding: 5px 8px;
+  background: rgba(0, 47, 68, 0.68);
+  border: 2px solid;
+  border-image: linear-gradient(
+      360deg,
+      rgba(32, 114, 238, 1),
+      rgba(1, 246, 255, 1)
+    )
+    1 1;
+  box-shadow: inset 0 0 33px 0 #2394e6;
+  .title-top {
+    margin-bottom: 12px;
+  }
+  .list-box {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 5px 5px;
+    .color-box {
+      .color {
+        width: 100%;
+        color: black;
+        padding: 5px 10px;
+        box-sizing: border-box;
+        text-shadow:
+          1px 1px 0 white,
+          -1px -1px 0 white,
+          1px -1px 0 white,
+          -1px 1px 0 white;
+      }
+    }
   }
 }
 

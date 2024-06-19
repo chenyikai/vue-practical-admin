@@ -425,8 +425,14 @@ class MapboxLayer extends EventEmitter {
   showById(id) {
     const features = Object.values(this.layerData);
     features.forEach((feature) => {
-      if (feature.properties.id === id) {
-        feature.properties.visible = true;
+      if (Array.isArray(id)) {
+        if (id.includes(feature.properties.id) || id.includes(feature.id)) {
+          feature.properties.visible = true;
+        }
+      } else {
+        if (feature.properties.id === id || feature.id === id) {
+          feature.properties.visible = true;
+        }
       }
     });
 
@@ -436,8 +442,14 @@ class MapboxLayer extends EventEmitter {
   hideById(id) {
     const features = Object.values(this.layerData);
     features.forEach((feature) => {
-      if (feature.properties.id === id) {
-        feature.properties.visible = false;
+      if (Array.isArray(id)) {
+        if (id.includes(feature.properties.id) || id.includes(feature.id)) {
+          feature.properties.visible = false;
+        }
+      } else {
+        if (feature.properties.id === id || feature.id === id) {
+          feature.properties.visible = false;
+        }
       }
     });
 
@@ -487,12 +499,14 @@ class MapboxLayer extends EventEmitter {
   }
 
   render(features) {
+    console.log(features);
     if (features && Array.isArray(features) && features.length > 0) {
       this.changeVisible(features, true).forEach((feature) => {
         this.set(feature);
       });
     }
 
+    console.log(this.layerData, "this.layerData");
     const _features = cloneDeep(Object.values(this.layerData));
     this._draw(_features);
   }
@@ -520,12 +534,11 @@ class MapboxLayer extends EventEmitter {
           let properties = {};
           let geom = parse(item.geom);
           if (geom["type"] === MapboxLayer.POINT && !item.radius) {
-            console.log(item.icon, "icon");
             properties = {
               ...MapboxLayer.POINT_STYLE,
               "icon-image": item.icon || "point",
             };
-          } else if (geom["type"] === MapboxLayer.POINT_STYLE) {
+          } else if (geom["type"] === MapboxLayer.LINE_STRING) {
             properties = MapboxLayer.LINE_STRING_STYLE;
           } else if (geom["type"] === MapboxLayer.POLYGON) {
             properties = MapboxLayer.POLYGON_STYLE;

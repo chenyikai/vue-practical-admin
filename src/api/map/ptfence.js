@@ -16,3 +16,12 @@ export function getPtShipFenceDetail(data) {
     data,
   });
 }
+
+// 根据电子围栏id 获取详情
+export function getDetailByFenceId(data) {
+  return request({
+    url: "/rest/ptShipFenceStatistic/getDetailByFenceId",
+    method: "post",
+    data,
+  });
+}
