@@ -1,48 +1,52 @@
 <script setup>
 import { watch } from "vue";
 import { mapStore } from "@/store/index.js";
-import { ref, onMounted } from "vue";
-import * as echarts from "echarts";
+import { ref, onMounted, reactive } from "vue";
+import { Mapbox, MapboxDraw } from "plugins";
+import { dateFormat } from "@/utils/date.js";
+import { get_random_point_weather } from "./api.js";
+// import * as echarts from "echarts";
 defineOptions({
   name: "ArbitraryPoint",
 });
-
-// let wind = ref("");
-// console.log(echarts, "echarts");
-// const myChart = echarts.init(document.getElementById("wind"));
-// console.log(myChart, "myChart");
-// const option = ref({
-//   xAxis: {
-//     type: "category",
-//     data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-//   },
-//   yAxis: {
-//     type: "value",
-//   },
-//   series: [
-//     {
-//       data: [150, 230, 224, 218, 135, 147, 260],
-//       type: "line",
-//     },
-//   ],
-// });
-// onMounted(() => {
-//   option.value && myChart.setOption(option);
-// });
 
 const MapStore = mapStore();
 const dialogVisible = ref(false);
 let clickType = ref(1);
 let title = ref("气象水文");
 function open(val) {
-  val === 4 ? isOpenDialog(true) : isOpenDialog(false);
-}
-function isOpenDialog(val) {
-  dialogVisible.value = val;
-  if (val) {
-    console.log("打开弹窗");
+  if (val === 4) {
+    Mapbox.map.on("click", getDataByLonLat);
   } else {
-    console.log("关闭弹窗");
+    isOpenDialog(false);
+    Mapbox.map.off("click", getDataByLonLat);
+  }
+}
+function getDataByLonLat(e) {
+  let day = dateFormat(new Date(), "yyyy-MM-dd");
+  const obj = { day, lat: e.lngLat.lat, lon: e.lngLat.lng };
+  get_random_point_weather(obj).then(({ data }) => {
+    isOpenDialog(true, data.data);
+  });
+}
+function isOpenDialog(val, data) {
+  dialogVisible.value = val;
+  if (data) {
+    const arr = data.v.map((item) => {
+      const obj = {};
+      item.forEach((element, index) => {
+        obj[data.k[index]] = element;
+      });
+      return obj;
+    });
+    arr = arr.map((item) => {
+      console.log(dateFormat(new Date(item.forecastTime), "yyyy-MM-dd"));
+      return {
+        ...item,
+        forecastTime: dateFormat(new Date(item.forecastTime), "yyyy-MM-dd"),
+      };
+    });
+    console.log(arr);
   }
 }
 function handleClick(val) {
@@ -102,7 +106,7 @@ watch(
             降水
           </div>
         </div>
-        <div id="wind" ref="wind">echart</div>
+        <div id="myChart" :style="{ width: '300px', height: '300px' }"></div>
       </div>
     </el-dialog>
   </div>

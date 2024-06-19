@@ -3,7 +3,7 @@ import { ref, reactive, onBeforeMount, onMounted } from "vue";
 import { reqSeaData, reqAnJiData, reqSeaType, reqAnjiType } from "./api.js";
 import { parse } from "wellknown";
 import { bbox } from "@turf/turf";
-import { MapboxLayer } from "plugins/index.js";
+import { Mapbox, MapboxLayer } from "plugins/index.js";
 defineOptions({
   name: "layerBox",
 });
@@ -96,43 +96,80 @@ function handleNodeClick(node) {
 }
 // 勾选图层的回调
 function handleCheckChange(data) {
+  console.log(data, "data");
+  let ids = [];
   const nodes = tree.value.getCheckedKeys();
-  if (nodes.includes(data.id)) {
-    handleShowId(data);
+
+  if (data.children && data.children.length) {
+    ids = data.children
+      .map((item) => {
+        if (item.children) {
+          return item.children.map((i) => i.id);
+        } else {
+          return item.id;
+        }
+      })
+      .flat();
+  } else if (data && data.geom) {
+    ids = data.id;
+  }
+
+  if (nodes.includes(data.id) && ids.length) {
+    MapboxLayer.showById(ids);
   } else {
-    handleHideId(data);
+    ids.length && MapboxLayer.hideById(ids);
   }
 }
-function handleShowId(data) {
-  if (data.children && data.children.length) {
-    data.children.map((item) => {
-      if (item.children && item.children.length) {
-        handleShowId(item);
-      } else if (item.geom) {
-        MapboxLayer.showById(item.id);
-      }
-    });
-  } else if (data.id && !data.children && data.geom) {
-    MapboxLayer.showById(data.id);
-  }
+function handleChildren(val) {
+  return val.children.map((item) => {
+    if (item.children && item.children.length) {
+      handleChildren(item);
+    } else {
+      return item.id;
+    }
+  });
 }
-function handleHideId(data) {
-  if (data.children && data.children.length) {
-    data.children.map((item) => {
-      if (item.children && item.children.length) {
-        handleHideId(item);
-      } else if (item.geom) {
-        MapboxLayer.hideById(item.id);
-      }
-    });
-  } else if (data.id && !data.children && data.geom) {
-    MapboxLayer.hideById(data.id);
-  }
-}
+
+// const ids = reactive([]);
+// function handleShowId(data) {
+//   if (data.children && data.children.length) {
+//     data.children.map((item) => {
+//       if (item.children && item.children.length) {
+//         handleShowId(item);
+//       } else if (item.geom) {
+//         ids.push(item.id);
+
+//         // MapboxLayer.showById(item.id);
+//       }
+//     });
+//   } else if (data.id && !data.children && data.geom) {
+//     MapboxLayer.showById(data.id);
+//     ids.push(data.id);
+//   }
+//   return ids;
+// }
+// function handleHideId(data) {
+//   if (data.children && data.children.length) {
+//     data.children.map((item) => {
+//       if (item.children && item.children.length) {
+//         handleHideId(item);
+//       } else if (item.geom) {
+//         ids.push(item.id);
+//         // MapboxLayer.hideById(item.id);
+//       }
+//     });
+//   } else if (data.id && !data.children && data.geom) {
+//     // MapboxLayer.hideById(data.id);
+//     ids.push(data.id);
+//   }
+//   return ids;
+// }
 // 渲染图层
 function renderLayer(val) {
-  const features = MapboxLayer.handleAllTypeLayer(val);
-  features.length !== 0 && MapboxLayer.render(features);
+  Mapbox.mapLoaded().then(() => {
+    const features = MapboxLayer.handleAllTypeLayer(val);
+    features.length !== 0 && MapboxLayer.render(features);
+  });
 }
 // 暴露open方法
 defineExpose({

@@ -388,7 +388,6 @@ class MapboxLayer extends EventEmitter {
     }
 
     const showFeatures = features.filter((item) => item.properties.visible);
-    console.log(features, showFeatures);
 
     const titleFeature = showFeatures
       .map((item) => this.getTitleFeature(item))
@@ -425,8 +424,14 @@ class MapboxLayer extends EventEmitter {
   showById(id) {
     const features = Object.values(this.layerData);
     features.forEach((feature) => {
-      if (feature.properties.id === id || feature.id === id) {
-        feature.properties.visible = true;
+      if (Array.isArray(id)) {
+        if (id.includes(feature.properties.id) || id.includes(feature.id)) {
+          feature.properties.visible = true;
+        }
+      } else {
+        if (feature.properties.id === id || feature.id === id) {
+          feature.properties.visible = true;
+        }
       }
     });
 
@@ -436,8 +441,14 @@ class MapboxLayer extends EventEmitter {
   hideById(id) {
     const features = Object.values(this.layerData);
     features.forEach((feature) => {
-      if (feature.properties.id === id || feature.id === id) {
-        feature.properties.visible = false;
+      if (Array.isArray(id)) {
+        if (id.includes(feature.properties.id) || id.includes(feature.id)) {
+          feature.properties.visible = false;
+        }
+      } else {
+        if (feature.properties.id === id || feature.id === id) {
+          feature.properties.visible = false;
+        }
       }
     });
 
