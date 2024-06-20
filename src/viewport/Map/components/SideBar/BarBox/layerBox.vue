@@ -51,6 +51,13 @@ function reqLayerData() {
           return item.poiTInfoList || item.shorePoiTInfoList || [];
         })
         .flat();
+      allData.value = allData.value.map((item) => {
+        let data = type.value.find((t) => t.code == item.typeCode);
+        return {
+          ...item,
+          icon: data.icon || "",
+        };
+      });
       defaultCheckKey.value = allData.value.map((item) => item.id);
       renderLayer(allData.value);
     },
@@ -103,7 +110,7 @@ function handleCheckChange(data) {
     //  递归获取所有id
     ids = data.children.map((item) => handleChildren(item)).flat();
   } else {
-    ids = data.id;
+    ids = [data.id];
   }
   let showId = ids.filter((item) => nodes.includes(item));
   // 根据showId长度 判断显示/隐藏图层
@@ -126,7 +133,9 @@ function handleChildren(item, ids = []) {
 // 渲染图层
 function renderLayer(val) {
   Mapbox.mapLoaded().then(() => {
+    console.log(val);
     const features = MapboxLayer.handleAllTypeLayer(val);
+    console.log(features);
     features.length !== 0 && MapboxLayer.render(features);
   });
 }

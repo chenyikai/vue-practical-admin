@@ -9,7 +9,24 @@ import { parse } from "wellknown";
 import { circle, feature } from "@turf/turf";
 import { validatenull } from "@/utils/validate.js";
 import { set, cloneDeep } from "lodash";
-
+import point from "@/plugins/assets/plot/point.png";
+import bianjian from "@/icons/mapIcon/bianjian.png";
+import bowei from "@/icons/mapIcon/bowei.png";
+import chuanbodaili from "@/icons/mapIcon/chuanbodaili.png";
+import chuanboweixiu from "@/icons/mapIcon/chuanboweixiu.png";
+import chuangonggongsi from "@/icons/mapIcon/chuangonggongsi.png";
+import chuanwu from "@/icons/mapIcon/chuanwu.png";
+import gangwubumen from "@/icons/mapIcon/gangwubumen.png";
+import gongyoufuwu from "@/icons/mapIcon/gongyoufuwu.png";
+import haiguan from "@/icons/mapIcon/haiguan.png";
+import haishi from "@/icons/mapIcon/haishi.png";
+import matou from "@/icons/mapIcon/matou.png";
+import nengyuanqiye from "@/icons/mapIcon/nengyuanqiye.png";
+import tushuziliao from "@/icons/mapIcon/tushuziliao.png";
+import yingji from "@/icons/mapIcon/yingji.png";
+import yugang from "@/icons/mapIcon/yugang.png";
+import yuye from "@/icons/mapIcon/yuye.png";
+import zaochuanqiye from "@/icons/mapIcon/zaochuanqiye.png";
 const SOURCE = "ehh-layer-source";
 class MapboxLayer extends EventEmitter {
   /**
@@ -22,7 +39,7 @@ class MapboxLayer extends EventEmitter {
   static POLYGON = "Polygon";
 
   static POINT_STYLE = {
-    featureType: MapboxLayer.Point,
+    featureType: MapboxLayer.POINT,
     icon: null,
     "icon-size": 1,
     name: null,
@@ -244,7 +261,25 @@ class MapboxLayer extends EventEmitter {
   /**
    * name-名字 icon-图标
    */
-  iconList = [];
+  iconList = [
+    { name: "point", icon: point },
+    { name: "bianjian", icon: bianjian },
+    { name: "bowei", icon: bowei },
+    { name: "chuanbodaili", icon: chuanbodaili },
+    { name: "chuanboweixiu", icon: chuanboweixiu },
+    { name: "chuanwu", icon: chuanwu },
+    { name: "gangwubumen", icon: gangwubumen },
+    { name: "gongyoufuwu", icon: gongyoufuwu },
+    { name: "haiguan", icon: haiguan },
+    { name: "haishi", icon: haishi },
+    { name: "matou", icon: matou },
+    { name: "nengyuanqiye", icon: nengyuanqiye },
+    { name: "tushuziliao", icon: tushuziliao },
+    { name: "yingji", icon: yingji },
+    { name: "yugang", icon: yugang },
+    { name: "yuye", icon: yuye },
+    { name: "zaochuanqiye", icon: zaochuanqiye },
+  ];
 
   constructor({ map }) {
     super();
@@ -379,7 +414,6 @@ class MapboxLayer extends EventEmitter {
   }
 
   _draw(features) {
-    console.log(this.map.getSource(SOURCE), "this.map.getSource(SOURCE)");
     if (features.length === 0) {
       this.map.getSource(SOURCE).setData({
         type: "FeatureCollection",
@@ -499,14 +533,11 @@ class MapboxLayer extends EventEmitter {
   }
 
   render(features) {
-    console.log(features);
     if (features && Array.isArray(features) && features.length > 0) {
       this.changeVisible(features, true).forEach((feature) => {
         this.set(feature);
       });
     }
-
-    console.log(this.layerData, "this.layerData");
     const _features = cloneDeep(Object.values(this.layerData));
     this._draw(_features);
   }
@@ -533,11 +564,14 @@ class MapboxLayer extends EventEmitter {
         if (item.geom) {
           let properties = {};
           let geom = parse(item.geom);
+          console.log(geom["type"]);
           if (geom["type"] === MapboxLayer.POINT && !item.radius) {
+            console.log(1111);
             properties = {
               ...MapboxLayer.POINT_STYLE,
-              "icon-image": item.icon || "point",
+              icon: item.icon || "point",
             };
+            console.log(properties["icon-image"]);
           } else if (geom["type"] === MapboxLayer.LINE_STRING) {
             properties = MapboxLayer.LINE_STRING_STYLE;
           } else if (geom["type"] === MapboxLayer.POLYGON) {
@@ -553,9 +587,7 @@ class MapboxLayer extends EventEmitter {
           if (geom["type"] === MapboxLayer.POINT && item.radius) {
             _feature = circle(geom.coordinates, item.radius, {
               units: "kilometers",
-
               steps: 64,
-
               properties: properties,
             });
           } else {
