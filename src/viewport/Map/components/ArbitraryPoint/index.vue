@@ -17,10 +17,18 @@ let title = ref("气象水文");
 function open(val) {
   if (val === 4) {
     Mapbox.map.on("click", getDataByLonLat);
+    Mapbox.map.on("mousemove", handleMouseMove);
   } else {
     isOpenDialog(false);
     Mapbox.map.off("click", getDataByLonLat);
+    Mapbox.map.off("mousemove", handleMouseMove);
+    let canvas = Mapbox.map.getCanvasContainer();
+    canvas.style.cursor = "";
   }
+}
+function handleMouseMove() {
+  let canvas = Mapbox.map.getCanvasContainer();
+  canvas.style.cursor = "crosshair";
 }
 function getDataByLonLat(e) {
   let day = dateFormat(new Date(), "yyyy-MM-dd");
