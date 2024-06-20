@@ -6,6 +6,8 @@ import { Mapbox, MapboxDraw } from "plugins";
 import { dateFormat } from "@/utils/date.js";
 import { get_random_point_weather } from "./api.js";
 import WindChart from "./windChart.vue";
+import TemperatureChart from "./temperatureChart.vue";
+import PrecipitationChart from "./precipitationChart.vue";
 defineOptions({
   name: "ArbitraryPoint",
 });
@@ -14,6 +16,12 @@ const MapStore = mapStore();
 const dialogVisible = ref(false);
 let clickType = ref(1);
 let title = ref("气象水文");
+let weatherList = reactive([]);
+let nowWeather = reactive({});
+let loading = ref(true);
+const windChart = ref({});
+const temperatureChart = ref({});
+const precipitationChart = ref({});
 function open(val) {
   if (val === 4) {
     Mapbox.map.on("click", getDataByLonLat);
@@ -30,36 +38,50 @@ function handleMouseMove() {
   let canvas = Mapbox.map.getCanvasContainer();
   canvas.style.cursor = "crosshair";
 }
+let lonlatObj = ref({});
 function getDataByLonLat(e) {
   let day = dateFormat(new Date(), "yyyy-MM-dd");
-  const obj = { day, lat: e.lngLat.lat, lon: e.lngLat.lng };
-  get_random_point_weather(obj).then(({ data }) => {
+  lonlatObj = { day, lat: e.lngLat.lat, lon: e.lngLat.lng };
+  get_random_point_weather(lonlatObj).then(({ data }) => {
     isOpenDialog(true, data.data);
   });
 }
+let dateList = reactive([]);
+let windZLevel = reactive([]);
+let precipitation = reactive([]);
+let temperature = reactive([]);
 function isOpenDialog(val, data) {
-  dialogVisible.value = val;
   if (data) {
-    const arr = data.v.map((item) => {
+    let arr = data.v.map((item) => {
       const obj = {};
       item.forEach((element, index) => {
         obj[data.k[index]] = element;
       });
       return obj;
     });
-    arr = arr.map((item) => {
-      console.log(dateFormat(new Date(item.forecastTime), "yyyy-MM-dd"));
+    weatherList = arr.map((item) => {
       return {
         ...item,
-        forecastTime: dateFormat(new Date(item.forecastTime), "yyyy-MM-dd"),
+        forecastTime: dateFormat(
+          new Date(Number(item.forecastTime)),
+          "yyyy-MM-dd",
+        ),
       };
     });
-    console.log(arr);
+
+    dateList = weatherList.map((item) => item.forecastTime);
+    windZLevel = weatherList.map((item) => item.windZLevel);
+    precipitation = weatherList.map((item) => item.precipitation);
+    temperature = weatherList.map((item) => item.temperature);
+    nowWeather = weatherList[0];
+    windChart.value.xAxisData = dateList;
+    windChart.value.seriesData = windZLevel;
+    dialogVisible.value = val;
   }
 }
 function handleClick(val) {
+  if (clickType.value === val) return;
   clickType.value = val;
-  console.log("换成", val, "的echart");
 }
 watch(
   () => MapStore.$state.qxType,
@@ -71,29 +93,45 @@ watch(
 
 <template>
   <div class="ArbitraryPointDialog">
-    <el-dialog v-model="dialogVisible" width="800" draggable>
+    <el-dialog
+      v-model="dialogVisible"
+      width="800"
+      draggable
+      v-loading="loading">
       <template #header="{ close, titleId, titleClass }">
         <div class="my-header">
-          <h3 :id="titleId" :class="titleClass">{{ title }}</h3>
+          <h3 :id="titleId" :class="titleClass">
+            {{ title }}-- 纬度:{{ lonlatObj.lat.toFixed(2) }} 经度:{{
+              lonlatObj.lon.toFixed(2)
+            }}
+          </h3>
         </div>
       </template>
       <div class="main">
         <div class="title">天气实况</div>
         <div class="weather">
           <div class="weather_icon"></div>
-          <div class="weather_text">阴</div>
+          <div class="weather_text">{{ nowWeather.skycon }}</div>
         </div>
         <div class="weather">
           <div class="weather_icon"></div>
-          <div class="weather_text">东北风四级</div>
+          <div class="weather_text">
+            {{ nowWeather.windDirection }}风{{ nowWeather.windLevel }}级
+          </div>
         </div>
         <div class="weather_detail">
-          <div class="weather_detail_item">温度:18.56℃</div>
-          <div class="weather_detail_item">云量:100.0%</div>
-          <div class="weather_detail_item">湿度:70.0%</div>
+          <div class="weather_detail_item">
+            温度:{{ nowWeather.temperature }}℃
+          </div>
+          <div class="weather_detail_item">
+            湿度:{{ (nowWeather.humidity * 100).toFixed(1) }}%
+          </div>
+          <div class="weather_detail_item">
+            能见度:{{ nowWeather.visibility }}%
+          </div>
         </div>
         <el-divider />
-        <div class="title">未来24小时天气</div>
+        <div class="title">未来天气</div>
         <div class="btn_list">
           <div
             class="btn_item"
@@ -114,7 +152,9 @@ watch(
             降水
           </div>
         </div>
-        <WindChart />
+        <WindChart v-if="clickType === 1" ref="windChart" />
+        <TemperatureChart v-if="clickType === 2" ref="temperatureChart" />
+        <PrecipitationChart v-if="clickType === 3" ref="precipitationChart" />
       </div>
     </el-dialog>
   </div>
