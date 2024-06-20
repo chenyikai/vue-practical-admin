@@ -92,7 +92,6 @@ class MapboxLayer extends MapboxDraw {
           let properties = {};
           let geom = parse(item.geom);
           if (geom["type"] === MapboxDraw.POINT && !item.radius) {
-            console.log(item.icon, "icon");
             properties = {
               ...MapboxLayer.POINT_STYLE,
               "icon-image": item.icon || "point",

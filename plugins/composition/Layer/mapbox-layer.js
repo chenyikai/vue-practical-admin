@@ -564,14 +564,11 @@ class MapboxLayer extends EventEmitter {
         if (item.geom) {
           let properties = {};
           let geom = parse(item.geom);
-          console.log(geom["type"]);
           if (geom["type"] === MapboxLayer.POINT && !item.radius) {
-            console.log(1111);
             properties = {
               ...MapboxLayer.POINT_STYLE,
               icon: item.icon || "point",
             };
-            console.log(properties["icon-image"]);
           } else if (geom["type"] === MapboxLayer.LINE_STRING) {
             properties = MapboxLayer.LINE_STRING_STYLE;
           } else if (geom["type"] === MapboxLayer.POLYGON) {

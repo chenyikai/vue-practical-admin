@@ -1,7 +1,8 @@
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { getTeamAndShipList } from "@/api/map/ship.js";
-import { flattenDeep } from "lodash";
+import { flattenDeep, uniq } from "lodash";
+import { Mapbox } from "plugins/index.js";
 
 defineOptions({
   name: "ShipBox",
@@ -12,10 +13,9 @@ const dataList = ref([]);
 const shipNbList = ref([]);
 const elTreeRef = ref();
 
-function open(type = true) {
-  drawer.value = type;
+function init() {
+  let colors = [];
   getTeamAndShipList({}).then(({ data }) => {
-    console.log(data.data);
     dataList.value = [{ name: "内部船舶", id: "root", children: data.data }];
     dataList.value[0].children.forEach((res) => {
       if (res.color && res.shipInfos && res.shipInfos.length > 0) {
@@ -23,12 +23,19 @@ function open(type = true) {
           ship.color = res.color;
           ship.teamName = res.name;
           ship.name = ship.shipName;
+          colors.push(res.color);
         });
         res.children = res.shipInfos;
         delete res.shipInfos;
       }
     });
+    colors = uniq(colors);
+    // console.log(colors);
   });
+}
+
+function open(type = true) {
+  drawer.value = type;
 }
 
 function handleNodeCheck(data, node) {
@@ -37,6 +44,10 @@ function handleNodeCheck(data, node) {
   shipNbList.value = flattenDeep(datas).filter((node) => node);
   console.log(shipNbList.value);
 }
+
+onMounted(() => {
+  Mapbox.mapLoaded().then(() => init());
+});
 
 defineExpose({
   open,

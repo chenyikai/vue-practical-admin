@@ -133,9 +133,7 @@ function handleChildren(item, ids = []) {
 // 渲染图层
 function renderLayer(val) {
   Mapbox.mapLoaded().then(() => {
-    console.log(val);
     const features = MapboxLayer.handleAllTypeLayer(val);
-    console.log(features);
     features.length !== 0 && MapboxLayer.render(features);
   });
 }
