@@ -14,8 +14,8 @@ import {
 } from "@/api/map/ship.js";
 import { validatenull } from "@/utils/validate.js";
 import { cloneDeep, set } from "lodash";
-import svgToImage from "svg-to-image";
 import getContext from "get-canvas-context";
+import svgToImage from "svg-to-image";
 
 const properties = ["imageName", "shipDataType", "shipFrom"];
 
@@ -37,6 +37,7 @@ class MapboxShip extends EventEmitter {
     [GHOST_SHIP]: [],
   };
   focusShip = {};
+  reload_own_color = [];
 
   moveStartFun = this._onMoveStart.bind(this);
   moveFun = this._onMove.bind(this);
@@ -87,12 +88,12 @@ class MapboxShip extends EventEmitter {
     this._getDataKey().then(async (keys) => {
       if (this.map.getZoom() < 12) {
         this._addGreenDot();
-        await this._addInternal(keys).then(() => {
-          shipData = this.shipData[OWN_SHIP];
-        });
+        // this._addInternal(keys).then((ownV) => {
+        //   shipData = [...ownV];
+        // });
       } else {
         await Promise.allSettled([
-          this._addInternal(keys),
+          // this._addInternal(keys),
           this._addExternal(keys),
         ]).then(() => {
           shipData = [...this.shipData[OUT_SHIP], ...this.shipData[OWN_SHIP]];
@@ -438,6 +439,54 @@ class MapboxShip extends EventEmitter {
 
   _onMouseOut() {
     this._removePopup();
+  }
+
+  addColorShip() {
+    // 绘制内部船舶虚拟样式并设置图层高度
+    if (this.map) {
+      this.reload_own_color.forEach((item) => {
+        this.getShipImage(item.color).then((url) => {
+          this.map.addImage({
+            url,
+            name: `own-ship-${item.id}`,
+          });
+        });
+      });
+      const minzoom = 5;
+      Object.keys(this.map.style._layers).forEach((key) => {
+        if (key.includes("ehh-ship-name-layer")) {
+          this.map.style._layers[key].minzoom = minzoom;
+        } else if (key.includes("ehh-ship-name-line-img-layer")) {
+          this.map.style._layers[key].minzoom = minzoom;
+        }
+      });
+    }
+  }
+
+  getShipImage(color) {
+    // 根据颜色绘制船舶图标
+    return new Promise((resolve, reject) => {
+      // const svgToImage = require("svg-to-image");
+      // const getContext = require("get-canvas-context");
+      const context = getContext("2d", {
+        width: 30,
+        height: 75,
+      });
+      const shipImgSvg = [
+        `<svg width="30" height="75" viewBox="0 0 30 75" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1 25.422L12.5 3L24 25.422V55H1V25.422Z" fill="${color}" stroke="black" stroke-width="2"/>
+</svg>
+`,
+      ].join("\n");
+      svgToImage(shipImgSvg, (error, image) => {
+        if (error) {
+          reject(error);
+          throw error;
+        }
+        context.drawImage(image, 0, 0);
+        resolve(context.canvas.toDataURL("image/png"));
+      });
+    });
   }
 }
 

@@ -1,16 +1,19 @@
-<script>
-export default {
-  name: "SideBar",
-};
-</script>
-
 <script setup>
-import { reactive } from "vue";
+import ShipBox from "./BarBox/shipbox.vue";
+import Meteorology from "./BarBox/meteorology.vue";
+import ToolBox from "./BarBox/toolbox.vue";
+import SourceBox from "./BarBox/source.vue";
+import LayerBox from "./BarBox/layerBox.vue";
+import { ref, reactive } from "vue";
 defineOptions({
   name: "SideBar",
 });
 
-const emits = defineEmits(["click"]);
+const shipbox = ref();
+const meteorology = ref();
+const toolbox = ref();
+const layerBox = ref();
+const sourcebox = ref();
 
 const sideBarList = reactive([
   {
@@ -65,8 +68,26 @@ const sideBarList = reactive([
   },
 ]);
 
-function onClick(val) {
-  emits("click", val);
+function onClick(item) {
+  switch (item.id) {
+    case 1:
+      shipbox.value.open();
+      break;
+    case 2:
+      meteorology.value.open();
+      break;
+    case 3:
+      layerBox.value.open();
+      break;
+    case 4:
+      toolbox.value.open();
+      break;
+    case 5:
+      sourcebox.value.open();
+      break;
+    default:
+      break;
+  }
 }
 </script>
 
@@ -83,6 +104,11 @@ function onClick(val) {
       <div class="text-layout">{{ item.label }}</div>
     </li>
   </ul>
+  <ShipBox ref="shipbox" />
+  <Meteorology ref="meteorology" />
+  <ToolBox ref="toolbox" />
+  <LayerBox ref="layerBox" />
+  <SourceBox ref="sourcebox" />
 </template>
 
 <style scoped lang="scss">

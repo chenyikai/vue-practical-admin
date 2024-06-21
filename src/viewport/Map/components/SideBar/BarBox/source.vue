@@ -1,13 +1,11 @@
 <script setup>
-import { MapboxSwitch } from "plugins";
-import { ref, watch } from "vue";
-import { mapStore } from "@/store/index.js";
+import { Mapbox, MapboxSwitch } from "plugins";
+import { ref, onMounted } from "vue";
 
 defineOptions({
   name: "SourceBox",
 });
 
-const MapStore = mapStore();
 const drawer = ref(false);
 const baseList = ref([]);
 const baseId = ref(null);
@@ -17,7 +15,7 @@ function open(type = true) {
 }
 
 function init() {
-  baseList.value = MapboxSwitch.switch.baseLayerOption.map((item, i) => {
+  baseList.value = MapboxSwitch.switch.baseLayerOption.map((item) => {
     const domainRegex = /^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:/\n?]+)/im;
     const domain = item.paramsList[0].tiles[0].match(domainRegex);
     return {
@@ -33,13 +31,9 @@ function handleClick(data) {
   baseId.value = data.id;
 }
 
-watch(
-  () => MapStore.initMap,
-  (news) => {
-    if (news) init();
-  },
-  { deep: true },
-);
+onMounted(() => {
+  Mapbox.mapLoaded().then(() => init());
+});
 
 defineExpose({
   open,

@@ -16,7 +16,7 @@ defineOptions({
 const props = defineProps({
   title: {
     type: String,
-    default: "浙江某某船务有限公司",
+    default: "电子航道图系统",
   },
 });
 
@@ -93,15 +93,15 @@ onMounted(() => {
         </div>
       </div>
     </main>
-    <footer class="map-page-container-footer">
-      <div class="module-box left">模块1</div>
-      <div class="module-box left">模块2</div>
-      <div class="module-box left">模块3</div>
-      <img class="index" src="@/assets/images/map/module-index.png" alt="" />
-      <div class="module-box right">模块4</div>
-      <div class="module-box right">模块5</div>
-      <div class="module-box right">模块6</div>
-    </footer>
+    <!--    <footer class="map-page-container-footer">-->
+    <!--      <div class="module-box left">模块1</div>-->
+    <!--      <div class="module-box left">模块2</div>-->
+    <!--      <div class="module-box left">模块3</div>-->
+    <!--      <img class="index" src="@/assets/images/map/module-index.png" alt="" />-->
+    <!--      <div class="module-box right">模块4</div>-->
+    <!--      <div class="module-box right">模块5</div>-->
+    <!--      <div class="module-box right">模块6</div>-->
+    <!--    </footer>-->
   </section>
 </template>
 
@@ -236,7 +236,7 @@ onMounted(() => {
   &-main {
     position: relative;
     width: 100%;
-    height: calc(100% - var(--header-height));
+    height: calc(99% - var(--header-height));
     margin: {
       top: var(--header-height);
     }

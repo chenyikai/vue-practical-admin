@@ -5,6 +5,7 @@ import electronicmap from "./assets/electronicmap.png";
 import seamap from "./assets/seamap.png";
 import satellitemap from "./assets/satellitemap.png";
 import roadmap from "./assets/roadmap.png";
+import EhhFishingGround from "plugins/composition/data/fishing-ground.json";
 
 export const mapConfig = {
   container: "map",
@@ -12,7 +13,13 @@ export const mapConfig = {
     version: 8,
     name: "Basic",
     glyphs: "https://objects.aochensoft.com/oss/{fontstack}/{range}.pbf",
-    sources: {},
+    sources: {
+      // 渔场数据
+      "ehh-fishing-ground": {
+        data: EhhFishingGround,
+        type: "geojson",
+      },
+    },
     layers: [
       {
         id: "background",
@@ -23,8 +30,8 @@ export const mapConfig = {
       },
     ],
   },
-  center: [122.106863, 30.016028],
-  zoom: 13,
+  center: [121.786863, 31.316028],
+  zoom: 11,
 };
 
 export const iconData = [
@@ -52,7 +59,7 @@ export const baseMap = [
         name: "landSea",
         type: "raster",
         tiles: [
-          `http://tianditu.ehanghai.cn/DataServer?T=vec_w&x={x}&y={y}&l={z}&tk=468826a92a07c852cefab31f9bed06d4`,
+          `https://tianditu.ehanghai.cn/DataServer?T=vec_w&x={x}&y={y}&l={z}&tk=ec021f83c8b14084b90726dbb120e307`,
         ],
         tileSize: 256,
         layer: {
@@ -67,7 +74,7 @@ export const baseMap = [
         name: "landSea1",
         type: "raster",
         tiles: [
-          `http://tianditu.ehanghai.cn/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=468826a92a07c852cefab31f9bed06d4`,
+          `https://tianditu.ehanghai.cn/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=ec021f83c8b14084b90726dbb120e307`,
         ],
         tileSize: 256,
         layer: {
@@ -81,7 +88,9 @@ export const baseMap = [
       {
         name: "landSea2",
         type: "raster",
-        tiles: ["http://pngchart.ehanghai.cn/zqyhlt/{z}/{y}/{x}.png"],
+        tiles: [
+          "https://seamap.ehanghai.cn/quanguohlt/{z}/{y}/{x}.png?appKey=sqm8vc2747a411eda8dc00163e0rtbbs",
+        ],
         tileSize: 256,
         layer: {
           type: "raster",
@@ -99,22 +108,11 @@ export const baseMap = [
     img: seamap,
     paramsList: [
       {
-        name: "sea",
-        type: "raster",
-        tiles: ["http://nas.ehanghai.cn:90/{z}/{y}/{x}.png"],
-        tileSize: 256,
-        layer: {
-          type: "raster",
-          paint: {},
-          layout: {
-            visibility: "none",
-          },
-        },
-      },
-      {
         name: "sea1",
         type: "raster",
-        tiles: ["http://pngchart.ehanghai.cn/ehhht/{z}/{y}/{x}.png"],
+        tiles: [
+          "https://seamap.ehanghai.cn/ehhht/{z}/{y}/{x}.png?appKey=sqm8vc2747a411eda8dc00163e0rtbbs",
+        ],
         tileSize: 256,
         layer: {
           type: "raster",
@@ -135,7 +133,7 @@ export const baseMap = [
         name: "satellite",
         type: "raster",
         tiles: [
-          `http://tianditu.ehanghai.cn/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=468826a92a07c852cefab31f9bed06d4`,
+          `https://tianditu.ehanghai.cn/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=ec021f83c8b14084b90726dbb120e307`,
         ],
         tileSize: 256,
         layer: {
@@ -150,7 +148,7 @@ export const baseMap = [
         name: "satellite1",
         type: "raster",
         tiles: [
-          `http://tianditu.ehanghai.cn/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=468826a92a07c852cefab31f9bed06d4`,
+          `https://tianditu.ehanghai.cn/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=ec021f83c8b14084b90726dbb120e307`,
         ],
         tileSize: 256,
         layer: {
@@ -172,7 +170,7 @@ export const baseMap = [
         name: "land",
         type: "raster",
         tiles: [
-          `http://tianditu.ehanghai.cn/DataServer?T=vec_w&x={x}&y={y}&l={z}&tk=468826a92a07c852cefab31f9bed06d4`,
+          `https://tianditu.ehanghai.cn/DataServer?T=vec_w&x={x}&y={y}&l={z}&tk=ec021f83c8b14084b90726dbb120e307`,
         ],
         tileSize: 256,
         layer: {
@@ -187,7 +185,7 @@ export const baseMap = [
         name: "land1",
         type: "raster",
         tiles: [
-          `http://tianditu.ehanghai.cn/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=468826a92a07c852cefab31f9bed06d4`,
+          `https://tianditu.ehanghai.cn/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=ec021f83c8b14084b90726dbb120e307`,
         ],
         tileSize: 256,
         layer: {
@@ -209,7 +207,7 @@ export const baseMap = [
         name: "satelliteSea",
         type: "raster",
         tiles: [
-          `http://tianditu.ehanghai.cn/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=468826a92a07c852cefab31f9bed06d4`,
+          `https://tianditu.ehanghai.cn/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=ec021f83c8b14084b90726dbb120e307`,
         ],
         tileSize: 256,
         layer: {
@@ -224,7 +222,7 @@ export const baseMap = [
         name: "satelliteSea1",
         type: "raster",
         tiles: [
-          `http://tianditu.ehanghai.cn/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=468826a92a07c852cefab31f9bed06d4`,
+          `https://tianditu.ehanghai.cn/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=ec021f83c8b14084b90726dbb120e307`,
         ],
         tileSize: 256,
         layer: {
@@ -238,7 +236,9 @@ export const baseMap = [
       {
         name: "satelliteSea2",
         type: "raster",
-        tiles: ["http://pngchart.ehanghai.cn/zqyhlt/{z}/{y}/{x}.png"],
+        tiles: [
+          "https://seamap.ehanghai.cn/qghlt-zld/{z}/{y}/{x}.png?appKey=ec021f83c8b14084b90726dbb120e307",
+        ],
         tileSize: 256,
         layer: {
           type: "raster",

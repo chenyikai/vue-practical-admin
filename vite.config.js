@@ -2,19 +2,22 @@ import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import TurboConsole from "vite-plugin-turbo-console";
-import viteCompression from "vite-plugin-compression";
+// import viteCompression from "vite-plugin-compression";
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 import { fileURLToPath, URL } from "node:url";
 import { loadEnv } from "vite";
 import pxToViewport from "postcss-px-to-viewport";
 import path from "path";
+// import mkcert from "vite-plugin-mkcert";
 
 export default defineConfig(({ mode }) => {
   // eslint-disable-next-line no-undef
   const env = loadEnv(mode, process.cwd(), "");
   return {
     // publicDir: env.VITE_API_PREFIX,
+    base: env.VITE_PUBLIC_PATH,
     plugins: [
+      // mkcert(),
       vue({
         script: {
           defineModel: true,
@@ -22,11 +25,11 @@ export default defineConfig(({ mode }) => {
       }),
       vueJsx({}),
       TurboConsole(),
-      viteCompression({
-        algorithm: "gzip",
-        threshold: 10240,
-        deleteOriginFile: true,
-      }),
+      // viteCompression({
+      //   algorithm: "gzip",
+      //   threshold: 10240,
+      //   deleteOriginFile: true,
+      // }),
       createSvgIconsPlugin({
         // eslint-disable-next-line no-undef
         iconDirs: [path.resolve(process.cwd(), "src/icons")],
@@ -65,6 +68,7 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       port: 9999,
+      // https: true,
       proxy: {
         [env.VITE_API_PREFIX]: {
           target: env.VITE_API_URL,

@@ -13,6 +13,7 @@ defineOptions({
 });
 
 const mousePositionInfo = ref("");
+const zoomInfo = ref("");
 
 function zoomIn() {
   if (!Mapbox.getMap().isZooming()) {
@@ -35,12 +36,21 @@ function onMouseMove(e) {
   mousePositionInfo.value = `${latitude.completeValue} ${longitude.completeValue}`;
 }
 
+function onZoom() {
+  zoomInfo.value = Mapbox.getMap().getZoom().toFixed(3);
+}
+
 onMounted(() => {
+  Mapbox.mapLoaded().then(() => {
+    zoomInfo.value = Mapbox.getMap().getZoom().toFixed(3);
+  });
   Mapbox.getMap().on("mousemove", onMouseMove);
+  Mapbox.getMap().on("zoom", onZoom);
 });
 
 onUnmounted(() => {
   Mapbox.getMap().off("mousemove", onMouseMove);
+  Mapbox.getMap().off("zoom", onZoom);
 });
 </script>
 
@@ -60,6 +70,9 @@ onUnmounted(() => {
     </div>
     <div class="mouse-position-control">
       {{ mousePositionInfo || "移动初始化" }}
+    </div>
+    <div class="zoom-position-control">
+      {{ zoomInfo ? `${zoomInfo} 层` : "地图初始化" }}
     </div>
   </section>
 </template>
@@ -99,6 +112,18 @@ onUnmounted(() => {
     border-radius: 6px;
     font-size: 14px;
     color: #fff;
+  }
+  .zoom-position-control {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 168px;
+    height: 30px;
+    background-color: rgba($color: #2b2c39, $alpha: 0.5);
+    border-radius: 6px;
+    font-size: 14px;
+    color: #fff;
+    margin-left: 3px;
   }
 }
 </style>

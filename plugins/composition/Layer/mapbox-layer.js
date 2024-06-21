@@ -5,9 +5,28 @@ import {
   polygonToLine,
   featureCollection,
 } from "@turf/turf";
+import { parse } from "wellknown";
+import { circle, feature } from "@turf/turf";
 import { validatenull } from "@/utils/validate.js";
 import { set, cloneDeep } from "lodash";
-
+import point from "@/plugins/assets/plot/point.png";
+import bianjian from "@/icons/mapIcon/bianjian.png";
+import bowei from "@/icons/mapIcon/bowei.png";
+import chuanbodaili from "@/icons/mapIcon/chuanbodaili.png";
+import chuanboweixiu from "@/icons/mapIcon/chuanboweixiu.png";
+import chuangonggongsi from "@/icons/mapIcon/chuangonggongsi.png";
+import chuanwu from "@/icons/mapIcon/chuanwu.png";
+import gangwubumen from "@/icons/mapIcon/gangwubumen.png";
+import gongyoufuwu from "@/icons/mapIcon/gongyoufuwu.png";
+import haiguan from "@/icons/mapIcon/haiguan.png";
+import haishi from "@/icons/mapIcon/haishi.png";
+import matou from "@/icons/mapIcon/matou.png";
+import nengyuanqiye from "@/icons/mapIcon/nengyuanqiye.png";
+import tushuziliao from "@/icons/mapIcon/tushuziliao.png";
+import yingji from "@/icons/mapIcon/yingji.png";
+import yugang from "@/icons/mapIcon/yugang.png";
+import yuye from "@/icons/mapIcon/yuye.png";
+import zaochuanqiye from "@/icons/mapIcon/zaochuanqiye.png";
 const SOURCE = "ehh-layer-source";
 class MapboxLayer extends EventEmitter {
   /**
@@ -20,7 +39,7 @@ class MapboxLayer extends EventEmitter {
   static POLYGON = "Polygon";
 
   static POINT_STYLE = {
-    featureType: MapboxLayer.Point,
+    featureType: MapboxLayer.POINT,
     icon: null,
     "icon-size": 1,
     name: null,
@@ -242,7 +261,25 @@ class MapboxLayer extends EventEmitter {
   /**
    * name-名字 icon-图标
    */
-  iconList = [];
+  iconList = [
+    { name: "point", icon: point },
+    { name: "bianjian", icon: bianjian },
+    { name: "bowei", icon: bowei },
+    { name: "chuanbodaili", icon: chuanbodaili },
+    { name: "chuanboweixiu", icon: chuanboweixiu },
+    { name: "chuanwu", icon: chuanwu },
+    { name: "gangwubumen", icon: gangwubumen },
+    { name: "gongyoufuwu", icon: gongyoufuwu },
+    { name: "haiguan", icon: haiguan },
+    { name: "haishi", icon: haishi },
+    { name: "matou", icon: matou },
+    { name: "nengyuanqiye", icon: nengyuanqiye },
+    { name: "tushuziliao", icon: tushuziliao },
+    { name: "yingji", icon: yingji },
+    { name: "yugang", icon: yugang },
+    { name: "yuye", icon: yuye },
+    { name: "zaochuanqiye", icon: zaochuanqiye },
+  ];
 
   constructor({ map }) {
     super();
@@ -380,7 +417,7 @@ class MapboxLayer extends EventEmitter {
     if (features.length === 0) {
       this.map.getSource(SOURCE).setData({
         type: "FeatureCollection",
-        features: [],
+        featurse: [],
       });
       return;
     }
@@ -422,8 +459,14 @@ class MapboxLayer extends EventEmitter {
   showById(id) {
     const features = Object.values(this.layerData);
     features.forEach((feature) => {
-      if (feature.properties.id === id) {
-        feature.properties.visible = true;
+      if (Array.isArray(id)) {
+        if (id.includes(feature.properties.id) || id.includes(feature.id)) {
+          feature.properties.visible = true;
+        }
+      } else {
+        if (feature.properties.id === id || feature.id === id) {
+          feature.properties.visible = true;
+        }
       }
     });
 
@@ -433,8 +476,14 @@ class MapboxLayer extends EventEmitter {
   hideById(id) {
     const features = Object.values(this.layerData);
     features.forEach((feature) => {
-      if (feature.properties.id === id) {
-        feature.properties.visible = false;
+      if (Array.isArray(id)) {
+        if (id.includes(feature.properties.id) || id.includes(feature.id)) {
+          feature.properties.visible = false;
+        }
+      } else {
+        if (feature.properties.id === id || feature.id === id) {
+          feature.properties.visible = false;
+        }
       }
     });
 
@@ -489,7 +538,6 @@ class MapboxLayer extends EventEmitter {
         this.set(feature);
       });
     }
-
     const _features = cloneDeep(Object.values(this.layerData));
     this._draw(_features);
   }
@@ -509,6 +557,55 @@ class MapboxLayer extends EventEmitter {
   getOffset(name) {
     const coefficient = Math.floor(name.length / 10);
     return [0, 1 + coefficient * 0.5];
+  }
+  handleAllTypeLayer(data) {
+    return data
+      .map((item) => {
+        if (item.geom) {
+          let properties = {};
+          let geom = parse(item.geom);
+          if (geom["type"] === MapboxLayer.POINT && !item.radius) {
+            properties = {
+              ...MapboxLayer.POINT_STYLE,
+              icon: item.icon || "point",
+            };
+          } else if (geom["type"] === MapboxLayer.LINE_STRING) {
+            properties = MapboxLayer.LINE_STRING_STYLE;
+          } else if (geom["type"] === MapboxLayer.POLYGON) {
+            properties = MapboxLayer.POLYGON_STYLE;
+          } else if (geom["type"] === MapboxLayer.POINT && item.radius) {
+            properties = {
+              ...MapboxLayer.CIRCLE_STYLE,
+            };
+          }
+
+          let _feature = {};
+
+          if (geom["type"] === MapboxLayer.POINT && item.radius) {
+            _feature = circle(geom.coordinates, item.radius, {
+              units: "kilometers",
+              steps: 64,
+              properties: properties,
+            });
+          } else {
+            _feature = feature(geom, {
+              ...properties,
+              "graphical-type": MapboxLayer.Warn,
+              name: item.name,
+            });
+          }
+
+          return {
+            id: item.id,
+
+            ..._feature,
+          };
+        }
+      })
+
+      .filter((item) => !validatenull(item))
+
+      .flat();
   }
 }
 
