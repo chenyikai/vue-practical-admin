@@ -15,7 +15,7 @@ import SvgIcon from "package/SvgIcon/src/index.vue";
 const MenuStore = menuStore();
 const menuProps = computed(() => website.menu.props);
 const sortMenu = computed(() => {
-  return cloneDeep(MenuStore.menuList).sort((a, b) => a.sort - b.sort);
+  return cloneDeep(MenuStore.menuList).sort((a, b) => b.sort - a.sort);
 });
 
 function handleClick(menu) {
