@@ -2,7 +2,7 @@
 import { onMounted, ref } from "vue";
 import { getTeamAndShipList } from "@/api/map/ship.js";
 import { flattenDeep, uniq } from "lodash";
-import { Mapbox } from "plugins/index.js";
+import { Mapbox, MapboxShip } from "plugins/index.js";
 
 defineOptions({
   name: "ShipBox",
@@ -29,8 +29,8 @@ function init() {
         delete res.shipInfos;
       }
     });
-    colors = uniq(colors);
-    // console.log(colors);
+    MapboxShip.reload_own_color = uniq(colors);
+    MapboxShip.addColorShip();
   });
 }
 
