@@ -10,9 +10,12 @@ import {
   getExternalShip,
   getGreenDot,
   getInternalShip,
+  getShipIcon,
 } from "@/api/map/ship.js";
 import { validatenull } from "@/utils/validate.js";
 import { cloneDeep, set } from "lodash";
+import svgToImage from "svg-to-image";
+import getContext from "get-canvas-context";
 
 const properties = ["imageName", "shipDataType", "shipFrom"];
 
@@ -24,8 +27,10 @@ class MapboxShip extends EventEmitter {
   ship = null;
   ehhGis = null;
   keys = [];
+  icons = [];
   popup = null;
   timer = null;
+  isInit = false;
   shipData = {
     [OUT_SHIP]: [],
     [OWN_SHIP]: [],
@@ -49,6 +54,8 @@ class MapboxShip extends EventEmitter {
   }
 
   init() {
+    this.isInit = true;
+    this._addIcon();
     this.getData();
     this._addEvents();
 
@@ -56,6 +63,7 @@ class MapboxShip extends EventEmitter {
   }
 
   destroy() {
+    this.isInit = false;
     this._removeEvents();
     this._removePopup();
     this._clearTask();
@@ -79,8 +87,8 @@ class MapboxShip extends EventEmitter {
     this._getDataKey().then(async (keys) => {
       if (this.map.getZoom() < 12) {
         this._addGreenDot();
-        this._addInternal(keys).then((ownV) => {
-          shipData = [...ownV];
+        await this._addInternal(keys).then(() => {
+          shipData = this.shipData[OWN_SHIP];
         });
       } else {
         await Promise.allSettled([
@@ -92,10 +100,9 @@ class MapboxShip extends EventEmitter {
       }
 
       // if (shipData.length > 0) {
-
       this.ship.addShips({
-        k: this.keys,
-        v: this._unique(this.keys, shipData, "mmsi"),
+        k: [...keys, ...properties],
+        v: this._unique([...keys, ...properties], shipData, "mmsi"),
       });
 
       if (this.focusShip) {
@@ -183,7 +190,11 @@ class MapboxShip extends EventEmitter {
             keys.forEach((key) => {
               v.push(ship[this._convertKey(key)] || null);
             });
-            v = this._addExtraField(OWN_SHIP, v);
+            v = this._addExtraField(v, {
+              imageName: ship["teamId"],
+              shipDataType: OWN_SHIP,
+              shipFrom: "my",
+            });
             vs.push(v);
           });
 
@@ -201,7 +212,13 @@ class MapboxShip extends EventEmitter {
           set(
             this.shipData,
             OUT_SHIP,
-            data.data.v.map((v) => this._addExtraField(OUT_SHIP, v)),
+            data.data.v.map((v) =>
+              this._addExtraField(v, {
+                imageName: null,
+                shipDataType: OUT_SHIP,
+                shipFrom: "ais",
+              }),
+            ),
           );
           resolve(this.shipData[OUT_SHIP]);
         })
@@ -209,14 +226,56 @@ class MapboxShip extends EventEmitter {
     });
   }
 
-  _addExtraField(type, v) {
-    if (type === OUT_SHIP) {
-      return [...cloneDeep(v), null, OUT_SHIP, "ais"];
-    } else if (type === OWN_SHIP) {
-      return [...cloneDeep(v), "imageName", OWN_SHIP, "my"];
-    } else if (type === GHOST_SHIP) {
-      return [...cloneDeep(v), null, OUT_SHIP, "ais"];
-    }
+  _addIcon() {
+    return new Promise((resolve, reject) => {
+      if (this.icons.length > 0) {
+        return resolve(this.icons);
+      }
+
+      getShipIcon()
+        .then(({ data }) => {
+          this.icons = data.data;
+          data.data.forEach((item) => {
+            this.getShipImage(item.color).then((url) => {
+              this.map.loadImage(url, (err, image) => {
+                if (err) return reject(err);
+                if (!this.map.hasImage(item.id)) {
+                  this.map.addImage(item.id, image);
+                }
+              });
+            });
+          });
+          resolve(this.icons);
+        })
+        .catch((e) => reject(e));
+    });
+  }
+
+  getShipImage(color) {
+    return new Promise((resolve, reject) => {
+      const context = getContext("2d", {
+        width: 25,
+        height: 56,
+      });
+      const shipImgSvg = [
+        `<svg width="25" height="56" viewBox="0 0 25 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1 25.422L12.5 3L24 25.422V55H1V25.422Z" fill="${color}" stroke="black" stroke-width="2"/>
+</svg>
+`,
+      ].join("\n");
+      svgToImage(shipImgSvg, (error, image) => {
+        if (error) {
+          reject(error);
+          throw error;
+        }
+        context.drawImage(image, 0, 0);
+        resolve(context.canvas.toDataURL("image/png"));
+      });
+    });
+  }
+
+  _addExtraField(v, fields) {
+    return [...cloneDeep(v), ...Object.values(fields)];
   }
 
   _addEvents() {
@@ -324,12 +383,12 @@ class MapboxShip extends EventEmitter {
     });
   }
 
-  _keyMap(keys) {
+  _keyMap(keys = []) {
     const newKeys = keys.map((key) => {
       return this._convertKey(key);
     });
-    // console.log(newKeys);
-    return [...newKeys, ...properties];
+    // return [...newKeys, ...properties];
+    return newKeys;
   }
 
   _convertKey(key) {

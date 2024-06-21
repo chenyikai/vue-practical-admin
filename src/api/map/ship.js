@@ -18,8 +18,9 @@ export function getGreenDot(data) {
 
 export function getInternalShip() {
   return request({
-    url: "/rest/onemap/getNbShipDataListNew",
+    url: "/rest/shipInfo/getNbShipDataListNew",
     method: "post",
+    data: {},
   });
 }
 
@@ -28,5 +29,13 @@ export function getExternalShip(data) {
     url: "/rest/ehhship/getShipDataList",
     method: "post",
     data,
+  });
+}
+
+export function getShipIcon() {
+  return request({
+    url: "/rest/shipTeam/getShipTeamList",
+    method: "post",
+    data: {},
   });
 }
