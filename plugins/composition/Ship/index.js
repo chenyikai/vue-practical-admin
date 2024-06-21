@@ -88,14 +88,18 @@ class MapboxShip extends EventEmitter {
       if (this.map.getZoom() < 12) {
         this._addGreenDot();
         await this._addInternal(keys).then(() => {
-          shipData = this.shipData[OWN_SHIP];
+          shipData = [...this.shipData[GHOST_SHIP], ...this.shipData[OWN_SHIP]];
         });
       } else {
         await Promise.allSettled([
           this._addInternal(keys),
           this._addExternal(keys),
         ]).then(() => {
-          shipData = [...this.shipData[OUT_SHIP], ...this.shipData[OWN_SHIP]];
+          shipData = [
+            ...this.shipData[GHOST_SHIP],
+            ...this.shipData[OUT_SHIP],
+            ...this.shipData[OWN_SHIP],
+          ];
         });
       }
 
@@ -174,6 +178,11 @@ class MapboxShip extends EventEmitter {
     let v = [];
     this.keys.forEach((key) => {
       v.push(data[this._convertKey(key)] || null);
+    });
+    v = this._addExtraField(v, {
+      imageName: null,
+      shipDataType: OUT_SHIP,
+      shipFrom: "ais",
     });
     set(this.shipData, GHOST_SHIP, [v]);
   }
