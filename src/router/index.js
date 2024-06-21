@@ -8,7 +8,7 @@ import { getStore } from "@/utils/store.js";
 
 const router = createRouter({
   // 4. 内部提供了 history 模式的实现。为了简单起见，我们在这里使用 hash 模式。
-  history: createWebHashHistory(import.meta.env.VITE_PUBLIC_PATH),
+  history: createWebHashHistory(),
   routes: [...pages, ...views],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
@@ -125,9 +125,9 @@ export function go2MenuPage(menu) {
   if (menu.children.length !== 0) {
     router.push({
       name: "MenuPage",
-      params: {
-        name: menu["menuName"],
-      },
+      // params: {
+      //   name: menu["menuName"],
+      // },
       query: { id: menu["id"] },
     });
   } else {

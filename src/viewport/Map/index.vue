@@ -11,17 +11,16 @@ import SearchBar from "./components/SearchBar/index.vue";
 import ShipInfo from "./components/ShipInfo/index.vue";
 import MapControl from "./components/MapControl/index.vue";
 import SideBar from "./components/SideBar/index.vue";
-import GalesPack from "./components/GalesPack/index.vue";
-import HurricanePack from "./components/HurricanePack/index.vue";
-import MapChannelMonitor from "@/viewport/Map/components/ChannelMonitor/index.vue";
-import ArbitraryPoint from "./components/ArbitraryPoint/index.vue";
-import FisheryMeteorology from "@/viewport/Map/components/FisheryMeteorology/index.vue";
 import { shipInfoStore } from "@/store";
 const ShipInfoStore = shipInfoStore();
 
 defineOptions({
   name: "MapPage",
 });
+
+function onClick() {
+  ShipInfoStore.show(412421079);
+}
 </script>
 
 <template>
@@ -33,12 +32,7 @@ defineOptions({
       <search-bar />
       <ship-info v-if="ShipInfoStore.visible" />
       <map-control />
-      <map-channel-monitor />
-      <side-bar />
-      <GalesPack />
-      <HurricanePack />
-      <ArbitraryPoint />
-      <FisheryMeteorology />
+      <side-bar @click="onClick" />
     </template>
   </map-layout>
 </template>

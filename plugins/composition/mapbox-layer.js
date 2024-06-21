@@ -1,7 +1,5 @@
 import MapboxDraw from "./Draw/mapbox-draw.js";
-import { parse } from "wellknown";
-import { circle, feature } from "@turf/turf";
-import { validatenull } from "@/utils/validate.js";
+
 class MapboxLayer extends MapboxDraw {
   map = null;
   ehhGis = null;
@@ -80,61 +78,6 @@ class MapboxLayer extends MapboxDraw {
 
   _removeEvents() {
     MapboxDraw.off("graphical_click", this.clickFunc);
-  }
-  clear() {
-    super.clearGraphicalData();
-    this.draw.deleteAll();
-  }
-  handleAllTypeLayer(data) {
-    return data
-      .map((item) => {
-        if (item.geom) {
-          let properties = {};
-          let geom = parse(item.geom);
-          if (geom["type"] === MapboxDraw.POINT && !item.radius) {
-            properties = {
-              ...MapboxLayer.POINT_STYLE,
-              "icon-image": item.icon || "point",
-            };
-          } else if (geom["type"] === MapboxDraw.LINE) {
-            properties = MapboxLayer.LINE_STYLE;
-          } else if (geom["type"] === MapboxDraw.POLYGON) {
-            properties = MapboxLayer.POLYGON_STYLE;
-          } else if (geom["type"] === MapboxDraw.POINT && item.radius) {
-            properties = {
-              ...MapboxLayer.CIRCLE_STYLE,
-            };
-          }
-
-          let _feature = {};
-
-          if (geom["type"] === MapboxDraw.POINT && item.radius) {
-            _feature = circle(geom.coordinates, item.radius, {
-              units: "kilometers",
-
-              steps: 64,
-
-              properties: properties,
-            });
-          } else {
-            _feature = feature(geom, {
-              ...properties,
-              "graphical-type": MapboxLayer.Warn,
-              name: item.name,
-            });
-          }
-
-          return {
-            id: item.id,
-
-            ..._feature,
-          };
-        }
-      })
-
-      .filter((item) => !validatenull(item))
-
-      .flat();
   }
 
   render(val) {
