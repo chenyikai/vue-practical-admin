@@ -45,14 +45,10 @@ function onDialogSubmit() {
 function onFormSubmit(data, done) {
   dialog.value.onLoad();
 
-  emits(
-    formStatus.value,
-    { ...formData.value, deptidsstr: formData.value.deptId },
-    (isClose = false) => {
-      done();
-      dialog.value.onDone(isClose);
-    },
-  );
+  emits(formStatus.value, formData.value, (isClose = false) => {
+    done();
+    dialog.value.onDone(isClose);
+  });
 }
 
 function onClose() {

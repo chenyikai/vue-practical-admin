@@ -4,10 +4,9 @@ class MapboxSwitch extends EventEmitter {
   map = null;
   switch = null;
 
-  constructor(options) {
-    super();
-    this.map = options.map;
-    this.switch = options.mapSwitch;
+  setData({ map, mapSwitch }) {
+    this.map = map;
+    this.switch = mapSwitch;
   }
 
   switchLayer(name) {
