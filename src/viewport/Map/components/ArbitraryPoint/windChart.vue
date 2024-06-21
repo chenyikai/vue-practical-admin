@@ -1,29 +1,39 @@
 <script setup>
 import * as echarts from "echarts";
+import { ref, defineProps, onMounted, reactive } from "vue";
 
-import { onMounted, ref } from "vue";
+defineProps({
+  clickType: { type: Number },
+});
 
 const chart = ref(); // ​定义一个响应式的值，用于传递图表
+const xAxisData = reactive([]);
+const seriesData = reactive([]);
+const option = reactive({
+  xAxis: {
+    data: xAxisData,
+  },
+  yAxis: { type: "value" },
+  series: [
+    {
+      data: seriesData,
+      type: "line",
+    },
+  ],
+});
 
 const init = () => {
   const myChart = echarts.init(chart.value);
-  let option = {
-    xAxis: {
-      data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-    },
-    yAxis: { type: "value" },
-    series: [
-      {
-        data: [150, 230, 224, 218, 135, 147, 260],
-        type: "line",
-      },
-    ],
-  };
   myChart.setOption(option);
 };
-
 onMounted(() => {
   init();
+});
+
+defineExpose({
+  init,
+  xAxisData,
+  seriesData,
 });
 </script>
 
@@ -34,14 +44,12 @@ export default {
 </script>
 
 <template>
-  <div ref="chart" id="wind"></div>
+  <div ref="chart" id="wind" style="width: 750px; height: 400px"></div>
 </template>
 
 <style scoped lang="scss">
 #wind {
   margin-top: 20px;
-  width: 100%;
-  height: 300px;
-  // background-color: greenyellow;
+  background-color: rgb(235, 238, 231);
 }
 </style>
