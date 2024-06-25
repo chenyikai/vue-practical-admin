@@ -96,23 +96,21 @@ class MapboxShip extends EventEmitter {
           this._addExternal(keys),
         ]).then(() => {
           shipData = [
-            ...this.shipData[GHOST_SHIP],
-            ...this.shipData[OUT_SHIP],
             ...this.shipData[OWN_SHIP],
+            ...this.shipData[OUT_SHIP],
+            ...this.shipData[GHOST_SHIP],
           ];
         });
       }
 
-      // if (shipData.length > 0) {
-      this.ship.addShips({
-        k: [...keys, ...properties],
-        v: this._unique([...keys, ...properties], shipData, "mmsi"),
-      });
-
-      if (this.focusShip) {
-        this.ship.setSelectedShip(this.focusShip.mmsi, true);
+      if (shipData.length > 0) {
+        this.ship.addShips({
+          k: [...keys, ...properties],
+          v: this._unique([...keys, ...properties], shipData, "mmsi"),
+        });
+      } else {
+        this.ship.addShips({});
       }
-      // }
     });
   }
 
@@ -147,16 +145,18 @@ class MapboxShip extends EventEmitter {
     };
   }
 
-  setFocus(val, zoom = 14) {
-    if (validatenull(val)) {
+  setFocus(ship, zoom = 14) {
+    if (validatenull(ship)) {
       this.focusMmsi = null;
       this.ship.cancelSelectedShip();
       return;
     }
 
-    if (val.location) {
-      this._addGhost(val);
-      const [lat, lon] = val.location.split(",");
+    if (ship.location) {
+      this.focusShip = ship;
+
+      this._addGhost(ship);
+      const [lat, lon] = ship.location.split(",");
       this.map.setCenter([lon, lat]);
       this.map.setZoom(zoom);
       // this.map.flyTo({
@@ -173,8 +173,6 @@ class MapboxShip extends EventEmitter {
   }
 
   _addGhost(data) {
-    this.focusShip = data;
-
     let v = [];
     this.keys.forEach((key) => {
       v.push(data[this._convertKey(key)] || null);
