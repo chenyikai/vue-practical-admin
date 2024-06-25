@@ -17,10 +17,6 @@ const ShipInfoStore = shipInfoStore();
 defineOptions({
   name: "MapPage",
 });
-
-function onClick() {
-  ShipInfoStore.show(412421079);
-}
 </script>
 
 <template>
@@ -32,7 +28,7 @@ function onClick() {
       <search-bar />
       <ship-info v-if="ShipInfoStore.visible" />
       <map-control />
-      <side-bar @click="onClick" />
+      <side-bar />
     </template>
   </map-layout>
 </template>

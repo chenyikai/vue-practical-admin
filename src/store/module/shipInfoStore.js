@@ -13,11 +13,6 @@ const shipInfoStore = defineStore("shipInfo", {
       isOwn: false,
     };
   },
-  getters: {
-    isEmpty(state) {
-      return state.results.length === 0;
-    },
-  },
   actions: {
     show(mmsi) {
       this.visible = true;
@@ -27,9 +22,11 @@ const shipInfoStore = defineStore("shipInfo", {
     },
     hide() {
       this.loading = false;
-      this.results = [];
       this.visible = false;
+      this.shipData = {};
+      this.isOwn = false;
       this.zIndex = 0;
+      MapboxShip.setFocus();
     },
     getData(mmsi) {
       this.loading = true;

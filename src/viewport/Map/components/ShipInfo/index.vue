@@ -60,6 +60,12 @@ function onAttentionChange(val) {
     });
 }
 
+function onClose() {
+  activeStep.value = 1;
+  attention.value = 0;
+  ShipInfoStore.hide();
+}
+
 onMounted(() => {
   attention.value = ShipInfoStore.isOwn ? 1 : 0;
 });
@@ -85,7 +91,9 @@ onMounted(() => {
             :max="1"
             clearable
             @change="onAttentionChange" />
-          <el-icon class="close-btn"><CircleClose /></el-icon>
+          <el-icon class="close-btn" @click.stop="onClose"
+            ><CircleClose
+          /></el-icon>
         </div>
       </header>
       <nav class="ship-info-container-nav">
@@ -137,9 +145,13 @@ onMounted(() => {
           color: #fff;
         }
       }
-      .close-btn {
-        font-size: 18px;
-        cursor: pointer;
+      .func-layout {
+        display: flex;
+        align-items: center;
+        .close-btn {
+          font-size: 18px;
+          cursor: pointer;
+        }
       }
     }
     &-nav {

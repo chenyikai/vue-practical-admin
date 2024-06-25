@@ -30,6 +30,7 @@ export default {
     MALE: 0,
     FEMALE: 1,
   },
+  scaleRatio: 1920 / window.innerWidth,
   menu: {
     props: {
       label: "menuName",

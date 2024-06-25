@@ -8,6 +8,7 @@ export default {
 import { ref, onMounted, onBeforeMount, onBeforeUnmount, computed } from "vue";
 import moment from "moment";
 import UserInfo from "../UserInfo/index.vue";
+import website from "@/config/website.js";
 
 defineOptions({
   name: "MapLayout",
@@ -52,7 +53,8 @@ onBeforeUnmount(() => {
 
 onMounted(() => {
   setTimeout(() => {
-    const height = headerRef.value.offsetHeight;
+    // 92 1920时头部高度
+    const height = headerRef.value.offsetHeight || 92 * website.scaleRatio;
     const root = document.documentElement;
     root.style.setProperty("--header-height", height + "px");
   }, 0);
