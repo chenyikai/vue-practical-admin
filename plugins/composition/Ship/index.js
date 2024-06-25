@@ -109,7 +109,7 @@ class MapboxShip extends EventEmitter {
           v: this._unique([...keys, ...properties], shipData, "mmsi"),
         });
       } else {
-        this.ship.addShips({});
+        this.ship.addShips([]);
       }
     });
   }
@@ -157,12 +157,12 @@ class MapboxShip extends EventEmitter {
 
       this._addGhost(ship);
       const [lat, lon] = ship.location.split(",");
-      this.map.setCenter([lon, lat]);
-      this.map.setZoom(zoom);
-      // this.map.flyTo({
-      //   center: [lon, lat],
-      //   zoom,
-      // });
+      // this.map.setCenter([lon, lat]);
+      // this.map.setZoom(zoom);
+      this.map.easeTo({
+        center: [lon, lat],
+        zoom,
+      });
     }
   }
 
