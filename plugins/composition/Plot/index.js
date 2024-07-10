@@ -23,8 +23,9 @@ class Plot {
 
   constructor(options) {
     Store.setData(options.map);
+
     Store.loaded().then(() => {
-      this._init();
+      this._init(options);
     });
   }
 
@@ -34,9 +35,8 @@ class Plot {
    * @param {object}options
    */
   changeMode(mode, options) {
-    console.log(mode, options, "mode, options");
     const point = new Point();
-    point.begin();
+    point.begin(mode, options);
   }
 
   /**
@@ -74,7 +74,7 @@ class Plot {
    *
    * @private
    */
-  _init() {
+  _init(options) {
     Store.getMap().addSource(styles.SOURCES.HOT, {
       type: "geojson",
       data: vars.EMPTY_COLLECTION,
@@ -96,7 +96,11 @@ class Plot {
         Store.getMap().addLayer({ ...layer, source: styles.SOURCES.COLD });
       }
     });
+
+    this._addIcons(options.icons);
   }
+
+  _factory() {}
 
   _addIcons(icons) {
     for (const name in icons) {

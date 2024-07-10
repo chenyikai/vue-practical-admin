@@ -72,8 +72,8 @@ class Store extends EventEmitter {
     }
 
     for (const key in feature1.properties) {
-      const value1 = feature1[key];
-      const value2 = feature2[key];
+      const value1 = feature1.properties[key];
+      const value2 = feature2.properties[key];
     }
   }
 

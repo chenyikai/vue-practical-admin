@@ -6,6 +6,7 @@ import * as styles from "../config/styles.js";
 class Point {
   static FEATURE_TYPE = "point";
   mouseMoveFunc = null;
+  clickFunc = null;
   uuid = null;
   plotList = {};
 
@@ -15,6 +16,7 @@ class Point {
 
   init() {
     this.mouseMoveFunc = this._mouseMove.bind(this);
+    this.clickFunc = this._click.bind(this);
   }
 
   destroy() {
@@ -28,7 +30,7 @@ class Point {
     set(this.plotList, this.uuid, {});
 
     Store.getMap().on("mousemove", this.mouseMoveFunc);
-    Store.getMap().once("click", this.mouseMoveFunc);
+    Store.getMap().once("click", this.clickFunc);
   }
 
   finish() {
@@ -41,10 +43,25 @@ class Point {
 
   _mouseMove(e) {
     const lonLat = [e.lngLat.lng, e.lngLat.lat];
-    const feature = point(lonLat, {});
 
-    Store.setFeature({ id: this.uuid, ...feature });
-    Store.render(styles.COLD);
+    const feature = point(
+      lonLat,
+      {
+        feature_type: Point.FEATURE_TYPE,
+      },
+      {
+        id: this.uuid,
+      },
+    );
+
+    console.log(feature);
+    // Store.setFeature(feature);
+    // Store.render(styles.COLD);
+  }
+
+  _click(e) {
+    console.log(e, "click");
+    this.finish();
   }
 }
 

@@ -29,7 +29,7 @@ function initMap() {
     Mapbox.getMap().resize();
 
     // MapboxTrack.trackSetData(trackData, shipData, true);
-    // const plot = new Plot({ map: Mapbox.getMap() });
+    // const plot = new Plot({ map: Mapbox.getMap(), icons: {} });
     // plot.changeMode(Plot.DRAW_POINT, {});
     MapboxShip.on("click", onClick);
   });
