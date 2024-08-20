@@ -12,7 +12,7 @@ import { computed, onBeforeMount, onBeforeUnmount, reactive, ref } from "vue";
 import { randomLenNum } from "@/utils/util.js";
 import { userStore } from "@/store";
 import { validatenull } from "@/utils/validate.js";
-import moment from "moment/moment.js";
+import moment from "moment";
 
 const router = useRouter();
 const route = useRoute();
@@ -79,13 +79,13 @@ function refreshCode() {
 }
 
 onBeforeMount(() => {
-  refreshCode();
-
   timer = setInterval(() => {
     const time = new Date();
     nowDate.value = `${moment(time).format("MM月DD日")} ${weekArr[time.getDay()]}`;
-    nowTime.value = moment(time).format("HH:mm:ss");
+    nowTime.value = moment(time).format("HH:mm");
   }, 1000);
+
+  refreshCode();
 });
 
 onBeforeUnmount(() => {
