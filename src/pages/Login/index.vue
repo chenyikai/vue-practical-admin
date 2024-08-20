@@ -96,8 +96,8 @@ onBeforeUnmount(() => {
 
 <template>
   <section class="login-container">
-    <!--    <div class="login-glass" />-->
-    <img class="login-bg" src="/images/login/bg.webp" alt="" />
+    <div class="login-glass" />
+    <img class="login-bg" src="/images/login/bg.jpg" alt="" />
     <div class="date-time-box">
       <div class="title">{{ website.title }}</div>
       <div class="date">{{ nowDate }}</div>
@@ -148,14 +148,7 @@ onBeforeUnmount(() => {
             </template>
           </el-input>
         </el-form-item>
-        <!--        <el-form-item size="large">-->
-        <!--          <el-button class="login-button" type="primary" native-type="submit">-->
-        <!--            登录-->
-        <!--          </el-button>-->
-        <!--        </el-form-item>-->
       </el-form>
     </div>
   </section>
 </template>
-
-<style scoped lang="scss"></style>
