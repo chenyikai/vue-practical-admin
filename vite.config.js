@@ -30,7 +30,7 @@ export default defineConfig(({ mode }) => {
       createSvgIconsPlugin({
         // eslint-disable-next-line no-undef
         iconDirs: [path.resolve(process.cwd(), "src/icons")],
-        symbolId: "icon-[dir]-[name]",
+        symbolId: "icon-[dir]-[name]", // icon-file-excel
       }),
     ],
     resolve: {

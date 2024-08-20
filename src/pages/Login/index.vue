@@ -5,14 +5,26 @@ export default {
 </script>
 
 <script setup>
-import { User, Lock, Warning } from "@element-plus/icons-vue";
+import { Promotion } from "@element-plus/icons-vue";
 import website from "@/config/website.js";
 import { useRoute, useRouter } from "vue-router";
-import { onBeforeMount, reactive, ref } from "vue";
+import { computed, onBeforeMount, reactive, ref } from "vue";
 import { randomLenNum } from "@/utils/util.js";
 import { userStore } from "@/store";
+import { validatenull } from "@/utils/validate.js";
+
 const router = useRouter();
 const route = useRoute();
+const UserStore = userStore();
+
+const avatarUrl = computed(() => {
+  const isMale = UserStore.userInfo.gender === website.gender.MALE;
+  if (validatenull(UserStore.userInfo.avatar)) {
+    return isMale ? website.defaultAvatar.male : website.defaultAvatar.female;
+  }
+
+  return UserStore.userInfo.avatar;
+});
 
 const codeUrl = ref(`${import.meta.env.VITE_API_PREFIX}/rest/auth/captcha`);
 const formData = reactive({
@@ -58,68 +70,67 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div class="login-page">
-    <div class="animation-content">
-      <div class="login-content">
-        <div class="illustration-layout">
-          <img src="@/assets/images/login/illustration.png" />
-        </div>
-        <div class="form-content">
-          <div class="login-content-title">{{ website.title }}</div>
-          <div class="login-content-form">
-            <el-form
-              ref="form"
-              :model="formData"
-              :rules="rules"
-              @submit.prevent="handleSubmit"
-              :disabled="loading">
-              <el-form-item prop="username" size="large">
-                <el-input
-                  v-model="formData.username"
-                  :prefix-icon="User"
-                  placeholder="请输入用户名"
-                  autofocus
-                  clearable>
-                </el-input>
-              </el-form-item>
-              <el-form-item prop="password" size="large">
-                <el-input
-                  v-model="formData.password"
-                  :prefix-icon="Lock"
-                  type="password"
-                  placeholder="请输入密码"
-                  show-password
-                  clearable>
-                </el-input>
-              </el-form-item>
-              <el-form-item prop="code" size="large">
-                <el-input
-                  v-model="formData.code"
-                  :prefix-icon="Warning"
-                  placeholder="请输入验证码"
-                  clearable>
-                  <template v-slot:append>
-                    <img
-                      :src="`${codeUrl}?key=${formData.key}`"
-                      @click="refreshCode" />
-                  </template>
-                </el-input>
-              </el-form-item>
-              <el-form-item size="large">
-                <el-button
-                  class="login-button"
-                  type="primary"
-                  native-type="submit">
-                  登录
-                </el-button>
-              </el-form-item>
-            </el-form>
-          </div>
-          <div class="login-content-footer"></div>
-        </div>
-      </div>
+  <section class="login-container">
+    <!--    <div class="login-glass" />-->
+    <img class="login-bg" src="/images/login/bg.webp" alt="" />
+    <div class="date-time-box">
+      <div class="title">{{ website.title }}</div>
+      <div class="date">8月20日 星期二</div>
+      <div class="time">09:25</div>
     </div>
-  </div>
+    <div class="login-form-box">
+      <el-avatar class="avatar" :size="60" :src="avatarUrl" />
+      <el-form
+        class="login-form"
+        ref="form"
+        :model="formData"
+        :rules="rules"
+        @submit.prevent="handleSubmit"
+        :disabled="loading">
+        <el-form-item prop="username" size="large">
+          <el-input
+            class="login-input"
+            v-model="formData.username"
+            placeholder="请输入用户名"
+            @keyup.enter="handleSubmit"
+            autofocus>
+          </el-input>
+        </el-form-item>
+        <el-form-item prop="password" size="large">
+          <el-input
+            class="login-input"
+            v-model="formData.password"
+            type="password"
+            placeholder="请输入密码"
+            @keyup.enter="handleSubmit">
+            <template #append v-if="!validatenull(formData.password)">
+              <el-button native-type="submit" :icon="Promotion" />
+            </template>
+          </el-input>
+        </el-form-item>
+        <el-form-item prop="code" size="large">
+          <el-input
+            class="login-input code-input"
+            v-model="formData.code"
+            placeholder="请输入验证码"
+            @keyup.enter="handleSubmit"
+            clearable>
+            <template v-slot:append>
+              <img
+                class="code-img"
+                :src="`${codeUrl}?key=${formData.key}`"
+                @click="refreshCode" />
+            </template>
+          </el-input>
+        </el-form-item>
+        <!--        <el-form-item size="large">-->
+        <!--          <el-button class="login-button" type="primary" native-type="submit">-->
+        <!--            登录-->
+        <!--          </el-button>-->
+        <!--        </el-form-item>-->
+      </el-form>
+    </div>
+  </section>
 </template>
 
 <style scoped lang="scss"></style>
