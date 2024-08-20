@@ -8,14 +8,28 @@ export default {
 import { Promotion } from "@element-plus/icons-vue";
 import website from "@/config/website.js";
 import { useRoute, useRouter } from "vue-router";
-import { computed, onBeforeMount, reactive, ref } from "vue";
+import { computed, onBeforeMount, onBeforeUnmount, reactive, ref } from "vue";
 import { randomLenNum } from "@/utils/util.js";
 import { userStore } from "@/store";
 import { validatenull } from "@/utils/validate.js";
+import moment from "moment/moment.js";
 
 const router = useRouter();
 const route = useRoute();
 const UserStore = userStore();
+
+let timer = null;
+const nowDate = ref("");
+const nowTime = ref("");
+const weekArr = [
+  "星期天",
+  "星期一",
+  "星期二",
+  "星期三",
+  "星期四",
+  "星期五",
+  "星期六",
+];
 
 const avatarUrl = computed(() => {
   const isMale = UserStore.userInfo.gender === website.gender.MALE;
@@ -66,6 +80,17 @@ function refreshCode() {
 
 onBeforeMount(() => {
   refreshCode();
+
+  timer = setInterval(() => {
+    const time = new Date();
+    nowDate.value = `${moment(time).format("MM月DD日")} ${weekArr[time.getDay()]}`;
+    nowTime.value = moment(time).format("HH:mm:ss");
+  }, 1000);
+});
+
+onBeforeUnmount(() => {
+  timer && clearInterval(timer);
+  timer = null;
 });
 </script>
 
@@ -75,8 +100,8 @@ onBeforeMount(() => {
     <img class="login-bg" src="/images/login/bg.webp" alt="" />
     <div class="date-time-box">
       <div class="title">{{ website.title }}</div>
-      <div class="date">8月20日 星期二</div>
-      <div class="time">09:25</div>
+      <div class="date">{{ nowDate }}</div>
+      <div class="time">{{ nowTime }}</div>
     </div>
     <div class="login-form-box">
       <el-avatar class="avatar" :size="60" :src="avatarUrl" />
