@@ -78,11 +78,17 @@ function refreshCode() {
   formData["code"] = "";
 }
 
+function getTime() {
+  const time = new Date();
+  nowDate.value = `${moment(time).format("MM月DD日")} ${weekArr[time.getDay()]}`;
+  nowTime.value = moment(time).format("HH:mm");
+}
+
 onBeforeMount(() => {
+  getTime();
+
   timer = setInterval(() => {
-    const time = new Date();
-    nowDate.value = `${moment(time).format("MM月DD日")} ${weekArr[time.getDay()]}`;
-    nowTime.value = moment(time).format("HH:mm");
+    getTime();
   }, 1000);
 
   refreshCode();
