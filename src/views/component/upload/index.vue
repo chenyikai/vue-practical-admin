@@ -21,7 +21,7 @@ defineOptions({
     </admin-card>
 
     <admin-card title="照片墙" class="upload-card">
-      <upload-file type="avatar" />
+      <upload-file type="pictureCard" />
     </admin-card>
   </section>
 </template>
