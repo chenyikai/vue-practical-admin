@@ -73,6 +73,7 @@ const icon = computed(() => {
     .title-layout {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       .page-title {
         display: flex;
         align-items: center;
@@ -85,7 +86,6 @@ const icon = computed(() => {
           margin-right: 6px;
         }
       }
-      align-items: center;
     }
     .form-layout {
       width: 100%;

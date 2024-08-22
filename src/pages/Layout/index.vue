@@ -24,11 +24,20 @@ function initMenu() {
     resolve([
       {
         id: 0,
-        menuName: "组件展示",
-        icon: "show",
-        path: "/show/index",
+        menuName: "组件",
+        icon: "component",
+        path: "/component",
         sort: 9,
-        children: [],
+        children: [
+          {
+            id: 100,
+            menuName: "上传组件",
+            icon: "export",
+            path: "/component/upload/index",
+            sort: 9,
+            children: [],
+          },
+        ],
       },
       {
         id: 1,
@@ -94,14 +103,6 @@ function initMenu() {
           //   children: [],
           // },
         ],
-      },
-      {
-        id: 2,
-        menuName: "表单配置",
-        icon: "form-config",
-        path: "/form/index",
-        sort: 8,
-        children: [],
       },
     ]);
   });
