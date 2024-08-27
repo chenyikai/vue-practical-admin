@@ -14,65 +14,65 @@ export const draggable = {
      * @type { HTMLElement }
      */
     // console.log(el, binding, vnode, 'el')
-    const dialogHeaderEl = document.getElementsByClassName(binding.arg)[0]
+    const dialogHeaderEl = document.getElementsByClassName(binding.arg)[0];
     // console.log(dialogHeaderEl, 'dialogHeaderEl')
-    const dragDom = el
+    const dragDom = el;
 
-    dialogHeaderEl.style.cursor = 'move'
+    dialogHeaderEl.style.cursor = "move";
 
     // 获取原有属性 ie dom元素.currentStyle 火狐谷歌 window.getComputedStyle(dom元素, null);
-    const sty = dragDom.currentStyle || window.getComputedStyle(dragDom, null)
+    const sty = dragDom.currentStyle || window.getComputedStyle(dragDom, null);
     function dragHandler(e) {
-      e.preventDefault()
-      e.stopPropagation()
-      const disX = e.clientX - dialogHeaderEl.offsetLeft
-      const disY = e.clientY - dialogHeaderEl.offsetTop
-      const screenWidth = document.body.clientWidth
-      const screenHeight = document.documentElement.clientHeight
-      const dragDomWidth = dragDom.offsetWidth
-      const dragDomheight = dragDom.offsetHeight
-      const minDragDomLeft = dragDom.offsetLeft
-      const maxDragDomLeft = screenWidth - dragDom.offsetLeft - dragDomWidth
-      const minDragDomTop = dragDom.offsetTop
-      const maxDragDomTop = screenHeight - dragDom.offsetTop - dragDomheight
-      let styL, styT
+      e.preventDefault();
+      e.stopPropagation();
+      const disX = e.clientX - dialogHeaderEl.offsetLeft;
+      const disY = e.clientY - dialogHeaderEl.offsetTop;
+      const screenWidth = document.body.clientWidth;
+      const screenHeight = document.documentElement.clientHeight;
+      const dragDomWidth = dragDom.offsetWidth;
+      const dragDomheight = dragDom.offsetHeight;
+      const minDragDomLeft = dragDom.offsetLeft;
+      const maxDragDomLeft = screenWidth - dragDom.offsetLeft - dragDomWidth;
+      const minDragDomTop = dragDom.offsetTop;
+      const maxDragDomTop = screenHeight - dragDom.offsetTop - dragDomheight;
+      let styL, styT;
 
-      if (sty.left.includes('%')) {
-        styL = +document.body.clientWidth * (+sty.left.replace(/%/g, '') / 100)
-        styT = +document.body.clientHeight * (+sty.top.replace(/%/g, '') / 100)
+      if (sty.left.includes("%")) {
+        styL = +document.body.clientWidth * (+sty.left.replace(/%/g, "") / 100);
+        styT = +document.body.clientHeight * (+sty.top.replace(/%/g, "") / 100);
       } else {
-        styL = +sty.left.replace(/px/g, '')
-        styT = +sty.top.replace(/px/g, '')
+        styL = +sty.left.replace(/px/g, "");
+        styT = +sty.top.replace(/px/g, "");
       }
 
       document.onmousemove = document.ontouchmove = function (e) {
-        e.preventDefault()
-        e.stopPropagation()
-        let l = e.clientX - disX
-        let t = e.clientY - disY
+        e.preventDefault();
+        e.stopPropagation();
+        let l = e.clientX - disX;
+        let t = e.clientY - disY;
         if (-l > minDragDomLeft) {
-          l = -minDragDomLeft
+          l = -minDragDomLeft;
         } else if (l > maxDragDomLeft) {
-          l = maxDragDomLeft
+          l = maxDragDomLeft;
         }
         if (-t > minDragDomTop) {
-          t = -minDragDomTop
+          t = -minDragDomTop;
         } else if (t > maxDragDomTop) {
-          t = maxDragDomTop
+          t = maxDragDomTop;
         }
-        dragDom.style.left = `${l + styL}px`
-        dragDom.style.top = `${t + styT}px`
-      }
+        dragDom.style.left = `${l + styL}px`;
+        dragDom.style.top = `${t + styT}px`;
+      };
 
       document.onmouseup = document.ontouchend = function () {
-        document.onmousemove = null
-        document.ontouchmove = null
-        document.onmouseup = null
-        document.ontouchend = null
-      }
+        document.onmousemove = null;
+        document.ontouchmove = null;
+        document.onmouseup = null;
+        document.ontouchend = null;
+      };
     }
 
-    dialogHeaderEl.addEventListener('touchstart', dragHandler)
-    dialogHeaderEl.addEventListener('mousedown', dragHandler)
+    dialogHeaderEl.addEventListener("touchstart", dragHandler);
+    dialogHeaderEl.addEventListener("mousedown", dragHandler);
   },
-}
+};
