@@ -55,7 +55,7 @@ class MapboxShip extends EventEmitter {
 
   init() {
     this.isInit = true;
-    this._addIcon();
+    // this._addIcon();
     this.getData();
     this._addEvents();
 
@@ -87,12 +87,12 @@ class MapboxShip extends EventEmitter {
     this._getDataKey().then(async (keys) => {
       if (this.map.getZoom() < 12) {
         this._addGreenDot();
-        await this._addInternal(keys).then(() => {
-          shipData = [...this.shipData[GHOST_SHIP], ...this.shipData[OWN_SHIP]];
-        });
+        // await this._addInternal(keys).then(() => {
+        //   shipData = [...this.shipData[GHOST_SHIP], ...this.shipData[OWN_SHIP]];
+        // });
       } else {
         await Promise.allSettled([
-          this._addInternal(keys),
+          // this._addInternal(keys),
           this._addExternal(keys),
         ]).then(() => {
           shipData = [
@@ -431,6 +431,8 @@ class MapboxShip extends EventEmitter {
   }
 
   _onClick(e) {
+    if (validatenull(e)) return;
+
     this.ship.setSelectedShip(e[0].id, true);
     this.emit("click", e[0]);
   }
