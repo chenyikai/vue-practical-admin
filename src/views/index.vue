@@ -1,9 +1,13 @@
 <script setup>
+import IconBox from "package/IconBox/src/index.vue";
+
 defineOptions({
   name: "IndexPage",
 });
 </script>
 
 <template>
-  <div>主页</div>
+  <div>
+    <icon-box />
+  </div>
 </template>

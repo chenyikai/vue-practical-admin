@@ -6,6 +6,7 @@ import SvgIcon from "./SvgIcon";
 import UploadFile from "./Upload";
 import PicZoom from "./PicZoom";
 import AdminCard from "./Card";
+import IconBox from "./IconBox";
 const components = [
   AdminContainer,
   PageButton,
@@ -15,6 +16,7 @@ const components = [
   UploadFile,
   PicZoom,
   AdminCard,
+  IconBox,
 ];
 
 export default function install(app) {
