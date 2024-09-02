@@ -8,6 +8,6 @@ defineOptions({
 
 <template>
   <div>
-    <icon-box />
+    <icon-box style="width: 240px" />
   </div>
 </template>

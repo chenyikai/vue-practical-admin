@@ -10,6 +10,7 @@ import { nextTick } from "vue";
 import website from "@/config/website.js";
 import useOptions from "./useOptions.js";
 import { menuDetail } from "@/api/sys/menu/index.js";
+import IconBox from "package/IconBox/src/index.vue";
 const emits = defineEmits({
   [website.pageStatus.CREATE]: null,
   [website.pageStatus.UPDATE]: null,
@@ -84,6 +85,10 @@ defineExpose({
       :key="key"
       :option="formOption"
       v-model="formData"
-      @submit="onFormSubmit" />
+      @submit="onFormSubmit">
+      <template #icon>
+        <icon-box v-model="formData.icon" />
+      </template>
+    </avue-form>
   </page-dialog>
 </template>

@@ -23,15 +23,22 @@ const icons = computed(() => {
     };
   });
 });
+
+function onChange(val) {
+  model.value = val;
+}
 </script>
 
 <template>
   <el-select-v2
     popper-class="icon-select__popper"
-    v-model="model"
+    :model-value="model"
     :options="icons"
+    filterable
+    autocomplete
     placeholder="请选择图标"
-    style="width: 240px">
+    item-height="40"
+    @change="onChange">
     <template #prefix>
       <svg-icon style="width: 20px; height: 20px" :name="model" />
     </template>
