@@ -37,6 +37,14 @@ function initMenu() {
             sort: 9,
             children: [],
           },
+          {
+            id: 101,
+            menuName: "通用组件",
+            icon: "common",
+            path: "/component/common/index",
+            sort: 9,
+            children: [],
+          },
         ],
       },
       {
