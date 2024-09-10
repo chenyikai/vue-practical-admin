@@ -13,6 +13,7 @@ export default [
         name: "主页",
         meta: {
           isTab: true,
+          isFrame: true,
         },
         component: () => import("@/views/index.vue"),
       },

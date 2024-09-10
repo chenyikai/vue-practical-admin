@@ -5,18 +5,25 @@ export default {
 </script>
 
 <script setup>
-import { onBeforeMount } from "vue";
+import { computed, onBeforeMount } from "vue";
+import { useRoute } from "vue-router";
 import LayoutAside from "@/components/LayoutComponent/LayoutAside.vue";
 import LayoutHeader from "@/components/LayoutComponent/LayoutHeader.vue";
 import LayoutTab from "@/components/LayoutComponent/LayoutTab.vue";
 import { menuStore } from "@/store/index.js";
 import { addRoute } from "@/router/index.js";
 
+const route = useRoute();
+
 onBeforeMount(() => {
   initMenu().then((menu) => {
     addRoute(menu, true);
     menuStore().setMenu(menu);
   });
+});
+
+const isFrame = computed(() => {
+  return route.meta.isFrame;
 });
 
 function initMenu() {
@@ -129,7 +136,11 @@ function initMenu() {
       <el-main class="main">
         <layout-tab />
         <div class="content">
-          <router-view />
+          <iframe
+            v-show="isFrame"
+            style="width: 100%; height: 100%"
+            src="https://platform.ehanghai.cn/ehhzhhy/index.html#/login" />
+          <router-view v-show="!isFrame" />
         </div>
       </el-main>
     </el-container>
