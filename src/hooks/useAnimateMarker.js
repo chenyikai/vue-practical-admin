@@ -1,13 +1,11 @@
-import { ref } from "vue";
-import { lineString, length } from "@turf/turf";
-import * as turf from "@turf/turf";
+import { lineString, length, along } from "@turf/turf";
 import { validatenull } from "@/utils/validate.js";
-import { cloneDeep } from "lodash";
+import { set } from "lodash";
 
 export default () => {
-  const marks = ref({});
-  const running = ref([]);
-  const steps = 1000;
+  const marks = {};
+  const running = [];
+  const steps = 500;
 
   /**
    *
@@ -34,30 +32,39 @@ export default () => {
   }
 
   function addMarker(mark) {
-    const { id, lon, lat } = mark;
-    const marker = new Marker().setLngLat([lon, lat]).addTo(map);
+    const { id, lon, lat, element } = mark;
+    const marker = new Marker({ element }).setLngLat([lon, lat]).addTo(map);
 
-    marks.value[id] = {
-      id,
-      value: mark,
-      marker,
-      start: [lon, lat],
-      mid: null,
-      turn: [],
-      end: null,
-      route: null,
-      distance: null,
-      count: 0,
-      animate: null,
+    marks[id] = {
+      id, // 唯一值
+      value: mark, // 数据
+      marker, // Marker实例
+      start: [lon, lat], // 起始点
+      mid: null, // 中途点
+      end: null, // 结束点
+      route: null, // 移动路劲
+      path: [], // 真实路径
+      distance: null, // 距离
+      count: 0, // 计数
+      animate: null, // 动画Id
+      success: () => {},
+      fail: () => {},
     };
   }
 
-  function deleteMarker(mark) {
-    const { id } = mark;
-    const val = marks.value[id];
+  function deleteMarker(id) {
+    const val = getMark(id);
+
+    if (val["animate"]) {
+      window.cancelAnimationFrame(val["animate"]);
+    }
+
+    if (val["marker"]) {
+      val["marker"].remove();
+    }
 
     if (!validatenull(val)) {
-      delete marks.value[id];
+      delete marks[id];
     }
   }
 
@@ -65,117 +72,118 @@ export default () => {
     return new Promise((resolve, reject) => {
       const { id, lon, lat } = mark;
       if (isRunning(id)) {
-        window.cancelAnimationFrame(marks.value[id]["animate"]);
-        marks.value[id]["animate"] = null;
-
-        const { mid: newStart, end: turn } = marks.value[id];
-        marks.value[id]["turn"].push(cloneDeep(turn));
-
-        const { route: r, distance: d } = getAnimateParams({
-          start: newStart,
-          turn: marks.value[id]["turn"],
-          end: [lon, lat],
-        });
-
-        marks.value[id]["route"] = r;
-        marks.value[id]["distance"] = d;
-        marks.value[id]["end"] = [lon, lat];
-
-        animate(id, resolve, reject);
+        marks[id]["path"].push([lon, lat]);
+        setMark(id, "success", resolve);
+        setMark(id, "fail", reject);
         return;
       }
 
-      const { start } = marks.value[id];
+      const { start } = getMark(id);
+      const { route, distance } = getAnimateParams([start, [lon, lat]]);
 
-      const { route, distance } = getAnimateParams({ start, end: [lon, lat] });
-
-      marks.value[id]["route"] = route;
-      marks.value[id]["distance"] = distance;
-      marks.value[id]["end"] = [lon, lat];
+      setMark(id, "route", route);
+      setMark(id, "distance", distance);
+      setMark(id, "end", [lon, lat]);
 
       addRunning(id);
       animate(id, resolve, reject);
     });
   }
 
-  function getAnimateParams({ start, turn, end }) {
-    const route = getRoute({ start, turn, end });
-    const distance = length(route);
+  function getAnimateParams(points) {
+    const path = lineString(points);
+    const distance = length(path);
     const arc = [];
 
     for (let i = 0; i < distance; i += distance / steps) {
-      const segment = turf.along(route, i);
+      const segment = along(path, i);
       arc.push(segment.geometry.coordinates);
     }
-    route.geometry.coordinates = arc;
+    const route = lineString(arc);
 
     return { route, distance };
   }
 
-  /**
-   *
-   * @param start
-   * @param turn
-   * @param end
-   * @return {Feature}
-   */
-  function getRoute({ start, turn, end }) {
-    const points = [start, end];
-    if (Array.isArray(turn) && turn.length > 0) {
-      points.splice(1, 0, ...turn);
-    }
-    return lineString(
-      points.filter((point) => Array.isArray(point) && point.length > 0),
-    );
-  }
-
   function animate(id, resolve, reject) {
     try {
-      const { marker, route, count, end } = marks.value[id];
+      const { marker, route, count, end } = getMark(id);
       const lngLat = route.geometry.coordinates[count];
-      marks.value[id]["mid"] = lngLat;
+      setMark(id, "mid", lngLat);
 
       marker.setLngLat(lngLat);
       if (count < steps - 1) {
         const fn = animate.bind(this, id, resolve, reject);
-        marks.value[id]["animate"] = window.requestAnimationFrame(fn);
+        setMark(id, "animate", window.requestAnimationFrame(fn));
       } else {
-        window.cancelAnimationFrame(marks.value[id]["animate"]);
-        marks.value[id]["start"] = end;
-        marks.value[id]["end"] = null;
-        marks.value[id]["route"] = null;
-        marks.value[id]["distance"] = null;
-        marks.value[id]["count"] = 0;
-        marks.value[id]["animate"] = null;
+        setMark(id, "start", end);
+        setMark(id, "mid", null);
+        setMark(id, "end", null);
+        setMark(id, "route", null);
+        setMark(id, "distance", null);
+        setMark(id, "count", 0);
+        setMark(id, "animate", null);
+        setMark(id, "success", () => {});
+        setMark(id, "fail", () => {});
 
-        deleteRunning(id);
+        if (hasTask(id)) {
+          const { start, path, success, fail } = getMark(id);
+          const { route, distance } = getAnimateParams([start, ...path]);
+          const [lon, lat] = path.at(-1);
+
+          setMark(id, "route", route);
+          setMark(id, "distance", distance);
+          setMark(id, "end", [lon, lat]);
+          setMark(id, "path", []);
+          animate(id, success, fail);
+        } else {
+          deleteRunning(id);
+        }
         resolve && resolve();
       }
 
-      marks.value[id]["count"] += 1;
+      marks[id]["count"] += 1;
     } catch (e) {
       reject(e);
     }
   }
 
   function isRunning(id) {
-    const index = running.value.indexOf(id);
+    const index = running.indexOf(id);
     return index !== -1;
   }
 
   function addRunning(id) {
-    running.value.push(id);
+    running.push(id);
   }
 
   function deleteRunning(id) {
-    const index = running.value.indexOf(id);
+    const index = running.indexOf(id);
     if (index !== -1) {
-      running.value.splice(index, 1);
+      running.splice(index, 1);
     }
+  }
+
+  function setMark(id, key, value) {
+    set(marks[id], key, value);
+  }
+
+  function getMark(id) {
+    return marks[id];
+  }
+
+  function isUpdate(id) {
+    const mark = getMark(id);
+    return !validatenull(mark);
+  }
+
+  function hasTask(id) {
+    const { path } = getMark(id);
+    return Array.isArray(path) && path.length > 0;
   }
 
   return {
     init,
+    isUpdate,
     addMarker,
     addMarkers,
     deleteMarker,
