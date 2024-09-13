@@ -14,6 +14,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
   return {
     // publicDir: env.VITE_API_PREFIX,
+    base: env.VITE_PUBLIC_PATH,
     plugins: [
       vue({
         script: {
@@ -72,6 +73,19 @@ export default defineConfig(({ mode }) => {
           changeOrigin: true,
           rewrite: (path) =>
             path.replace(RegExp(`^${env.VITE_API_PREFIX}`), ""),
+        },
+        [env.VITE_OIL_tiles]: {
+          target: "https://safety.sh.coscoshipping.com:8000/",
+          ws: true,
+          changeOrigin: true,
+          rewrite: (path) => path.replace(RegExp(`^${env.VITE_OIL_tiles}`), ""),
+        },
+        [env.VITE_SOCKER_PREFIX]: {
+          target: "https://safety.sh.coscoshipping.com:8000/",
+          ws: true,
+          changeOrigin: true,
+          rewrite: (path) =>
+            path.replace(RegExp(`^${env.VITE_SOCKER_PREFIX}`), ""),
         },
       },
     },
