@@ -31,6 +31,18 @@ export default () => {
     list.forEach((mark) => addMarker(mark));
   }
 
+  function setMarker(options) {
+    return new Promise((resolve, reject) => {
+      if (isUpdate(options.id)) {
+        updateMarker(options)
+          .then(() => resolve())
+          .catch((e) => reject(e));
+      } else {
+        addMarker(options);
+      }
+    });
+  }
+
   function addMarker(mark) {
     const { id, lon, lat, element } = mark;
     const marker = new Marker({ element }).setLngLat([lon, lat]).addTo(map);
@@ -54,6 +66,8 @@ export default () => {
 
   function deleteMarker(id) {
     const val = getMark(id);
+    // 未新增的数据 不予理睬
+    if (!val) return;
 
     if (val["animate"]) {
       window.cancelAnimationFrame(val["animate"]);
@@ -79,6 +93,9 @@ export default () => {
       }
 
       const { start } = getMark(id);
+      // 点位一样 不做动画
+      if (start[0] === lon && start[1] === lat) return;
+
       const { route, distance } = getAnimateParams([start, [lon, lat]]);
 
       setMark(id, "route", route);
@@ -99,6 +116,7 @@ export default () => {
       const segment = along(path, i);
       arc.push(segment.geometry.coordinates);
     }
+
     const route = lineString(arc);
 
     return { route, distance };
@@ -184,6 +202,7 @@ export default () => {
   return {
     init,
     isUpdate,
+    setMarker,
     addMarker,
     addMarkers,
     deleteMarker,

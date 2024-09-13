@@ -59,7 +59,7 @@ export const baseMap = [
           type: "raster",
           paint: {},
           layout: {
-            visibility: "visible",
+            visibility: "none",
           },
         },
       },
@@ -74,7 +74,7 @@ export const baseMap = [
           type: "raster",
           paint: {},
           layout: {
-            visibility: "visible",
+            visibility: "none",
           },
         },
       },
@@ -87,7 +87,7 @@ export const baseMap = [
           type: "raster",
           paint: {},
           layout: {
-            visibility: "visible",
+            visibility: "none",
           },
         },
       },
@@ -212,11 +212,12 @@ export const baseMap = [
           `http://tianditu.ehanghai.cn/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=468826a92a07c852cefab31f9bed06d4`,
         ],
         tileSize: 256,
+        maxzoom: 17,
         layer: {
           type: "raster",
           paint: {},
           layout: {
-            visibility: "none",
+            visibility: "visible",
           },
         },
       },
@@ -231,20 +232,23 @@ export const baseMap = [
           type: "raster",
           paint: {},
           layout: {
-            visibility: "none",
+            visibility: "visible",
           },
         },
       },
       {
         name: "satelliteSea2",
         type: "raster",
-        tiles: ["http://pngchart.ehanghai.cn/zqyhlt/{z}/{y}/{x}.png"],
+        tiles: ["/tileset/yisheng/{z}/{x}/{y}.png"],
         tileSize: 256,
+        maxzoom: 17,
+        minzoom: 15,
+        bounds: [121.61699569, 31.34550567, 121.627033, 31.3541081],
         layer: {
           type: "raster",
           paint: {},
           layout: {
-            visibility: "none",
+            visibility: "visible",
           },
         },
       },

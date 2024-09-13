@@ -14,6 +14,7 @@ import { menuStore } from "@/store/index.js";
 import { addRoute } from "@/router/index.js";
 
 const route = useRoute();
+console.log(route);
 
 onBeforeMount(() => {
   initMenu().then((menu) => {
@@ -24,6 +25,12 @@ onBeforeMount(() => {
 
 const isFrame = computed(() => {
   return route.meta.isFrame;
+});
+
+const frameUrl = computed(() => {
+  if (isFrame.value) {
+    return `${window.location.origin}${window.location.pathname}${route.fullPath}`;
+  } else return null;
 });
 
 function initMenu() {
@@ -139,7 +146,7 @@ function initMenu() {
           <iframe
             v-show="isFrame"
             style="width: 100%; height: 100%"
-            src="https://platform.ehanghai.cn/ehhzhhy/index.html#/login" />
+            src="http://localhost:9999/#/map" />
           <router-view v-show="!isFrame" />
         </div>
       </el-main>
