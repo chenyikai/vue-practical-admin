@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup>
-import { computed, onBeforeMount } from "vue";
+import { onBeforeMount } from "vue";
 import { useRoute } from "vue-router";
 import LayoutAside from "@/components/LayoutComponent/LayoutAside.vue";
 import LayoutHeader from "@/components/LayoutComponent/LayoutHeader.vue";
@@ -20,10 +20,6 @@ onBeforeMount(() => {
     addRoute(menu, true);
     menuStore().setMenu(menu);
   });
-});
-
-const isFrame = computed(() => {
-  return route.meta.isFrame;
 });
 
 function initMenu() {
@@ -136,11 +132,7 @@ function initMenu() {
       <el-main class="main">
         <layout-tab />
         <div class="content">
-          <iframe
-            v-show="isFrame"
-            style="width: 100%; height: 100%"
-            src="https://platform.ehanghai.cn/ehhzhhy/index.html#/login" />
-          <router-view v-show="!isFrame" />
+          <router-view />
         </div>
       </el-main>
     </el-container>
