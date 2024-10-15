@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { getStore, setStore } from "@/utils/store.js";
 import website from "@/config/website.js";
+import { validatenull } from "@/utils/validate.js";
 const { children } = website.menu.props;
 
 const menuStore = defineStore("menu", {
@@ -20,6 +21,31 @@ const menuStore = defineStore("menu", {
         for (const menuDatum of menuData) {
           if (String(menuDatum["id"]) === String(id)) {
             return menuDatum;
+          }
+
+          if (
+            Array.isArray(menuDatum[children]) &&
+            menuDatum[children].length !== 0
+          ) {
+            const menu = loop(menuDatum[children]);
+            if (menu) return menu;
+          }
+        }
+      };
+
+      return loop(this.menuList);
+    },
+    findMenu({ key, value, expression }) {
+      const loop = (menuData) => {
+        for (const menuDatum of menuData) {
+          if (!validatenull(expression)) {
+            if (expression(menuDatum)) {
+              return menuDatum;
+            }
+          } else {
+            if (String(menuDatum[key]) === String(value)) {
+              return menuDatum;
+            }
           }
 
           if (
