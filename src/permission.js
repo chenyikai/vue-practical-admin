@@ -3,9 +3,9 @@
  *
  */
 import router, { setTitle } from "@/router/index.js";
-import { tabStore } from "@/store/index.js";
-import { userStore } from "@/store/index.js";
+import { tabStore, menuStore, userStore } from "@/store/index.js";
 import { validatenull } from "@/utils/validate.js";
+import website from "@/config/website.js";
 
 router.beforeEach((to, from, next) => {
   // 缓冲设置
@@ -95,6 +95,10 @@ router.beforeEach((to, from, next) => {
 });
 
 router.afterEach((to) => {
+  if (!validatenull(to.query.id)) {
+    setTitle(menuStore().getMenu(to.query.id)[website.menu.props.label]);
+    return;
+  }
   const title = to.name || to.params.name || to.query.name;
   setTitle(title);
 });
