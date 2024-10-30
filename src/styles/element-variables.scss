@@ -7,7 +7,7 @@
   ),
   $switch: (
     'on-color': vars.$dark_content-color,
-    'off-color': vars.$dark_content-color
+    'off-color': #2e68aa
   ),
   $dialog: (
     'padding-primary': 0,
@@ -22,7 +22,7 @@
   ),
   $button: (
     'hover-text-color': getCssVar('text-color', 'regular'),
-  ),
+  )
 );
 
 @use "element-plus/theme-chalk/src/index.scss" as *;

@@ -120,15 +120,15 @@ defineExpose({
     margin-bottom: 10px;
     .el-dialog__title {
       margin-left: 10px;
+      color: #fff;
     }
     &btn {
       top: 15px;
       right: 10px;
       width: 19px;
       height: 19px;
-      color: #fff;
       .el-dialog__close {
-        color: var(--font-color);
+        color: #fff;
         font-weight: bold;
       }
     }

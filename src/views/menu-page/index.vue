@@ -116,8 +116,10 @@ function handleClick(menu) {
       color: var(--font-color);
     }
     &:hover {
-      background-color: rgba($color: #fff, $alpha: 0.1);
-      border-color: rgba($color: #fff, $alpha: 0.4);
+      //background-color: rgba($color: #fff, $alpha: 0.1);
+      //border-color: rgba($color: #fff, $alpha: 0.4);
+      background-color: rgba($color: #2e68aa, $alpha: 0.1);
+      border-color: rgba($color: #2e68aa, $alpha: 0.4);
     }
   }
 }

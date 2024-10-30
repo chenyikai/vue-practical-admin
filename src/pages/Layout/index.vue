@@ -6,14 +6,11 @@ export default {
 
 <script setup>
 import { onBeforeMount } from "vue";
-import { useRoute } from "vue-router";
 import LayoutAside from "@/components/LayoutComponent/LayoutAside.vue";
 import LayoutHeader from "@/components/LayoutComponent/LayoutHeader.vue";
 import LayoutTab from "@/components/LayoutComponent/LayoutTab.vue";
 import { menuStore } from "@/store/index.js";
 import { addRoute } from "@/router/index.js";
-
-const route = useRoute();
 
 onBeforeMount(() => {
   initMenu().then((menu) => {

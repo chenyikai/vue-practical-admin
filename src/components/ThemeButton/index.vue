@@ -50,20 +50,14 @@ const toggleTheme = () => {
 </script>
 
 <template>
-  <el-switch
-    size="large"
-    :class="isDark ? 'dark' : 'light'"
-    :model-value="isDark"
-    :active-action-icon="Moon"
-    :inactive-action-icon="Sunny"
-    @change="toggleTheme" />
+  <el-icon class="theme-btn" :size="20" color="#fff" @click.stop="toggleTheme">
+    <Moon v-if="isDark" />
+    <Sunny v-else />
+  </el-icon>
 </template>
 
-<style lang="scss">
-.dark {
-  .el-switch__action {
-    background-color: var(--theme-color) !important;
-    color: var(--font-color) !important;
-  }
+<style lang="scss" scoped>
+.theme-btn {
+  cursor: pointer;
 }
 </style>

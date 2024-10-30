@@ -91,7 +91,5 @@ const onInput = debounce(
     border-radius: 17.5px;
     background-color: var(--theme-menu-hover-bg);
   }
-  .input-layout {
-  }
 }
 </style>
