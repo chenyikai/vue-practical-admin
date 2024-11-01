@@ -14,8 +14,7 @@
     'title-font-size': 16px
   ),
   $table: (
-    'border': none,
-    'border-color': transparent
+    'border-color': var(--table-border-color)
   ),
   $tree: (
     'node-content-height': 40px

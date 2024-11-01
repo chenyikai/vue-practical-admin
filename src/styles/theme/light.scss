@@ -1,0 +1,13 @@
+html {
+  &.light {
+    --theme-color: #2e68aa; // 系统主色
+    --container-color: #fff; // 容器颜色
+    --tab-color: #fff; // tab颜色
+    --content-color: #f0f0f0; // 内容颜色
+    --font-color: #333; // 字体颜色
+    --font-size: 14px; // 字体大小
+    --menu-hover-bg: #17457a; // 菜单hover背景
+    --border-color: #767474; // 边框颜色
+    --system-avatar-bg: #fff; // 系统图标背景色
+  }
+}

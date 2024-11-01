@@ -1,0 +1,12 @@
+html {
+  &.dark {
+    --table-header-color: var(--tab-color); // 表头颜色
+    --table-header-font-color: var(--font-color); // 表头颜色
+    --table-border-color: #5c6062; // 边框颜色
+  }
+  &.light {
+    --table-header-color: #f4f6f9; // 表头颜色
+    --table-header-font-color: var(--font-color); // 表头颜色
+    --table-border-color: #dfeae8; // 边框颜色
+  }
+}

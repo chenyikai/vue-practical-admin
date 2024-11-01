@@ -13,7 +13,7 @@ $update_font_color: #67C23A;
 @mixin container() {
   border-radius: 4px;
   background-color: var(--container-color);
-  box-shadow: 0 0 2px 5px var(--container-color);
+  //box-shadow: 0 0 2px 5px var(--container-color);
   padding: 10px;
 }
 

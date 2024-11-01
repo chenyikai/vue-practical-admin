@@ -8,7 +8,7 @@ import Avue from "@smallwei/avue";
 import axios from "@/router/axios.js";
 import "./styles/index.scss";
 import "./styles/element-variables.scss";
-import "./styles/theme.scss";
+import "./styles/theme/index.scss";
 import "plugins/index.scss";
 import ElementPlus from "element-plus";
 import { draggable } from "@/utils/directive.js";
