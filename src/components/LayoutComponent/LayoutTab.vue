@@ -173,6 +173,7 @@ function getDropMenu(tab) {
     cursor: pointer;
     color: var(--font-color);
     user-select: none;
+    flex-shrink: 0;
     transition: all 0.3s;
     &:hover,
     &.active {

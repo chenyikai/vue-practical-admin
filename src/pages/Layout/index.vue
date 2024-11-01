@@ -135,21 +135,3 @@ function initMenu() {
     </el-container>
   </el-container>
 </template>
-
-<style lang="scss" scoped>
-.layout-page-container {
-  .main {
-    display: flex;
-    flex-direction: column;
-    padding: 0;
-    flex-basis: 0;
-    overflow: hidden;
-    .content {
-      flex: 1;
-      overflow: hidden;
-      padding: 20px;
-      background-color: var(--content-color);
-    }
-  }
-}
-</style>

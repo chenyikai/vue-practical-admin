@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script setup>
+import { useDark } from "@vueuse/core";
 import website from "@/config/website.js";
 import analyze from "rgbaster";
 import { readonly, watch, ref, onBeforeMount } from "vue";
@@ -18,6 +19,12 @@ const MenuStore = menuStore();
 
 const menuProps = readonly(website.menu.props);
 const menuList = ref([]);
+
+const isDark = useDark({
+  selector: "html",
+  valueDark: "dark",
+  valueLight: "light",
+});
 
 watch(
   route,
@@ -60,6 +67,7 @@ function handleClick(menu) {
   <ul class="menu-page-container">
     <li
       class="menu-page-item"
+      :class="{ dark: isDark }"
       v-for="menu in menuList"
       :key="menu.id"
       @click="handleClick(menu)">
@@ -102,7 +110,7 @@ function handleClick(menu) {
       height: 60px;
       border-radius: 50%;
       margin-bottom: 10px;
-      opacity: 0.1;
+      opacity: 0.2;
     }
     .icon {
       position: absolute;
@@ -116,10 +124,14 @@ function handleClick(menu) {
       color: var(--font-color);
     }
     &:hover {
-      //background-color: rgba($color: #fff, $alpha: 0.1);
-      //border-color: rgba($color: #fff, $alpha: 0.4);
       background-color: rgba($color: #2e68aa, $alpha: 0.1);
-      border-color: rgba($color: #2e68aa, $alpha: 0.4);
+      border-color: rgba($color: #2e68aa, $alpha: 0.3);
+    }
+    &.dark {
+      &:hover {
+        background-color: rgba($color: #fff, $alpha: 0.1);
+        border-color: rgba($color: #fff, $alpha: 0.4);
+      }
     }
   }
 }
