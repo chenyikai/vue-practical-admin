@@ -34,8 +34,8 @@ const props = defineProps({
     font-size: 16px;
     margin: 0;
   }
-  & + & {
-    margin-top: 20px;
+  .divider-line {
+    margin: 10px 0;
   }
 }
 </style>

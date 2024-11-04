@@ -5,30 +5,31 @@ export default {
 </script>
 
 <script setup>
-import { cloneDeep } from "lodash";
 import website from "@/config/website.js";
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import { menuStore } from "@/store/index.js";
 import { go2MenuPage } from "@/router/index.js";
 import SvgIcon from "package/SvgIcon/src/index.vue";
 
 const MenuStore = menuStore();
 const menuProps = computed(() => website.menu.props);
-const sortMenu = computed(() => {
-  return cloneDeep(MenuStore.menuList).sort((a, b) => b.sort - a.sort);
-});
 
 function handleClick(menu) {
   go2MenuPage(menu);
 }
+
+onMounted(() => {
+  console.log(MenuStore.menuList);
+});
 </script>
 
 <template>
   <div class="system-menu">
     <div
       class="menu-item"
-      v-for="menu in sortMenu"
+      v-for="menu in MenuStore.menuList"
       :key="menu.id"
+      :style="{ order: menu.sort }"
       @click="handleClick(menu)">
       <svg-icon class="icon" :name="menu.icon" />
       <span class="title">{{ menu[menuProps["label"]] }}</span>
@@ -44,6 +45,7 @@ function handleClick(menu) {
   width: 100%;
   border: none;
   user-select: none;
+  gap: 10px;
   background-color: var(--theme-color);
   .menu-item {
     position: relative;
@@ -68,9 +70,6 @@ function handleClick(menu) {
       font-size: 14px;
       //color: var(--font-color);
       color: #fff;
-    }
-    & + .menu-item {
-      margin-top: 10px;
     }
   }
 }

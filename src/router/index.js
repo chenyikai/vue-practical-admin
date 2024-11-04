@@ -122,7 +122,7 @@ export function getPath(params) {
 }
 
 export function go2MenuPage(menu) {
-  if (menu.children.length !== 0) {
+  if (Array.isArray(menu.children) && menu.children.length !== 0) {
     router.push({
       name: "MenuPage",
       // params: {
