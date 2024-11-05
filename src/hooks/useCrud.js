@@ -145,10 +145,6 @@ export default () => {
     }
   }
 
-  function isPromise(value) {
-    return Promise.resolve(value) === value && typeof value.then === "function";
-  }
-
   return {
     crud,
     dialog,
