@@ -111,17 +111,18 @@ export default () => {
 
     // 自定义查询方法
     if (funcList.callback && typeof funcList.callback === "function") {
-      if (
-        funcList.callback(queryParams.value) &&
-        funcList.callback(queryParams.value).then
-      ) {
-        funcList.callback(queryParams.value).then(({ mainData, total }) => {
-          mainTableData.value = mainData;
-          pagination.total = total || 0;
-          tableLoading.value = false;
-        });
+      if (funcList.callback) {
+        try {
+          funcList.callback(queryParams.value).then(({ mainData, total }) => {
+            mainTableData.value = mainData;
+            pagination.total = total || 0;
+            tableLoading.value = false;
+          });
+        } catch (e) {
+          console.error(`${e}-自定义查询方法需返回Promise`);
+        }
       } else {
-        console.error("自定义查询方法需返回Promise");
+        console.error("未传入自定义方法");
       }
       return;
     }
@@ -142,6 +143,10 @@ export default () => {
         tableLoading.value = false;
       });
     }
+  }
+
+  function isPromise(value) {
+    return Promise.resolve(value) === value && typeof value.then === "function";
   }
 
   return {
