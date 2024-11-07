@@ -12,6 +12,9 @@
       ],
       "plugins/*": [
         "plugins/*"
+      ],
+      "visualization/*": [
+        "visualization/*"
       ]
     }
   },

@@ -3,8 +3,8 @@ import Store from "./store";
 import * as styles from "./config/styles.js";
 import Point from "./modes/Point.js";
 
-class Plot {
-  static POINT = "Point";
+class MapboxDraw {
+  static POINT = Point.TYPE;
   static LINE = "LineString";
   static POLYGON = "Polygon";
 
@@ -60,6 +60,7 @@ class Plot {
    * 选择
    */
   select() {
+    Store.getMap().fire(vars.SELECT);
     Store.getMap().fire(vars.SELECTION_CHANGE);
   }
 
@@ -129,4 +130,4 @@ class Plot {
   }
 }
 
-export default Plot;
+export default MapboxDraw;

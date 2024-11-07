@@ -6,14 +6,25 @@ export default {
 
 <script setup>
 import { onMounted } from "vue";
-import { Mapbox } from "plugins/composition/Map/mapbox.js";
+import { init } from "visualization";
 
 defineOptions({
   name: "ModelPage",
 });
 
 onMounted(() => {
-  Mapbox;
+  init(
+    {
+      container: "modelMap",
+      accessToken:
+        "pk.eyJ1IjoiY2hlbnlpa2FpIiwiYSI6ImNrbTZiOTB1dzBtczMydnFzM2V5ZnR0YmcifQ.BPfABgNBi7FIcJBH3BeTwg",
+      antialias: true,
+      center: [122.21162604088397, 29.995962378718033],
+      zoom: 13,
+      maxZoom: 17,
+    },
+    (map) => {},
+  );
 });
 </script>
 
@@ -29,5 +40,9 @@ onMounted(() => {
   width: 100%;
   height: 100%;
   @include container();
+  #modelMap {
+    width: 100%;
+    height: 100%;
+  }
 }
 </style>
