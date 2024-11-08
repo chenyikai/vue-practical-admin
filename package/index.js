@@ -7,6 +7,7 @@ import UploadFile from "./Upload";
 import PicZoom from "./PicZoom";
 import AdminCard from "./Card";
 import IconBox from "./IconBox";
+import Crud from "./Crud";
 const components = [
   AdminContainer,
   PageButton,
@@ -17,6 +18,7 @@ const components = [
   PicZoom,
   AdminCard,
   IconBox,
+  Crud,
 ];
 
 export default function install(app) {

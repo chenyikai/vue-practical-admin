@@ -22,6 +22,14 @@ export const menuData = [
         sort: 9,
         children: [],
       },
+      {
+        id: 102,
+        menuName: "表格",
+        icon: "table",
+        path: "/component/crud/index",
+        sort: 9,
+        children: [],
+      },
     ],
   },
   {
