@@ -62,6 +62,7 @@ function addDraw({ map, ehhGis }) {
   };
 
   mapboxDrawInstance = new MapboxDraw(options);
+  mapboxDrawInstance.init();
   mapboxLayerInstance = new MapboxLayer(options);
 }
 

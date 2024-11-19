@@ -6,8 +6,9 @@ export default {
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from "vue";
-import init, { Mapbox, MapboxShip } from "plugins/index.js";
+import init, { Mapbox, MapboxShip, MapboxDraw } from "plugins/index.js";
 import { shipInfoStore } from "@/store";
+import { stringify } from "wellknown";
 // import { trackData, shipData } from "./data.js";
 // import Plot from "plugins/composition/Plot";
 const ShipInfoStore = shipInfoStore();
@@ -31,6 +32,10 @@ function initMap() {
     // MapboxTrack.trackSetData(trackData, shipData, true);
     // const plot = new Plot({ map: Mapbox.getMap(), icons: {} });
     // plot.changeMode(Plot.DRAW_POINT, {});
+    MapboxDraw.changeMode("draw_point");
+    MapboxDraw.on("graphical_create", (e) => {
+      console.log(stringify(e.features[0]), "e");
+    });
     MapboxShip.on("click", onClick);
   });
 }

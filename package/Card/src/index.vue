@@ -5,6 +5,8 @@ export default {
 </script>
 
 <script setup>
+import { validatenull } from "@/utils/validate.js";
+
 defineOptions({
   name: "AdminCard",
 });
@@ -19,8 +21,10 @@ const props = defineProps({
 
 <template>
   <section class="admin-card-container">
-    <h1 class="title">{{ props.title }}</h1>
-    <el-divider class="divider-line" />
+    <template v-if="!validatenull(title)">
+      <h1 class="title">{{ props.title }}</h1>
+      <el-divider class="divider-line" />
+    </template>
     <slot></slot>
   </section>
 </template>

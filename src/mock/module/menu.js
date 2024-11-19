@@ -30,6 +30,14 @@ export const menuData = [
         sort: 9,
         children: [],
       },
+      {
+        id: 103,
+        menuName: "签名板",
+        icon: "sign",
+        path: "/component/crud/index",
+        sort: 10,
+        children: [],
+      },
     ],
   },
   {

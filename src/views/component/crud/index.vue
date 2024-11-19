@@ -6,6 +6,7 @@ export default {
 
 <script setup>
 import PageCrud from "package/Crud/src/index.vue";
+import AdminCard from "package/Card/src/index.vue";
 
 defineOptions({
   name: "CrudCard",
@@ -21,27 +22,7 @@ const config = {
     },
     {
       label: "部门机构全称",
-      align: "center",
-      children: [
-        {
-          label: "部门机构全称1",
-          prop: "fullName1",
-        },
-        {
-          label: "部门机构全称2",
-          prop: "fullName2",
-          children: [
-            {
-              label: "部门机构全称3",
-              prop: "fullName3",
-            },
-            {
-              label: "部门机构全称4",
-              prop: "fullName4",
-            },
-          ],
-        },
-      ],
+      prop: "fullName",
     },
     {
       label: "排序",
@@ -62,12 +43,9 @@ const config = {
 
 const tableData = [
   {
+    id: 1,
     deptName: "部门机构名称",
     fullName: "部门机构全称",
-    fullName1: "部门机构全称1",
-    fullName2: "部门机构全称2",
-    fullName3: "部门机构全称3",
-    fullName4: "部门机构全称4",
     sort: "排序",
     remark: "备注",
   },
@@ -75,13 +53,15 @@ const tableData = [
 </script>
 
 <template>
-  <section class="crud-card-container">
-    <page-crud :data="tableData" :config="config">
-      <template #fullName2>
-        {{ "deptName" }}
-      </template>
+  <admin-card class="crud-card-container">
+    <page-crud
+      :data="tableData"
+      :config="config"
+      row-key="id"
+      border
+      default-expand-all>
     </page-crud>
-  </section>
+  </admin-card>
 </template>
 
 <style scoped lang="scss">

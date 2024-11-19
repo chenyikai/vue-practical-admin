@@ -9,8 +9,6 @@ import { computed, useSlots, provide } from "vue";
 import { validatenull } from "@/utils/validate.js";
 import loadingIcon from "@/icons/loading.svg?raw";
 import TableColumn from "package/Crud/src/TableColumn.vue";
-import DefaultSlot from "./slots/DefaultSlot.vue";
-import HeaderSlot from "package/Crud/src/slots/HeaderSlot.vue";
 
 defineOptions({
   name: "PageCrud",
@@ -62,6 +60,7 @@ function getFilterIcon(prop) {
       element-loading-text="加载中"
       element-loading-svg-view-box="0 0 57 57"
       border
+      header-row-class-name="crud-table-header-row"
       v-bind="config"
       :data="data"
       style="width: 100%">
@@ -82,37 +81,44 @@ function getFilterIcon(prop) {
 
       <!-- 索引 选择 展开column -->
       <template v-if="!validatenull(tableType)">
-        <el-table-column :type="tableType" />
+        <el-table-column :type="tableType">
+          <template #default v-if="slots.expand">
+            <slot name="expand"></slot>
+          </template>
+        </el-table-column>
       </template>
 
       <!-- 数据column -->
       <template v-for="column in config.columns" :key="column.prop">
         <table-column :column="column">
           <!-- default插槽 -->
-          <template v-slot:[column.prop]>
-            <default-slot :name="column.prop" :slots="slots" />
+          <template v-slot:[column.prop] v-if="slots[column.prop]">
+            <slot :name="column.prop"></slot>
           </template>
 
           <!-- header插槽 -->
-          <template v-slot:[getHeadSlot(column.prop)]>
-            <header-slot :name="column.prop" :slots="slots" />
+          <template
+            v-slot:[getHeadSlot(column.prop)]
+            v-if="slots[getHeadSlot(column.prop)]">
+            <slot :name="column.prop"></slot>
           </template>
 
           <!-- filter-icon插槽 -->
           <template
-            v-if="slots[getFilterIcon(column.prop)]"
-            v-slot:[getFilterIcon(column.prop)]>
-            <slot :name="getFilterIcon(column.prop)"></slot>
+            v-slot:[getFilterIcon(column.prop)]
+            v-if="slots[getFilterIcon(column.prop)]">
+            <slot :name="column.prop"></slot>
           </template>
 
           <!-- 子节点插槽 -->
           <template
             v-for="childColumn in column.children"
-            v-slot:[childColumn.prop]>
+            v-slot:[childColumn.prop]
+            :key="childColumn.prop">
             <!-- default插槽 -->
-            <template v-if="slots[childColumn.prop]">
-              <slot :name="childColumn.prop"></slot>
-            </template>
+            <slot
+              v-if="slots[childColumn.prop]"
+              :name="childColumn.prop"></slot>
           </template>
         </table-column>
       </template>

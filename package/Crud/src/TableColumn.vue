@@ -35,7 +35,7 @@ const hasChild = computed(
 );
 
 onMounted(() => {
-  console.log(slots);
+  // console.log(slots);
 });
 </script>
 

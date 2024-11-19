@@ -140,7 +140,6 @@ defineExpose({
       align-items: center;
       margin: 0;
       font-size: 16px;
-      color: #fff;
       .icon {
         width: 24px;
         height: 24px;
