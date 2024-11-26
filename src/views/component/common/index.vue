@@ -18,7 +18,7 @@ const icon = ref("");
 
 <template>
   <section class="common-page-container">
-    <admin-card title="图标选择器" class="upload-card">
+    <admin-card title="图标选择器" class="upload-card" style="height: 100px">
       <icon-box v-model="icon" style="width: 240px; margin-right: 10px" />
       <span class="bind-value">绑定值：{{ icon }}</span>
     </admin-card>
@@ -28,3 +28,15 @@ const icon = ref("");
     </admin-card>
   </section>
 </template>
+
+<style lang="scss" scoped>
+.common-page-container {
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+</style>
