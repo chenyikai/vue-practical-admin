@@ -59,7 +59,8 @@ export const baseMap = [
           type: "raster",
           paint: {},
           layout: {
-            visibility: "visible",
+            // visibility: "visible",
+            visibility: "none",
           },
         },
       },
@@ -74,7 +75,8 @@ export const baseMap = [
           type: "raster",
           paint: {},
           layout: {
-            visibility: "visible",
+            // visibility: "visible",
+            visibility: "none",
           },
         },
       },
@@ -87,7 +89,8 @@ export const baseMap = [
           type: "raster",
           paint: {},
           layout: {
-            visibility: "visible",
+            // visibility: "visible",
+            visibility: "none",
           },
         },
       },

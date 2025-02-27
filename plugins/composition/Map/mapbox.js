@@ -1,6 +1,7 @@
 import EventEmitter from "eventemitter3";
 import { cloneDeep } from "lodash";
 import { mapConfig } from "plugins/mapConfig.js";
+import { validatenull } from "@/utils/validate.js";
 
 let cache = new Set();
 
@@ -168,6 +169,51 @@ class Mapbox extends EventEmitter {
         reject(e);
       }
     });
+  }
+
+  /**
+   *
+   * @param options { mapboxgl.PopupOptions }
+   * @return {mapboxgl.Popup | Popup}
+   */
+  addPopup(options) {
+    let htmlStr = "";
+    const getFormValue = (config, data) => {
+      if (validatenull(config.format)) {
+        const result = data[config.prop];
+        return validatenull(result) ? "暂无数据" : result;
+      } else {
+        return config.format({
+          value: data[config.prop],
+          info: data,
+        });
+      }
+    };
+    options.config.forEach((item) => {
+      htmlStr += `
+          <div class="ship-form-item">
+            <div class="ship-label">
+                ${item.label}：
+            </div>
+            <div class="ship-value">
+              ${getFormValue(item, options.data)}
+            </div>
+          </div>
+        `;
+    });
+    const html = `
+        <div class="info-form">
+          ${htmlStr}
+        </div>
+  `;
+
+    return new this.ehhGis.Popup({
+      ...options,
+      className: "info-popup",
+    })
+      .setLngLat(options.center)
+      .setHTML(options.template || html)
+      .addTo(this.map);
   }
 }
 

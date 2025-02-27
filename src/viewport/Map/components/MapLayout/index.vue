@@ -248,6 +248,7 @@ onMounted(() => {
       right: 15px;
       bottom: 0;
     }
+    @include rounded-border();
     .map-container {
       position: relative;
       width: 100%;
@@ -264,7 +265,6 @@ onMounted(() => {
         overflow: hidden;
       }
     }
-    @include rounded-border();
   }
   &-footer {
     display: flex;

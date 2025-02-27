@@ -1,1 +1,2 @@
-@use "plugins/composition/Ship/index";
+@use "plugins/composition/Ship/index" as ship;
+@use "plugins/composition/Map/index" as map;

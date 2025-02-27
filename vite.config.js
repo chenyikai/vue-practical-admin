@@ -90,6 +90,12 @@ export default defineConfig(({ mode }) => {
           rewrite: (path) =>
             path.replace(RegExp(`^${env.VITE_SOCKER_PREFIX}`), ""),
         },
+        "/tank": {
+          target: "https://www.sinochemlogistics.com",
+          ws: true,
+          changeOrigin: true,
+          rewrite: (path) => path.replace(RegExp(`^tank`), ""),
+        },
       },
     },
   };

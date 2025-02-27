@@ -1296,6 +1296,22 @@ declare namespace mapboxgl {
         className?: string | undefined;
 
         maxWidth?: string | undefined;
+
+        center?: mapboxgl.LngLat | undefined;
+
+        config?: Array<PopupFormConfig> | undefined;
+
+        data?: object | undefined;
+
+        template?: HTMLElement | undefined;
+    }
+
+    export interface PopupFormConfig {
+        format?: Function | undefined
+
+        label: string | number
+
+        prop: string | number
     }
 
     export interface Style {

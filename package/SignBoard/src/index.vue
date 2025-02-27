@@ -25,6 +25,7 @@ function init() {
 
   ctx = canvas.getContext("2d");
   ctx.scale(dpr, dpr);
+  ctx.filter = "blur(1px)";
   on();
 }
 
