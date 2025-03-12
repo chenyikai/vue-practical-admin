@@ -38,6 +38,14 @@ export const menuData = [
         sort: 10,
         children: [],
       },
+      {
+        id: 104,
+        menuName: "富文本",
+        icon: "richText",
+        path: "/component/text-editor/index",
+        sort: 10,
+        children: [],
+      },
     ],
   },
   {

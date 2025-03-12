@@ -9,6 +9,8 @@ import AdminCard from "./Card";
 import IconBox from "./IconBox";
 import Crud from "./Crud";
 import SignBoard from "./SignBoard";
+import RichText from "./RichText";
+
 const components = [
   AdminContainer,
   PageButton,
@@ -21,6 +23,7 @@ const components = [
   IconBox,
   Crud,
   SignBoard,
+  RichText,
 ];
 
 export default function install(app) {

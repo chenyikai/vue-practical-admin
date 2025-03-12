@@ -1,0 +1,33 @@
+@use "aieditor/dist/style.css";
+
+.aie-container {
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+:root {
+  .aie-theme-dark {
+    --aie-bg-color: var(--theme-color);
+    //--aie-border-color: var(--border-color);
+    --aie-border-color: transparent;
+    --aie-menus-bg-color: var(--tab-color);
+    --aie-text-color: var(--aie-menus-svg-color);
+    .aie-container {
+      aie-footer > div {
+        color: var(--aie-text-color);
+      }
+    }
+  }
+  .aie-theme-light {
+    --aie-menus-bg-color: var(--theme-color);
+    //--aie-text-color: #fff;
+    --aie-border-color: transparent;
+    --aie-menus-svg-color: #fff;
+    --aie-menus-ai-color: #333;
+    .aie-container {
+      aie-header {
+        color: #fff;
+      }
+    }
+  }
+}
