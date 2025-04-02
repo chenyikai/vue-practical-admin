@@ -46,35 +46,12 @@
       </div>
 
       <template #file="{ file }">
-        <div
+        <file-card
           v-if="props.type !== 'pictureCard'"
-          class="file-card"
-          :key="file.uid"
-          @click.stop="onFileClick(file)">
-          <svg-icon class="icon" :name="getIcon(file)" />
-          <span class="label">{{ file.name }}</span>
-          <el-icon
-            v-if="getStatus(file, status.SUCCESS)"
-            :size="20"
-            class="status success"
-            ><SuccessFilled
-          /></el-icon>
-          <el-icon
-            v-if="getStatus(file, status.FAIL)"
-            :size="20"
-            class="status fail"
-            ><CircleCloseFilled
-          /></el-icon>
-          <el-icon
-            v-if="getStatus(file, status.READY)"
-            :size="20"
-            class="status loading"
-            ><Loading
-          /></el-icon>
-          <el-icon class="close-btn" :size="20" @click.stop="onDelete(file)"
-            ><CircleClose
-          /></el-icon>
-        </div>
+          :file="file"
+          :status="results[file.uid].status"
+          @delete="onDelete"
+          @click="onFileClick" />
 
         <div v-else class="file-card-img-layout">
           <el-image :src="file.url" fit="cover" lazy />
@@ -120,11 +97,7 @@ export default {
 import { ref, useAttrs, computed, useSlots, readonly, reactive } from "vue";
 import {
   UploadFilled,
-  SuccessFilled,
-  CircleCloseFilled,
-  CircleClose,
   Plus,
-  Loading,
   Check,
   Search,
   Delete,
@@ -134,7 +107,9 @@ import website from "@/config/website.js";
 import SvgIcon from "package/SvgIcon/src/index.vue";
 import { ElMessageBox } from "element-plus";
 import { useZIndex } from "element-plus";
+import FileCard from "package/Upload/src/components/FileCard.vue";
 const { nextZIndex } = useZIndex();
+import { STATUS } from "package/Upload/src/vars.js";
 
 const emits = defineEmits({
   success: null,
@@ -144,10 +119,10 @@ const emits = defineEmits({
   change: null,
 });
 const status = readonly({
-  SUCCESS: "success",
-  FAIL: "fail",
-  UPLOADING: "uploading",
-  READY: "ready",
+  SUCCESS: STATUS.SUCCESS,
+  FAIL: STATUS.FAIL,
+  UPLOADING: STATUS.UPLOADING,
+  READY: STATUS.READY,
 });
 const attrs = useAttrs();
 const slots = useSlots();
@@ -171,10 +146,10 @@ const props = defineProps({
     default: () => {
       return [
         { color: "#f56c6c", percentage: 20 },
-        { color: "#e6a23c", percentage: 40 },
-        { color: "#5cb87a", percentage: 60 },
+        { color: "#6f7ad3", percentage: 40 },
+        { color: "#e6a23c", percentage: 60 },
         { color: "#1989fa", percentage: 80 },
-        { color: "#6f7ad3", percentage: 100 },
+        { color: "#5cb87a", percentage: 100 },
       ];
     },
     validator: (val) => {
@@ -254,40 +229,6 @@ const isDisabled = computed(() => {
 
 // 头像
 const avatarSize = ref(props.size + "px");
-
-function getFileExtension(filename) {
-  const parts = filename.split(".");
-  return parts.length > 1 ? parts.pop() : undefined;
-}
-
-function getIcon(file) {
-  const suffix = getFileExtension(file.name);
-  const fileType = {
-    // word
-    doc: "file-document",
-    docs: "file-document",
-
-    // excel
-    xls: "file-excel",
-    xlsx: "file-excel",
-
-    // pdf
-    pdf: "file-pdf",
-
-    // zip
-    zip: "file-zip",
-
-    png: "file-pic",
-    jpg: "file-pic",
-    jpeg: "file-pic",
-  };
-
-  return fileType[suffix] || "file-document";
-}
-
-function getStatus(file, status) {
-  return results[file.uid].status === status;
-}
 
 function setData(val) {
   files.value = val;
@@ -409,6 +350,12 @@ function onPreview(file) {
 }
 
 function onDelete(file) {
+  // if ([status.UPLOADING, status.READY].includes(results[file.uid].status)) {
+  //   console.log(file, "file");
+  //   upload.value.abort(file);
+  //   return;
+  // }
+
   if (isDisabled.value) return;
 
   upload.value.handleRemove(file);
@@ -476,51 +423,6 @@ defineExpose({
       width: v-bind(avatarSize);
       height: v-bind(avatarSize);
       text-align: center;
-    }
-  }
-}
-
-.file-card {
-  position: relative;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-  padding: 5px;
-  flex-shrink: 0;
-  border: 1px dashed transparent;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.3s;
-  .icon {
-    width: 22px;
-    height: 25px;
-    flex-shrink: 0;
-    margin-right: 4px;
-    border-radius: 4px;
-  }
-  .label {
-    flex: 1;
-    font-size: 12px;
-    @include vars.text-ellipsis(1);
-  }
-  .status {
-    &.success {
-      color: #67c23a;
-    }
-    &.fail {
-      color: #f56c6c;
-    }
-  }
-  .close-btn {
-    display: none;
-  }
-  &:hover {
-    .close-btn {
-      display: block;
-    }
-    .status {
-      display: none;
     }
   }
 }

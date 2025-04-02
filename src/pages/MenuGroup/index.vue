@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: "MenuPage",
+  name: "MenuGroup",
 };
 </script>
 
@@ -28,10 +28,8 @@ const isDark = useDark({
 
 watch(
   route,
-  (val) => {
-    if (val.name === "MenuPage") {
-      init();
-    }
+  () => {
+    init();
   },
   {
     deep: true,
@@ -44,7 +42,7 @@ onBeforeMount(() => {
 
 function init() {
   menuList.value = cloneDeep(
-    MenuStore.getMenu(route.query.id)[menuProps.children],
+    MenuStore.getMenu(route.meta.id)[menuProps.children],
   ).sort((a, b) => a.sort - b.sort);
   setColor();
 }
@@ -64,9 +62,9 @@ function handleClick(menu) {
 </script>
 
 <template>
-  <ul class="menu-page-container">
+  <ul class="menu-group-container">
     <li
-      class="menu-page-item"
+      class="menu-group-item"
       :class="{ dark: isDark }"
       v-for="menu in menuList"
       :key="menu.id"
@@ -81,14 +79,14 @@ function handleClick(menu) {
 </template>
 
 <style scoped lang="scss">
-.menu-page-container {
+.menu-group-container {
   @import "src/styles/variables";
   display: flex;
   width: 100%;
   height: 100%;
   overflow: hidden;
   @include container();
-  .menu-page-item {
+  .menu-group-item {
     position: relative;
     display: flex;
     flex-direction: column;

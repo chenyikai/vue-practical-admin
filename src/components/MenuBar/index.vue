@@ -6,7 +6,7 @@ export default {
 
 <script setup>
 import website from "@/config/website.js";
-import { computed, onMounted } from "vue";
+import { computed } from "vue";
 import { menuStore } from "@/store/index.js";
 import { go2MenuPage } from "@/router/index.js";
 import SvgIcon from "package/SvgIcon/src/index.vue";
@@ -17,10 +17,6 @@ const menuProps = computed(() => website.menu.props);
 function handleClick(menu) {
   go2MenuPage(menu);
 }
-
-onMounted(() => {
-  console.log(MenuStore.menuList);
-});
 </script>
 
 <template>

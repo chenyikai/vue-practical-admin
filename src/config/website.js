@@ -33,6 +33,7 @@ export default {
   scaleRatio: 1920 / window.innerWidth,
   menu: {
     props: {
+      id: "id",
       label: "menuName",
       path: "path",
       icon: "icon",

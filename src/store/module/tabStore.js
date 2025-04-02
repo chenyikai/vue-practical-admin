@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import website from "@/config/website.js";
 import { getStore, setStore } from "@/utils/store.js";
-import { menuStore } from "@/store/index.js";
 import router from "@/router/index.js";
 
 // const isFirstPage = website.isFirstPage;
@@ -32,13 +31,6 @@ const tabStore = defineStore("tab", {
       const flag =
         this.tabList.findIndex((item) => item.value === data.value) === -1;
       if (!flag) return;
-
-      if (data.label === "MenuPage") {
-        const menu = menuStore().getMenu(data.query.id);
-        const { label, icon } = website.menu.props;
-        data.label = menu[label];
-        data.icon = menu[icon];
-      }
 
       if (data.label === "页面不存在") {
         data.icon = website.pageIcon["404"];

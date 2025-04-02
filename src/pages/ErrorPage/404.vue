@@ -1,6 +1,7 @@
 <template>
   <div class="page-not-found">
     <img class="bg" src="@/assets/images/404/404-bg.svg" alt="" />
+    <span class="tips">很抱歉，您访问的页面不存在。</span>
     <div class="btn-group">
       <el-button type="primary" @click.stop="retry">重试</el-button>
       <el-button @click.stop="handleGo2Index">首页</el-button>
@@ -60,6 +61,11 @@ onMounted(() => {
   @include container();
   .bg {
     width: 750px;
+  }
+  .tips {
+    margin: 20px 0;
+    font-size: 18px;
+    font-weight: bold;
   }
 }
 </style>

@@ -10,12 +10,12 @@ import LayoutAside from "@/components/LayoutComponent/LayoutAside.vue";
 import LayoutHeader from "@/components/LayoutComponent/LayoutHeader.vue";
 import LayoutTab from "@/components/LayoutComponent/LayoutTab.vue";
 import { menuStore } from "@/store/index.js";
-import { addRoute } from "@/router/index.js";
+import { initRoutes } from "@/router/index.js";
 import { menuData } from "@/mock/module/menu.js";
 
 onBeforeMount(() => {
   initMenu().then((menu) => {
-    addRoute(menu, true);
+    initRoutes(menu);
     menuStore().setMenu(menu);
   });
 });

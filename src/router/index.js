@@ -1,8 +1,8 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import views from "./views/index.js";
+import views, { notFoundRecord } from "./views/index.js";
 import pages from "./page/index.js";
 import website from "@/config/website.js";
-import { isURL } from "@/utils/validate.js";
+import { isURL, validatenull } from "@/utils/validate.js";
 import { menuStore } from "@/store/index.js";
 import { getStore } from "@/utils/store.js";
 
@@ -27,77 +27,72 @@ const router = createRouter({
 
 const modules = import.meta.glob("../**/**/*.vue");
 
-export function addRoute(aMenu = [], first) {
-  const aRouter = [];
+export function addRoutes(aMenu, parent = "Layout") {
+  if (validatenull(aMenu) || !Array.isArray(aMenu) || aMenu.length === 0) {
+    return;
+  }
+
   const propsDefault = website.menu.props;
-  if (aMenu && aMenu.length === 0) return;
-  for (let i = 0; i < aMenu.length; i++) {
-    const oMenu = aMenu[i];
-    let path = oMenu[propsDefault.path],
-      component = oMenu.component,
-      name = oMenu[propsDefault.label],
-      icon = oMenu[propsDefault.icon],
-      children = oMenu[propsDefault.children],
-      query = oMenu[propsDefault.query],
-      meta = oMenu[propsDefault.meta];
-    const isChild = !!(children && children.length !== 0);
-    const oRouter = {
-      path: path,
-      component: (() => {
-        // 判断是否为首路由
-        if (first) {
-          return modules["../pages/Layout/index.vue"];
-          // 判断是否为多层路由
-        } else if (isChild && !first) {
-          return modules[`../pages/Layout/index.vue`];
-          // 判断是否为最终的页面视图
+
+  aMenu.forEach((oMenu) => {
+    let record = {};
+
+    const id = oMenu[propsDefault.id];
+    const path = oMenu[propsDefault.path];
+    const name = oMenu[propsDefault.label];
+    const icon = oMenu[propsDefault.icon];
+    const children = oMenu[propsDefault.children];
+    const meta = oMenu[propsDefault.meta];
+
+    const hasChild = Array.isArray(children) && children.length > 0;
+    const isHttp =
+      path.indexOf("https://") !== -1 || path.indexOf("http://") !== -1;
+
+    record = {
+      path: (() => {
+        if (isHttp) {
+          return "/iframe";
         } else {
-          return modules[`../views${oMenu.path}.vue`];
+          return path;
         }
       })(),
       name,
-      meta: { ...meta, icon },
-      query,
-      redirect: (() => {
-        if (!isChild && first) return `${path}`;
-        else return "";
+      meta: (() => {
+        return {
+          ...meta,
+          id,
+          name,
+          icon,
+        };
       })(),
-      // 处理是否为一级路由
-      children: !isChild
-        ? (() => {
-            if (first) {
-              oMenu[propsDefault.path] = `${path}`;
-              let result = modules[`../views${oMenu.path}.vue`];
-              if (result) result().then((mod) => (mod.default.name = path));
-              else {
-                console.log(component + "不存在");
-              }
-              return [
-                {
-                  component: result,
-                  name: name,
-                  meta: { ...meta, icon },
-                  query: query,
-                  path: "",
-                },
-              ];
-            }
-            return [];
-          })()
-        : (() => {
-            return addRoute(children, false);
-          })(),
+      props: {
+        meta: oMenu,
+      },
+      component: (() => {
+        if (isHttp) {
+          return modules[`../pages/IFramePage/index.vue`];
+        }
+
+        if (hasChild) {
+          return modules[`../pages/MenuGroup/index.vue`];
+        } else {
+          const module = modules[`../views${oMenu.path}.vue`];
+          return module ? module : modules[`../pages/ErrorPage/404.vue`];
+        }
+      })(),
+      children: hasChild ? addRoutes(children) : [],
     };
-    if (!isURL(path)) aRouter.push(oRouter);
-  }
-  if (first) {
-    aRouter.forEach((ele) => router.addRoute(ele));
-  } else {
-    return aRouter;
-  }
+
+    router.addRoute(parent, record);
+
+    return record;
+  });
 }
 
-addRoute(menuStore["menuList"] || getStore({ name: "menu" }), true);
+export function initRoutes(menu) {
+  addRoutes(menu || menuStore["menuList"] || getStore({ name: "menu" }));
+  router.addRoute("Layout", notFoundRecord);
+}
 
 export function setTitle(title) {
   title = title ? `${title}-${website.title}` : website.title;
@@ -122,18 +117,17 @@ export function getPath(params) {
 }
 
 export function go2MenuPage(menu) {
-  if (Array.isArray(menu.children) && menu.children.length !== 0) {
-    router.push({
-      name: "MenuPage",
-      // params: {
-      //   name: menu["menuName"],
-      // },
-      query: { id: menu["id"] },
-    });
+  const path = menu[website.menu.props.path];
+  const isHttp =
+    path.indexOf("https://") !== -1 || path.indexOf("http://") !== -1;
+
+  if (isHttp) {
+    router.push({ path: "iframe" });
   } else {
-    const path = website.menu.props.path;
-    router.push({ path: menu[path] });
+    router.push({ path });
   }
 }
+
+initRoutes();
 
 export default router;
