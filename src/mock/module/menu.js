@@ -46,6 +46,14 @@ export const menuData = [
         sort: 10,
         children: [],
       },
+      {
+        id: 105,
+        menuName: "自定义指令",
+        icon: "directive",
+        path: "/component/directive/index",
+        sort: 11,
+        children: [],
+      },
     ],
   },
   {

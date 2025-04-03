@@ -11,6 +11,9 @@ import Crud from "./Crud";
 import SignBoard from "./SignBoard";
 import RichText from "./RichText";
 
+import throttle from "./Directive/throttle.js";
+import debounce from "./Directive/debounce.js";
+
 const components = [
   AdminContainer,
   PageButton,
@@ -26,6 +29,10 @@ const components = [
   RichText,
 ];
 
+const directives = [throttle, debounce];
+
 export default function install(app) {
   components.forEach((install) => install(app));
+
+  directives.forEach((d) => app.directive(d.name, d.directive));
 }

@@ -13,37 +13,15 @@
       :on-error="onError"
       :disabled="isDisabled"
       v-bind="bindValue">
-      <div class="upload-layout" v-if="type === 'drag'">
-        <template v-if="!isUpload">
-          <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-          <div class="el-upload__text">拖拽文件到此或 <em>点击上传</em></div>
-        </template>
-        <template v-else>
-          <el-progress
-            striped-flow
-            striped
-            type="dashboard"
-            :percentage="progress"
-            :color="colors">
-            <template #default="{ percentage }">
-              <div class="upload-progress-content">
-                <svg-icon class="icon" name="loading" />
-                <span class="text">{{ percentage }}%</span>
-              </div>
-            </template>
-          </el-progress>
-        </template>
-      </div>
+      <drag-upload
+        v-if="type === 'drag'"
+        :is-upload="isUpload"
+        :progress="progress"
+        :colors="props.colors" />
 
-      <div class="upload-layout avatar-layout" v-if="type === 'avatar'">
-        <img v-if="model" :src="model" class="avatar" />
-        <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
-      </div>
-      <div
-        class="upload-layout picture-card-layout"
-        v-if="type === 'pictureCard'">
-        <el-icon><Plus /></el-icon>
-      </div>
+      <avatar-upload v-if="type === 'avatar'" :src="model" :size="props.size" />
+
+      <picture-card-upload v-if="type === 'pictureCard'" />
 
       <template #file="{ file }">
         <file-card
@@ -95,21 +73,18 @@ export default {
 
 <script setup>
 import { ref, useAttrs, computed, useSlots, readonly, reactive } from "vue";
-import {
-  UploadFilled,
-  Plus,
-  Check,
-  Search,
-  Delete,
-} from "@element-plus/icons-vue";
+import { Check, Search, Delete } from "@element-plus/icons-vue";
 import request from "@/router/axios.js";
 import website from "@/config/website.js";
-import SvgIcon from "package/SvgIcon/src/index.vue";
 import { ElMessageBox } from "element-plus";
 import { useZIndex } from "element-plus";
 import FileCard from "package/Upload/src/components/FileCard.vue";
-const { nextZIndex } = useZIndex();
 import { STATUS } from "package/Upload/src/vars.js";
+import DragUpload from "package/Upload/src/components/DragUpload.vue";
+import AvatarUpload from "package/Upload/src/components/AvatarUpload.vue";
+import PictureCardUpload from "package/Upload/src/components/PictureCardUpload.vue";
+
+const { nextZIndex } = useZIndex();
 
 const emits = defineEmits({
   success: null,
@@ -162,6 +137,10 @@ const props = defineProps({
   },
   ossType: {
     type: Number,
+    default: null,
+  },
+  beforeUploadValidator: {
+    type: Function,
     default: null,
   },
 });
@@ -227,11 +206,9 @@ const isDisabled = computed(() => {
   return isUpload.value || attrs.disabled;
 });
 
-// 头像
-const avatarSize = ref(props.size + "px");
-
 function setData(val) {
   files.value = val;
+
   files.value.forEach((file) => {
     results[file.uid] = {
       status: status.SUCCESS,
@@ -266,8 +243,11 @@ function uploadFunc(option) {
 }
 
 function onBeforeUpload(file) {
-  // TODO 做一些校验
-  isUpload.value = true;
+  if (props.beforeUploadValidator) {
+    isUpload.value = props.beforeUploadValidator(file);
+  } else {
+    isUpload.value = true;
+  }
 
   loadingFile.value = file;
   emits("select", loadingFile.value);
@@ -350,12 +330,6 @@ function onPreview(file) {
 }
 
 function onDelete(file) {
-  // if ([status.UPLOADING, status.READY].includes(results[file.uid].status)) {
-  //   console.log(file, "file");
-  //   upload.value.abort(file);
-  //   return;
-  // }
-
   if (isDisabled.value) return;
 
   upload.value.handleRemove(file);
@@ -401,30 +375,6 @@ defineExpose({
 <style lang="scss">
 @use "src/styles/variables" as vars;
 .upload-file-container {
-  .avatar-layout {
-    border: 1px dashed var(--el-border-color);
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    border-radius: 50%;
-    transition: var(--el-transition-duration-fast);
-    &:hover {
-      border-color: var(--el-color-primary);
-    }
-    .avatar {
-      width: v-bind(avatarSize);
-      height: v-bind(avatarSize);
-      display: block;
-      border-radius: 50%;
-    }
-    .avatar-uploader-icon {
-      font-size: 28px;
-      color: #8c939d;
-      width: v-bind(avatarSize);
-      height: v-bind(avatarSize);
-      text-align: center;
-    }
-  }
 }
 
 .file-card-img-layout {
@@ -439,18 +389,6 @@ defineExpose({
         margin-left: 10px;
       }
     }
-  }
-}
-
-.upload-progress-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  .icon {
-    width: 50px;
-    height: 50px;
-    margin-bottom: 10px;
   }
 }
 </style>
