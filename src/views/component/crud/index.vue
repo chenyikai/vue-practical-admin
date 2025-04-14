@@ -5,68 +5,135 @@ export default {
 </script>
 
 <script setup>
+import { useId } from "vue";
 import PageCrud from "package/Crud/src/index.vue";
 import AdminCard from "package/Card/src/index.vue";
+import PageButton from "package/Button/src/index.vue";
 
 defineOptions({
   name: "CrudCard",
 });
 
 const config = {
-  // type: "expand", // 'default' | 'selection' | 'index' | 'expand'
+  type: "index", // 'default' | 'selection' | 'index' | 'expand'
   height: "100%",
   columns: [
     {
-      label: "部门机构名称",
-      prop: "deptName",
+      label: "普通",
+      prop: "normal",
     },
     {
-      label: "部门机构全称",
-      prop: "fullName",
+      label: "图片",
+      prop: "image",
+      type: "image",
     },
     {
-      label: "排序",
-      prop: "sort",
+      label: "评价",
+      prop: "rate",
+      type: "rate",
+      config: {
+        // disabled: true,
+        onChange: (val) => {
+          console.log(val, "val");
+        },
+      },
     },
     {
-      label: "备注",
-      prop: "remark",
-      overHidden: true,
+      label: "标签",
+      prop: "tag",
+      type: "tag",
+      config: (row) => {
+        return {
+          type: row.tag === "已上架" ? "success" : "info",
+        };
+      },
+    },
+    {
+      label: "文本",
+      prop: "text",
+      type: "text",
+      config: {
+        truncated: true,
+        tooltip: {
+          placement: "top",
+        },
+      },
     },
     {
       label: "操作",
       prop: "menu",
-      slot: true,
     },
   ],
 };
 
 const tableData = [
   {
-    id: 1,
-    deptName: "部门机构名称",
-    fullName: "部门机构全称",
-    sort: "排序",
-    remark: "备注",
+    id: useId(),
+    normal: "普通单元格" + useId(),
+    image:
+      "https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg",
+    rate: Math.random() * 5,
+    tag: "已上架",
+    text: "这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！",
   },
 ];
+
+function onTest(scope) {
+  console.log(scope, "onTest1");
+}
 </script>
 
 <template>
   <admin-card class="crud-card-container">
-    <page-crud
-      :data="tableData"
-      :config="config"
-      row-key="id"
-      border
-      default-expand-all>
-    </page-crud>
+    <div class="button-group">
+      <page-button type="search"></page-button>
+    </div>
+    <div class="box">
+      <page-crud
+        v-model="tableData"
+        :data="tableData"
+        :config="config"
+        row-key="id"
+        border
+        default-expand-all>
+        <template #menu="{ scope }">
+          <page-button
+            type="create"
+            direction="horizontal"
+            @click.stop="onTest(scope)" />
+          <page-button
+            type="detail"
+            direction="horizontal"
+            @click.stop="onTest(scope)" />
+          <page-button
+            type="update"
+            direction="horizontal"
+            @click.stop="onTest(scope)" />
+          <page-button
+            type="delete"
+            direction="horizontal"
+            @click.stop="onTest(scope)" />
+        </template>
+      </page-crud>
+    </div>
   </admin-card>
 </template>
 
 <style scoped lang="scss">
 .crud-card-container {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
+  overflow: hidden;
+  .button-group {
+    width: 100%;
+    height: 70px;
+  }
+  .box {
+    width: 100%;
+    flex: 1;
+    overflow: hidden;
+  }
 }
 </style>

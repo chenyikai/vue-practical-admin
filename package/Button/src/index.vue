@@ -121,7 +121,6 @@ function handleClick(e) {
 </template>
 
 <style lang="scss">
-@import "src/styles/variables";
 .page-button {
   padding: 8px 10px;
   .icon {

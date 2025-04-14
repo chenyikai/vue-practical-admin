@@ -11,7 +11,7 @@ defineOptions({
   name: "IconBox",
 });
 
-const model = defineModel();
+const model = defineModel({ type: String, default: null });
 
 const icons = computed(() => {
   const filePaths = Object.keys(import.meta.glob("@/icons/*.svg"));

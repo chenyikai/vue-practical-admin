@@ -98,7 +98,6 @@ function onClick() {
 </template>
 
 <style scoped lang="scss">
-@use "src/styles/variables" as vars;
 .file-card {
   position: relative;
   display: flex;
@@ -121,7 +120,7 @@ function onClick() {
   .label {
     flex: 1;
     font-size: 12px;
-    @include vars.text-ellipsis(1);
+    @include text-ellipsis(1);
   }
   .status {
     &.success {

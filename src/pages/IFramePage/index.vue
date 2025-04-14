@@ -27,7 +27,6 @@ defineOptions({
 
 <style scoped lang="scss">
 .iframe-container {
-  @import "src/styles/variables";
   display: flex;
   flex-direction: column;
   width: 100%;

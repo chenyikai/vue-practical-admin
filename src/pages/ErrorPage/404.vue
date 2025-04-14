@@ -50,7 +50,6 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-@import "src/styles/variables";
 .page-not-found {
   display: flex;
   flex-direction: column;

@@ -80,7 +80,6 @@ function handleClick(menu) {
 
 <style scoped lang="scss">
 .menu-group-container {
-  @import "src/styles/variables";
   display: flex;
   width: 100%;
   height: 100%;

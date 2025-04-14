@@ -35,7 +35,6 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
-@import "src/styles/variables";
 .model-page-container {
   width: 100%;
   height: 100%;

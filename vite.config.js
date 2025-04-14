@@ -45,6 +45,13 @@ export default defineConfig(({ mode }) => {
       },
     },
     css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: '@use "@/styles/variables.scss" as *;',
+          javascriptEnabled: true,
+          silenceDeprecations: ["legacy-js-api"],
+        },
+      },
       postcss: {
         plugins: [
           pxToViewport({

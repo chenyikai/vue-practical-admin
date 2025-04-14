@@ -5,8 +5,13 @@ export default {
 </script>
 
 <script setup>
-// import { validatenull } from "@/utils/validate.js";
 import { inject, computed, onMounted } from "vue";
+import ImageTd from "./td/ImageTd.vue";
+import TagTd from "package/Crud/src/td/TagTd.vue";
+import NormalTd from "package/Crud/src/td/NormalTd.vue";
+import RateTd from "package/Crud/src/td/RateTd.vue";
+import TextTd from "package/Crud/src/td/TextTd.vue";
+import { validatenull } from "@/utils/validate.js";
 
 defineOptions({
   name: "TableColumn",
@@ -23,6 +28,14 @@ const props = defineProps({
   },
 });
 
+const tdMap = {
+  normal: NormalTd,
+  image: ImageTd,
+  tag: TagTd,
+  rate: RateTd,
+  text: TextTd,
+};
+
 const slots = inject("slots");
 const getHeadSlot = inject("getHeadSlot");
 const getFilterIcon = inject("getFilterIcon");
@@ -34,6 +47,24 @@ const hasChild = computed(
     Array.isArray(props.column.children) && props.column.children.length !== 0,
 );
 
+const tdType = computed(() => {
+  if (validatenull(props.column?.type)) {
+    return "normal";
+  } else {
+    return props.column?.type;
+  }
+});
+
+function getComponent() {
+  const c = tdMap[tdType.value];
+
+  return c ? c : NormalTd;
+}
+
+function onChange() {
+  console.log("onChange");
+}
+
 onMounted(() => {
   // console.log(slots);
 });
@@ -44,34 +75,16 @@ onMounted(() => {
     :prop="column.prop"
     :label="column.label"
     :width="column.width"
+    align="center"
     v-bind="column">
-    <template v-if="hasChild">
-      <table-column
-        v-for="childColumn in column.children"
-        :key="childColumn.prop"
-        :column="childColumn"
-        isChild>
-        <template v-if="slots[childColumn.prop]" v-slot:[childColumn.prop]>
-          <slot :name="childColumn.prop"></slot>
-        </template>
-      </table-column>
-    </template>
-
-    <!-- default插槽 -->
-    <template v-if="!hasChild && slots[column.prop]" #default>
-      <slot :name="column.prop"></slot>
-    </template>
-
-    <!-- header插槽 -->
-    <template v-if="!hasChild && slots[getHeadSlot(column.prop)]" #header>
-      <slot :name="getHeadSlot(column.prop)"></slot>
-    </template>
-
-    <!-- filter-icon插槽 -->
-    <template
-      v-if="!hasChild && slots[getFilterIcon(column.prop)]"
-      #filter-icon>
-      <slot :name="getFilterIcon(column.prop)"></slot>
+    <template v-slot:default="scope">
+      <slot :name="column.prop" :scope="scope">
+        <component
+          :is="getComponent(column)"
+          :column="column"
+          :scope="scope"
+          @change="onChange" />
+      </slot>
     </template>
   </el-table-column>
 </template>

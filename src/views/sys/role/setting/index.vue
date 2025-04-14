@@ -120,7 +120,6 @@ defineExpose({
 </template>
 
 <style scoped lang="scss">
-@import "src/styles/variables";
 .limit-setting-card-container {
   position: relative;
   display: flex;

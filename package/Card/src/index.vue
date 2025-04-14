@@ -31,7 +31,6 @@ const props = defineProps({
 
 <style scoped lang="scss">
 .admin-card-container {
-  @import "src/styles/variables";
   width: 100%;
   @include container();
   .title {

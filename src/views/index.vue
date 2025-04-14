@@ -11,7 +11,6 @@ defineOptions({
 </template>
 
 <style lang="scss" scoped>
-@import "src/styles/variables.scss";
 .box {
   width: 100%;
   height: 100%;

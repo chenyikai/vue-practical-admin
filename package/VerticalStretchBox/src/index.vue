@@ -96,7 +96,6 @@ function onMouseup() {
 </template>
 
 <style scoped lang="scss">
-@import "src/styles/variables";
 .vertical-stretch-box {
   display: flex;
   align-items: center;

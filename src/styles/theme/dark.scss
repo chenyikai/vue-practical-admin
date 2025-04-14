@@ -1,4 +1,4 @@
-@use "../variables" as vars;
+@use '../variables' as *;
 @forward 'element-plus/theme-chalk/src/dark/var.scss' with (
   $empty: (
     'fill-color-0': getCssVar('color-black'),
@@ -13,13 +13,13 @@
     'fill-color-9': #3e3e3f,
   ),
   $bg-color: (
-    '': vars.$dark_content-color,
-    "page": vars.$dark_system-color,
+    '': $dark_content-color,
+    "page": $dark_system-color,
     //"page": var(--theme-color),
-    'overlay': vars.$dark_content-color,
+    'overlay': $dark_content-color,
   ),
   $fill-color: (
-    "blank": vars.$dark_content-color
+    "blank": $dark_content-color
   )
 );
 

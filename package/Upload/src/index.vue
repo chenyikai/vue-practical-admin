@@ -373,7 +373,6 @@ defineExpose({
 </script>
 
 <style lang="scss">
-@use "src/styles/variables" as vars;
 .upload-file-container {
 }
 

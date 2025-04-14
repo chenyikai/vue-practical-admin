@@ -44,6 +44,11 @@ function onChange(editor) {
   model.value = editor.getHtml();
 }
 
+function clearContent() {
+  model.value = null;
+  editor?.setContent(model.value);
+}
+
 onMounted(() => {
   editor = new AiEditor({
     ...props.options,
@@ -51,13 +56,17 @@ onMounted(() => {
     theme: isDark.value ? "dark" : "light",
     toolbarSize: "medium",
     placeholder: "点击输入内容...",
-    content: null,
+    content: model.value,
     onChange,
   });
 });
 
 onUnmounted(() => {
   editor && editor.destroy();
+});
+
+defineExpose({
+  clear: clearContent,
 });
 </script>
 

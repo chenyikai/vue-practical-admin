@@ -5,8 +5,7 @@ export default {
 </script>
 
 <script setup>
-import { computed, useSlots, provide } from "vue";
-import { validatenull } from "@/utils/validate.js";
+import { ref, computed, useSlots, provide } from "vue";
 import loadingIcon from "@/icons/loading.svg?raw";
 import TableColumn from "package/Crud/src/TableColumn.vue";
 
@@ -16,13 +15,9 @@ defineOptions({
 
 const slots = useSlots();
 
+const model = defineModel({ type: Array, default: () => [] });
+
 const props = defineProps({
-  data: {
-    type: Array,
-    default: () => {
-      return [];
-    },
-  },
   config: {
     type: Object,
     required: true,
@@ -32,7 +27,24 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  pagination: {
+    type: Object,
+    default: () => {
+      return {
+        pageIndex: 0,
+        pageSize: 10,
+        total: 400,
+        pageSizes: [],
+      };
+    },
+  },
 });
+
+const emit = defineEmits(["row-click"]);
+
+const currentPage = ref(1);
+const pageSize = ref(10);
+const disabled = ref(false);
 
 const tableType = computed(() => {
   return props.config.type;
@@ -50,86 +62,64 @@ function getHeadSlot(prop) {
 function getFilterIcon(prop) {
   return `${prop}FilterIcon`;
 }
+
+function onSizeChange(val) {
+  console.log(val, "val");
+}
+
+function onCurrentChange(val) {
+  console.log(val, "val");
+}
+
+function onRowClick(row) {
+  emit("row-click", row);
+}
 </script>
 
 <template>
   <section class="crud-container">
-    <el-table
-      v-loading="loading"
-      :element-loading-spinner="loadingIcon"
-      element-loading-text="加载中"
-      element-loading-svg-view-box="0 0 57 57"
-      border
-      header-row-class-name="crud-table-header-row"
-      v-bind="config"
-      :data="data"
-      style="width: 100%">
-      <!-- default插槽 -->
-      <template #default v-if="!validatenull(slots.default)">
-        <slot name="default"></slot>
-      </template>
+    <main class="crud-container-main">
+      <el-table
+        v-loading="loading"
+        :element-loading-spinner="loadingIcon"
+        element-loading-text="加载中"
+        element-loading-svg-view-box="0 0 57 57"
+        border
+        row-class-name="crud-table-body-row"
+        header-row-class-name="crud-table-header-row"
+        v-bind="config"
+        :data="model"
+        style="width: 100%"
+        @row-click="onRowClick">
+        <el-table-column
+          label="序号"
+          :type="tableType"
+          width="80px"
+          align="center" />
 
-      <!-- append插槽 -->
-      <template #append v-if="!validatenull(slots.append)">
-        <slot name="append"></slot>
-      </template>
-
-      <!-- empty插槽 -->
-      <template #empty v-if="!validatenull(slots.empty)">
-        <slot name="empty"></slot>
-      </template>
-
-      <!-- 索引 选择 展开column -->
-      <template v-if="!validatenull(tableType)">
-        <el-table-column :type="tableType">
-          <template #default v-if="slots.expand">
-            <slot name="expand"></slot>
-          </template>
-        </el-table-column>
-      </template>
-
-      <!-- 数据column -->
-      <template v-for="column in config.columns" :key="column.prop">
-        <table-column :column="column">
-          <!-- default插槽 -->
-          <template v-slot:[column.prop] v-if="slots[column.prop]">
-            <slot :name="column.prop"></slot>
-          </template>
-
-          <!-- header插槽 -->
-          <template
-            v-slot:[getHeadSlot(column.prop)]
-            v-if="slots[getHeadSlot(column.prop)]">
-            <slot :name="column.prop"></slot>
-          </template>
-
-          <!-- filter-icon插槽 -->
-          <template
-            v-slot:[getFilterIcon(column.prop)]
-            v-if="slots[getFilterIcon(column.prop)]">
-            <slot :name="column.prop"></slot>
-          </template>
-
-          <!-- 子节点插槽 -->
-          <template
-            v-for="childColumn in column.children"
-            v-slot:[childColumn.prop]
-            :key="childColumn.prop">
-            <!-- default插槽 -->
-            <slot
-              v-if="slots[childColumn.prop]"
-              :name="childColumn.prop"></slot>
-          </template>
-        </table-column>
-      </template>
-    </el-table>
+        <!-- 数据column -->
+        <template v-for="column in config.columns" :key="column.prop">
+          <table-column :column="column">
+            <!-- 单元格插槽 -->
+            <template v-slot:[column.prop]="{ scope }">
+              <slot :name="column.prop" :scope="scope"></slot>
+            </template>
+          </table-column>
+        </template>
+      </el-table>
+    </main>
+    <footer class="crud-container-footer">
+      <el-pagination
+        :current-page="currentPage"
+        :page-size="pageSize"
+        :page-sizes="[100, 200, 300, 400]"
+        size="default"
+        :disabled="disabled"
+        background
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="400"
+        @size-change="onSizeChange"
+        @current-change="onCurrentChange" />
+    </footer>
   </section>
 </template>
-
-<style scoped lang="scss">
-.crud-container {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-</style>
