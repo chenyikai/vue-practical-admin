@@ -45,7 +45,7 @@ export default () => {
     connectTimer && clearInterval(connectTimer);
     connectTimer = setInterval(() => {
       // 新连接
-      this.initWebSocket();
+      initSocket();
       lockReconnect = false;
     }, 5000);
   }

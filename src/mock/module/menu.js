@@ -71,6 +71,13 @@ export const menuData = [
     path: "https://www.doubao.com/chat/?channel=baidu_sem&source=dbweb_baidusem_htl_pc_pinp_2&keywordid=967031825910&ad_platform_id=baidusearch_lead&account_id=53653088&a_planid=720987910&a_unitid=10812115427&a_keywordid=967031825910&a_creative=108560718853&a_matchtype=2&a_dongtai=0&a_trig_flag=nm&a_crowdid=0&a_kw_enc_utf8=%E8%B1%86%E5%8C%85%E7%BD%91%E9%A1%B5%E7%89%88&ug_semver=v2.0.0&bd_vid=8795350834893036628",
   },
   {
+    id: 5,
+    menuName: "图标",
+    icon: "icon",
+    sort: 10,
+    path: "/icon/index",
+  },
+  {
     id: 1,
     menuName: "设置",
     icon: "setting",
