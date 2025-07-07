@@ -24,7 +24,6 @@
 );
 
 @use "element-plus/theme-chalk/src/dark/css-vars";
-
 html {
   &.dark {
     --theme-color: #323e52; // 系统主色
