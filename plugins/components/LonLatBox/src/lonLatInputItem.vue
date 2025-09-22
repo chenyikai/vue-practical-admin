@@ -136,7 +136,7 @@
 
 <script>
 import { MapboxPlotClass } from "@/plugins/composition/mapbox-plot";
-import { cloneDeep } from "lodash";
+import { cloneDeep } from "lodash-es";
 
 export default {
   name: "lonLatInputItem",
@@ -199,7 +199,7 @@ export default {
       },
     },
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.reset();
   },
   methods: {
@@ -247,7 +247,7 @@ export default {
         degreeDecimal: 6,
         minuteDecimal: 4,
         secondDecimal: 6,
-      }
+      },
     ) {
       let absValue = Math.abs(value);
       let degree = Math.floor(absValue);

@@ -1,7 +1,7 @@
 import EventEmitter from "eventemitter3";
 import MapboxDraw, { MapboxDrawClass } from "@/plugins/composition/mapbox-draw";
 import LonLatBox from "@/plugins/components/LonLatBox";
-import { set } from "lodash";
+import { set } from "lodash-es";
 import Mapbox from "@/plugins/composition/mapbox";
 import { bbox } from "@turf/turf";
 
@@ -101,7 +101,7 @@ class MapboxTools extends EventEmitter {
     const { properties } = e.feature;
     if (
       [MapboxTools.STOP, MapboxTools.PLAY_BACK, MapboxTools.ROUTE].includes(
-        properties["graphical-type"]
+        properties["graphical-type"],
       )
     ) {
       const id = e.feature.id;

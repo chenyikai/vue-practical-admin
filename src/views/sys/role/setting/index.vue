@@ -10,7 +10,7 @@ import { ref } from "vue";
 import { updateRole } from "@/api/sys/role/index.js";
 import { getRoleMenuById } from "@/api/sys/menu/index.js";
 import { ElMessage } from "element-plus";
-import { debounce } from "lodash";
+import { debounce } from "lodash-es";
 import SvgIcon from "package/SvgIcon/src/index.vue";
 const emits = defineEmits({ setting: null });
 

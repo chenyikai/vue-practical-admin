@@ -6,7 +6,7 @@ export default {
 
 <script setup>
 import { ref, nextTick } from "vue";
-import { debounce } from "lodash";
+import { debounce } from "lodash-es";
 import ComponentBox from "../../ComponentBox.vue";
 import SearchInput from "./SearchInput.vue";
 import ResultList from "./ResultList.vue";

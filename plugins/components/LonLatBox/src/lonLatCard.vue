@@ -30,7 +30,7 @@
 
 <script>
 import LonLatInputItem from "./lonLatInputItem.vue";
-import _ from "lodash";
+import { clone } from "lodash-es";
 import { MapboxPlotClass } from "@/plugins/composition/mapbox-plot";
 
 export default {
@@ -84,7 +84,7 @@ export default {
       label: "度",
     });
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.activeTab = undefined;
   },
   methods: {
@@ -92,17 +92,17 @@ export default {
       this.activeTab = value;
     },
     handleChange({ index, lngLat }) {
-      const list = _.clone(this.lonLatList);
+      const list = clone(this.lonLatList);
       list[index] = lngLat;
       this.$emit("change", list);
     },
     handleDelete(index) {
-      const list = _.clone(this.lonLatList);
+      const list = clone(this.lonLatList);
       list.splice(index, 1);
       this.$emit("change", list);
     },
     handleAdd() {
-      const list = _.clone(this.lonLatList);
+      const list = clone(this.lonLatList);
       list.push([0, 0]);
       this.$emit("change", list);
       this.$nextTick(() => {

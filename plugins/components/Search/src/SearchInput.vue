@@ -1,5 +1,5 @@
 <script>
-import { throttle } from "lodash";
+import { throttle } from "lodash-es";
 
 export default {
   name: "SearchInput",
@@ -33,11 +33,9 @@ export default {
       :value="value"
       placeholder="请输入船舶"
       @input="handleInput">
-      <el-button
-        type="primary"
-        icon="el-icon-search"
-        slot="append"
-        @click="handleSearch" />
+      <template v-slot:append>
+        <el-button type="primary" icon="el-icon-search" @click="handleSearch" />
+      </template>
     </el-input>
   </div>
 </template>

@@ -1,5 +1,5 @@
 import EventEmitter from "eventemitter3";
-import { set } from "lodash";
+import { set } from "lodash-es";
 import { validatenull } from "@/utils/validate.js";
 import { area, featureCollection } from "@turf/turf";
 

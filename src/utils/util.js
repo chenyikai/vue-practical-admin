@@ -1,8 +1,7 @@
 import * as CryptoJS from "crypto-js";
 import { validatenull } from "./validate.js";
-import { set } from "lodash";
+import { set, cloneDeep } from "lodash-es";
 import { userStore } from "@/store/index.js";
-import { cloneDeep } from "lodash";
 
 /**
  * 把字符串化的函数还原为可执行函数

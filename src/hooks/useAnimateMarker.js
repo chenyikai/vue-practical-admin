@@ -1,6 +1,6 @@
 import { lineString, length, along } from "@turf/turf";
 import { validatenull } from "@/utils/validate.js";
-import { set } from "lodash";
+import { set } from "lodash-es";
 
 export default () => {
   const marks = {};

@@ -1,5 +1,5 @@
 import EventEmitter from "eventemitter3";
-import { cloneDeep } from "lodash";
+import { cloneDeep } from "lodash-es";
 import { mapConfig } from "plugins/mapConfig.js";
 import { validatenull } from "@/utils/validate.js";
 

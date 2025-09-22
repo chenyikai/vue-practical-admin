@@ -1,6 +1,6 @@
 <script>
 import CustomColorPicker from "@/plugins/components/CustomColorPicker/index.vue";
-import { cloneDeep } from "lodash";
+import { cloneDeep } from "lodash-es";
 import LonLatCard from "./lonLatCard.vue";
 import { MapboxPlotClass } from "@/plugins/composition/mapbox-plot";
 import { MapboxToolsClass } from "@/plugins/composition/mapbox-tools";
@@ -244,7 +244,7 @@ export default {
     custom-class="lon-lat-drawer"
     title="标绘编辑"
     size="400px"
-    :visible.sync="visible"
+    v-model:visible="visible"
     direction="rtl"
     append-to-body
     :modal-append-to-body="false"
@@ -252,7 +252,7 @@ export default {
     :modal="false"
     :before-close="handleClose"
     @opened="handleOpened">
-    <template slot="title">
+    <template v-slot:title>
       <div class="title-layout">
         <span class="label">图形编辑</span>
         <div class="btn-layout">

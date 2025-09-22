@@ -1,5 +1,5 @@
 import EventEmitter from "eventemitter3";
-import { debounce } from "lodash";
+import { debounce } from "lodash-es";
 
 class MapboxMousePosition extends EventEmitter {
   map = null;

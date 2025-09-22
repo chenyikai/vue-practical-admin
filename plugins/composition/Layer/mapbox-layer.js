@@ -6,7 +6,7 @@ import {
   featureCollection,
 } from "@turf/turf";
 import { validatenull } from "@/utils/validate.js";
-import { set, cloneDeep } from "lodash";
+import { set, cloneDeep } from "lodash-es";
 
 const SOURCE = "ehh-layer-source";
 class MapboxLayer extends EventEmitter {

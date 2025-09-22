@@ -13,7 +13,7 @@ import { go2MenuPage } from "@/router/index.js";
 import { menuStore } from "@/store/index.js";
 import { useRoute } from "vue-router";
 import SvgIcon from "package/SvgIcon/src/index.vue";
-import { cloneDeep } from "lodash";
+import { cloneDeep } from "lodash-es";
 const route = useRoute();
 const MenuStore = menuStore();
 

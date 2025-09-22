@@ -1,7 +1,7 @@
 import EventEmitter from "eventemitter3";
 import { validatenull } from "@/util/validate";
 import { formatLatitudeAndLongitude, getDictData } from "@/util/util";
-import { cloneDeep, set } from "lodash";
+import { cloneDeep, set } from "lodash-es";
 import moment from "moment";
 import {
   getGreenPoiByRange,

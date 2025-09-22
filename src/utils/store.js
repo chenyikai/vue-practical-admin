@@ -1,4 +1,4 @@
-import _ from "lodash";
+import { isNull } from "lodash-es";
 import website from "@/config/website";
 import { stringParseToFunction } from "@/utils/util.js";
 
@@ -31,10 +31,10 @@ export function getStore(params = {}) {
   name = `${keyName}${name}`;
   let obj = {};
   obj = window.sessionStorage.getItem(name);
-  if (_.isNull(obj)) {
+  if (isNull(obj)) {
     obj = window.localStorage.getItem(name);
   }
-  if (_.isNull(obj)) {
+  if (isNull(obj)) {
     console.warn(`未找到缓存，${name}不存在！`);
     return;
   }

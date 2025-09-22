@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { set } from "lodash";
+import { set } from "lodash-es";
 
 const popupManageStore = defineStore("popupManage", {
   state: () => {

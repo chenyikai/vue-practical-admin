@@ -13,7 +13,7 @@ import {
   getShipIcon,
 } from "@/api/map/ship.js";
 import { validatenull } from "@/utils/validate.js";
-import { cloneDeep, set } from "lodash";
+import { cloneDeep, set } from "lodash-es";
 import svgToImage from "svg-to-image";
 import getContext from "get-canvas-context";
 

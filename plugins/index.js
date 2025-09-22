@@ -5,7 +5,7 @@ import MapboxSwitch from "./composition/mapbox-switch.js";
 import MapboxTrack from "./composition/Track/index.js";
 import MapboxShip from "./composition/Ship/index.js";
 import "./composition/Ship/index.scss";
-import { cloneDeep } from "lodash";
+import { cloneDeep } from "lodash-es";
 import { baseMap } from "./mapConfig.js";
 
 /**

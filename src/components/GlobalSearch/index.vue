@@ -7,7 +7,7 @@ export default {
 <script setup>
 import { ref, nextTick } from "vue";
 import { Search, DArrowRight } from "@element-plus/icons-vue";
-import { debounce } from "lodash";
+import { debounce } from "lodash-es";
 import { menuStore } from "@/store";
 import website from "@/config/website.js";
 

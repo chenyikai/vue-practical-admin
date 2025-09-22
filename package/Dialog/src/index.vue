@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup>
-import { debounce } from "lodash";
+import { debounce } from "lodash-es";
 import { ref, useAttrs } from "vue";
 defineProps({
   showFooter: {

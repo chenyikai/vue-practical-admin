@@ -1,4 +1,4 @@
-import { cloneDeep } from "lodash";
+import { cloneDeep } from "lodash-es";
 import { Collision } from "../Collision.js";
 import { featureCollection, feature, lineString } from "@turf/turf";
 import { clearBySource } from "../../utils/util.js";
