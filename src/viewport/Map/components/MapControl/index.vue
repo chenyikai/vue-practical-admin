@@ -6,7 +6,6 @@ export default {
 
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
-import { Mapbox } from "plugins";
 import { formatLatitudeAndLongitude } from "@/utils/util.js";
 defineOptions({
   name: "MapControl",
@@ -14,17 +13,9 @@ defineOptions({
 
 const mousePositionInfo = ref("");
 
-function zoomIn() {
-  if (!Mapbox.getMap().isZooming()) {
-    Mapbox.getMap().zoomIn();
-  }
-}
+function zoomIn() {}
 
-function zoomOut() {
-  if (!Mapbox.getMap().isZooming()) {
-    Mapbox.getMap().zoomOut();
-  }
-}
+function zoomOut() {}
 
 function onMouseMove(e) {
   const coordinate = e.lngLat.wrap();
@@ -35,13 +26,9 @@ function onMouseMove(e) {
   mousePositionInfo.value = `${latitude.completeValue} ${longitude.completeValue}`;
 }
 
-onMounted(() => {
-  Mapbox.getMap().on("mousemove", onMouseMove);
-});
+onMounted(() => {});
 
-onUnmounted(() => {
-  Mapbox.getMap().off("mousemove", onMouseMove);
-});
+onUnmounted(() => {});
 </script>
 
 <template>

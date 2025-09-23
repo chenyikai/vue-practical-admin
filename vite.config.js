@@ -6,6 +6,8 @@ import viteCompression from "vite-plugin-compression";
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 import { fileURLToPath, URL } from "node:url";
 import { loadEnv } from "vite";
+import { visualizer } from "rollup-plugin-visualizer";
+// import { viteExternalsPlugin } from "vite-plugin-externals";
 import pxToViewport from "postcss-px-to-viewport";
 import path from "path";
 
@@ -33,15 +35,42 @@ export default defineConfig(({ mode }) => {
         iconDirs: [path.resolve(process.cwd(), "src/icons")],
         symbolId: "icon-[dir]-[name]", // icon-file-excel
       }),
+      visualizer({
+        open: true, //注意这里要设置为true，否则无效
+        filename: "stats.html", //分析图生成的文件名
+        gzipSize: true, // 收集 gzip 大小并将其显示
+        brotliSize: true, // 收集 brotli 大小并将其显示
+      }),
+      // viteExternalsPlugin({
+      //   vue: "Vue",
+      //   "element-plus": "Element",
+      // }),
     ],
+    build: {
+      rollupOptions: {
+        external: [
+          "vue",
+          "element-plus",
+          "@element-plus/icons-vue",
+          "vue-router",
+          "@smallwei/avue",
+          "@vueuse/core",
+          "aieditor",
+          "lodash-es",
+          "moment",
+          "qs",
+          "crypto-js",
+          "axios",
+          "pinia",
+          "vuedraggable",
+          "virtual:svg-icons-register",
+        ],
+      },
+    },
     resolve: {
       alias: {
         "@": fileURLToPath(new URL("./src", import.meta.url)),
         package: fileURLToPath(new URL("./package", import.meta.url)),
-        plugins: fileURLToPath(new URL("./plugins", import.meta.url)),
-        visualization: fileURLToPath(
-          new URL("./visualization", import.meta.url),
-        ),
       },
     },
     css: {
@@ -83,25 +112,6 @@ export default defineConfig(({ mode }) => {
           changeOrigin: true,
           rewrite: (path) =>
             path.replace(RegExp(`^${env.VITE_API_PREFIX}`), ""),
-        },
-        [env.VITE_OIL_tiles]: {
-          target: "https://safety.sh.coscoshipping.com:8000/",
-          ws: true,
-          changeOrigin: true,
-          rewrite: (path) => path.replace(RegExp(`^${env.VITE_OIL_tiles}`), ""),
-        },
-        [env.VITE_SOCKER_PREFIX]: {
-          target: "https://safety.sh.coscoshipping.com:8000/",
-          ws: true,
-          changeOrigin: true,
-          rewrite: (path) =>
-            path.replace(RegExp(`^${env.VITE_SOCKER_PREFIX}`), ""),
-        },
-        "/tank": {
-          target: "https://www.sinochemlogistics.com",
-          ws: true,
-          changeOrigin: true,
-          rewrite: (path) => path.replace(RegExp(`^tank`), ""),
         },
       },
     },
