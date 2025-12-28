@@ -10,6 +10,7 @@ import IconBox from "./IconBox";
 import Crud from "./Crud";
 import SignBoard from "./SignBoard";
 import RichText from "./RichText";
+import SkeletonForm from "./Skeleton";
 
 import throttle from "./Directive/throttle.js";
 import debounce from "./Directive/debounce.js";
@@ -27,6 +28,7 @@ const components = [
   Crud,
   SignBoard,
   RichText,
+  SkeletonForm,
 ];
 
 const directives = [throttle, debounce];

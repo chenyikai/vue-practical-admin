@@ -37,6 +37,7 @@ export default () => {
     return new Promise((resolve, reject) => {
       if (validatenull(form.id)) {
         formData.value = form;
+        // forceUpdate();
         resolve(formData);
       } else {
         if (validatenull(detailFunc.value)) {
@@ -58,9 +59,9 @@ export default () => {
           .catch((e) => reject(e))
           .finally(() => {
             loading.value = false;
+            // forceUpdate();
           });
       }
-      forceUpdate();
     });
   }
 

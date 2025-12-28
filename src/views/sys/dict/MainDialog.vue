@@ -10,6 +10,7 @@ import { nextTick } from "vue";
 import { formOption } from "./options.js";
 import website from "@/config/website.js";
 import { dictDetail } from "@/api/sys/dict/index.js";
+import SkeletonForm from "package/Skeleton/src/index.vue";
 const emits = defineEmits({
   [website.pageStatus.CREATE]: null,
   [website.pageStatus.UPDATE]: null,
@@ -30,11 +31,12 @@ const {
 function open(status, data = {}) {
   dialog.value.open();
   detailFunc.value = dictDetail;
-  setData(status, data);
-  formOption.disabled = isDetail.value;
 
-  nextTick().then(() => {
-    form.value.clearValidate();
+  setData(status, data).then(() => {
+    formOption.disabled = isDetail.value;
+    // nextTick().then(() => {
+    //   form.value.clearValidate();
+    // });
   });
 }
 
@@ -66,13 +68,18 @@ defineExpose({
     ref="dialog"
     @submit="onDialogSubmit"
     @close="onClose"
-    :loading="loading"
     :show-footer="!isDetail">
-    <avue-form
-      ref="form"
-      :key="key"
+    <skeleton-form
       :option="formOption"
-      v-model="formData"
-      @submit="onFormSubmit" />
+      :loading="true"
+      animated
+      :throttle="{ leading: 500, initVal: true }">
+      <avue-form
+        ref="form"
+        :key="key"
+        :option="formOption"
+        v-model="formData"
+        @submit="onFormSubmit" />
+    </skeleton-form>
   </page-dialog>
 </template>

@@ -90,7 +90,6 @@ export function addRoutes(aMenu, parent = "Layout") {
 }
 
 export function initRoutes(menu) {
-  console.log("initRoutes");
   addRoutes(menu || menuStore["menuList"] || getStore({ name: "menu" }));
   router.addRoute("Layout", notFoundRecord);
 }
@@ -129,6 +128,6 @@ export function go2MenuPage(menu) {
   }
 }
 
-// initRoutes();
+initRoutes();
 
 export default router;
