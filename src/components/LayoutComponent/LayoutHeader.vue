@@ -8,6 +8,7 @@ import FullScreen from "@/components/FullScreen/index.vue";
 import MonitorButton from "@/components/MonitorButton/index.vue";
 import LockButton from "@/components/LockButton/index.vue";
 import GlobalSearch from "@/components/GlobalSearch/index.vue";
+import SettingButton from "@/components/SettingButton/index.vue";
 const router = useRouter();
 defineOptions({
   name: "LayoutHeader",
@@ -35,6 +36,7 @@ function handleGo2Index() {
       <notification-center />
       <full-screen />
       <theme-button />
+      <setting-button />
       <user-info />
     </div>
   </div>

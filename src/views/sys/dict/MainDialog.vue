@@ -6,11 +6,9 @@ export default {
 
 <script setup>
 import useForm from "@/hooks/useForm.js";
-import { nextTick } from "vue";
 import { formOption } from "./options.js";
 import website from "@/config/website.js";
 import { dictDetail } from "@/api/sys/dict/index.js";
-import SkeletonForm from "package/Skeleton/src/index.vue";
 const emits = defineEmits({
   [website.pageStatus.CREATE]: null,
   [website.pageStatus.UPDATE]: null,
@@ -69,17 +67,13 @@ defineExpose({
     @submit="onDialogSubmit"
     @close="onClose"
     :show-footer="!isDetail">
-    <skeleton-form
-      :option="formOption"
-      :loading="true"
-      animated
-      :throttle="{ leading: 500, initVal: true }">
+    <skeleton-box :option="formOption" :loading="loading">
       <avue-form
         ref="form"
         :key="key"
         :option="formOption"
         v-model="formData"
         @submit="onFormSubmit" />
-    </skeleton-form>
+    </skeleton-box>
   </page-dialog>
 </template>

@@ -38,7 +38,7 @@ function handleClick(menu) {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  width: 80px;
   border: none;
   user-select: none;
   gap: 10px;

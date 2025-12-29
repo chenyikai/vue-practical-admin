@@ -1,6 +1,12 @@
 .layout-page-container {
   .container {
     overflow: hidden;
+    .aside {
+      //width: 240px;
+      width: max-content;
+      //max-width: 240px;
+      //transition: all 0.3s;
+    }
     .main {
       display: flex;
       flex-direction: column;

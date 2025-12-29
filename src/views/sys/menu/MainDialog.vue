@@ -11,6 +11,7 @@ import website from "@/config/website.js";
 import useOptions from "./useOptions.js";
 import { menuDetail } from "@/api/sys/menu/index.js";
 import IconBox from "package/IconBox/src/index.vue";
+import SkeletonForm from "package/Skeleton/src/index.vue";
 const emits = defineEmits({
   [website.pageStatus.CREATE]: null,
   [website.pageStatus.UPDATE]: null,
@@ -78,17 +79,18 @@ defineExpose({
     ref="dialog"
     @submit="onDialogSubmit"
     @close="onClose"
-    :loading="loading"
     :show-footer="!isDetail">
-    <avue-form
-      ref="form"
-      :key="key"
-      :option="formOption"
-      v-model="formData"
-      @submit="onFormSubmit">
-      <template #icon>
-        <icon-box v-model="formData.icon" />
-      </template>
-    </avue-form>
+    <skeleton-box :option="formOption" :loading="loading">
+      <avue-form
+        ref="form"
+        :key="key"
+        :option="formOption"
+        v-model="formData"
+        @submit="onFormSubmit">
+        <template #icon>
+          <icon-box v-model="formData.icon" />
+        </template>
+      </avue-form>
+    </skeleton-box>
   </page-dialog>
 </template>

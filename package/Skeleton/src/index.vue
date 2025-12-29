@@ -4,7 +4,7 @@ import { useAttrs } from "vue";
 const attrs = useAttrs();
 
 defineOptions({
-  name: "SkeletonForm",
+  name: "SkeletonBox",
 });
 
 const { option } = defineProps({
@@ -22,7 +22,11 @@ function getItemType(item) {}
 </script>
 
 <template>
-  <el-skeleton class="skeleton-form-container" v-bind="attrs">
+  <el-skeleton
+    animated
+    :throttle="{ leading: 500, initVal: true }"
+    class="skeleton-box-container"
+    v-bind="attrs">
     <template #template v-if="Array.isArray(option.column)">
       <el-form class="skeleton-form" :label-width="option.labelWidth || 'auto'">
         <el-row>
@@ -44,10 +48,10 @@ function getItemType(item) {}
 </template>
 
 <style scoped lang="scss">
-.skeleton-form-container {
+.skeleton-box-container {
   width: 100%;
   .el-skeleton__item {
-    //height: 30px !important;
+    height: 30px !important;
   }
 }
 </style>

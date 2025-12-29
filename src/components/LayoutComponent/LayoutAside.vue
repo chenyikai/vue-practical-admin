@@ -6,11 +6,20 @@ export default {
 
 <script setup>
 import MenuBar from "@/components/MenuBar/index.vue";
+import CollapseMenu from "@/components/CollapseMenu/CollapseMenu.vue";
+import { ref } from "vue";
+
+defineOptions({
+  name: "LayoutAside",
+});
+
+const menuType = ref("collapse");
 </script>
 
 <template>
   <div class="layout-aside-container">
-    <menu-bar />
+    <collapse-menu v-if="menuType === 'collapse'" />
+    <menu-bar v-if="menuType === 'icon'" />
   </div>
 </template>
 

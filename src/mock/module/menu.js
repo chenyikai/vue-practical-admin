@@ -1,6 +1,7 @@
 export const menuData = [
   {
     id: 0,
+    fId: -1,
     menuName: "组件",
     icon: "component",
     path: "/component",
@@ -8,6 +9,7 @@ export const menuData = [
     children: [
       {
         id: 100,
+        fId: 0,
         menuName: "上传组件",
         icon: "export",
         path: "/component/upload/index",
@@ -16,6 +18,7 @@ export const menuData = [
       },
       {
         id: 101,
+        fId: 0,
         menuName: "通用组件",
         icon: "common",
         path: "/component/common/index",
@@ -24,22 +27,24 @@ export const menuData = [
       },
       {
         id: 102,
+        fId: 0,
         menuName: "表格",
         icon: "table",
         path: "/component/crud/index",
         sort: 9,
         children: [],
       },
-      {
-        id: 103,
-        menuName: "签名板",
-        icon: "sign",
-        path: "/component/crud/index",
-        sort: 10,
-        children: [],
-      },
+      // {
+      //   id: 103,
+      //   menuName: "签名板",
+      //   icon: "sign",
+      //   path: "/component/crud/index",
+      //   sort: 10,
+      //   children: [],
+      // },
       {
         id: 104,
+        fId: 0,
         menuName: "富文本",
         icon: "richText",
         path: "/component/text-editor/index",
@@ -48,6 +53,7 @@ export const menuData = [
       },
       {
         id: 105,
+        fId: 0,
         menuName: "自定义指令",
         icon: "directive",
         path: "/component/directive/index",
@@ -56,29 +62,31 @@ export const menuData = [
       },
     ],
   },
-  {
-    id: 3,
-    menuName: "模型",
-    icon: "3d",
-    sort: 8,
-    path: "/model/index",
-  },
+  // {
+  //   id: 3,
+  //   menuName: "模型",
+  //   icon: "3d",
+  //   sort: 8,
+  //   path: "/model/index",
+  // },
   {
     id: 4,
+    fId: -1,
     menuName: "豆包",
     icon: "3d",
     sort: 9,
     path: "https://www.doubao.com/chat/?channel=baidu_sem&source=dbweb_baidusem_htl_pc_pinp_2&keywordid=967031825910&ad_platform_id=baidusearch_lead&account_id=53653088&a_planid=720987910&a_unitid=10812115427&a_keywordid=967031825910&a_creative=108560718853&a_matchtype=2&a_dongtai=0&a_trig_flag=nm&a_crowdid=0&a_kw_enc_utf8=%E8%B1%86%E5%8C%85%E7%BD%91%E9%A1%B5%E7%89%88&ug_semver=v2.0.0&bd_vid=8795350834893036628",
   },
-  {
-    id: 5,
-    menuName: "图标",
-    icon: "icon",
-    sort: 10,
-    path: "/icon/index",
-  },
+  // {
+  //   id: 5,
+  //   menuName: "图标",
+  //   icon: "icon",
+  //   sort: 10,
+  //   path: "/icon/index",
+  // },
   {
     id: 1,
+    fId: -1,
     menuName: "设置",
     icon: "setting",
     sort: 999,
@@ -86,6 +94,7 @@ export const menuData = [
     children: [
       {
         id: 11,
+        fId: 1,
         menuName: "菜单管理",
         icon: "menu",
         path: "/sys/menu/index",
@@ -93,6 +102,7 @@ export const menuData = [
       },
       {
         id: 12,
+        fId: 1,
         menuName: "字典管理",
         icon: "dict",
         path: "/sys/dict/index",
@@ -100,6 +110,7 @@ export const menuData = [
       },
       {
         id: 13,
+        fId: 1,
         menuName: "用户管理",
         path: "/sys/user/index",
         icon: "user",
@@ -107,6 +118,7 @@ export const menuData = [
       },
       {
         id: 14,
+        fId: 1,
         menuName: "权限管理",
         icon: "limit",
         path: "/sys/role/index",
@@ -114,6 +126,7 @@ export const menuData = [
       },
       {
         id: 15,
+        fId: 1,
         menuName: "部门管理",
         icon: "department",
         path: "/sys/dept/index",
@@ -128,6 +141,7 @@ export const menuData = [
       // },
       {
         id: 17,
+        fId: 1,
         menuName: "日志管理",
         icon: "log",
         path: "/sys/log/index",
