@@ -45,7 +45,7 @@ const defaultOpen = computed(() => {
     style="
       --el-menu-text-color: #fff;
       --el-menu-hover-text-color: #fff;
-      --el-menu-hover-bg-color: #87bbfe;
+      --el-menu-hover-bg-color: var(--menu-hover-bg);
       --el-menu-active-color: #ffd04b;
       --el-menu-level: 0;
       --el-menu-border-color: transparent;

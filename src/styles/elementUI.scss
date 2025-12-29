@@ -73,7 +73,7 @@
   }
   .el-sub-menu {
     .el-menu {
-      background-color: #1d4a85;
+      background-color: var(--sub-menu-bg);
     }
   }
   .el-sub-menu__icon-arrow {
@@ -97,7 +97,7 @@
     display: flex;
     align-items: center;
     &.is-active, &:hover {
-      background-color: #87bbfe;
+      background-color: var(--menu-hover-bg);
     }
   }
   .el-sub-menu__title {
