@@ -166,7 +166,7 @@ onBeforeUnmount(() => {
 
         <!-- 验证码 -->
         <el-form-item prop="code">
-          <div class="input-label">验证码 /</div>
+          <div class="input-label">验证码 / 点击刷新</div>
           <div class="captcha-row">
             <el-input
               v-model="formData.code"

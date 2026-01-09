@@ -61,8 +61,8 @@ function getComponent() {
   return c ? c : NormalTd;
 }
 
-function onChange() {
-  console.log("onChange");
+function onChange(val) {
+  console.log(val, "onChange");
 }
 
 onMounted(() => {

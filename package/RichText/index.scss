@@ -1,32 +1,93 @@
 @use "aieditor/dist/style.css";
 
+/* --- 全局容器样式 --- */
 .aie-container {
   border-radius: 6px;
   overflow: hidden;
+  /* 基础阴影 */
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
+  transition: all 0.3s;
 }
 
 :root {
-  .aie-theme-dark {
-    --aie-bg-color: var(--theme-color);
-    //--aie-border-color: var(--border-color);
-    --aie-border-color: transparent;
-    --aie-menus-bg-color: var(--tab-color);
-    --aie-text-color: var(--aie-menus-svg-color);
+  /* =========================================
+     ☀️ 浅色模式 (Light Theme) - 你的原有代码
+     ========================================= */
+  .aie-theme-light {
+    --aie-menus-bg-color: #e6f1fc; /* 淡品牌蓝 */
+    --aie-border-color: #e6f1fc;   /* 同色边框 */
+
+    /* 图标使用深色主题色 */
+    --aie-menus-svg-color: var(--theme-color);
+
+    --aie-bg-color: #fff;
+    --aie-text-color: #333;
+
     .aie-container {
-      aie-footer > div {
-        color: var(--aie-text-color);
+      /* 滚动条美化 */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #ddd;
+        border-radius: 3px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #ccc;
       }
     }
   }
-  .aie-theme-light {
-    --aie-menus-bg-color: var(--theme-color);
-    //--aie-text-color: #fff;
-    --aie-border-color: transparent;
-    --aie-menus-svg-color: #fff;
-    --aie-menus-ai-color: #333;
+
+  /* =========================================
+     🌑 深色模式 (Dark Theme) - 商务冷调黑
+     ========================================= */
+  .aie-theme-dark {
+    /*
+       1. 工具栏背景：深蓝灰色 (Deep Navy)
+       对应浅色模式的 #e6f1fc，这里用深色冷调，显得沉稳专业
+    */
+    --aie-menus-bg-color: #1b2431;
+
+    /* 2. 边框颜色：比背景稍亮的深蓝灰，划分边界 */
+    --aie-border-color: #2c3e50;
+
+    /*
+       3. 图标颜色：高亮浅蓝
+       注意：不能在这里用 var(--theme-color)，因为深蓝在黑底上看不见。
+       这里给了一个通用的浅蓝色 hex，或者你可以用 var(--el-color-primary-light-3)
+    */
+    --aie-menus-svg-color: #61afef;
+
+    /* 4. 编辑区域背景：接近纯黑的深灰，保证文字对比度 */
+    --aie-bg-color: #141414;
+
+    /* 5. 文字颜色：柔和灰白 */
+    --aie-text-color: #e5eaf3;
+
     .aie-container {
-      aie-header {
-        color: #fff;
+      /* 深色模式下的阴影调整 */
+      box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.3);
+
+      /* 滚动条深色适配 */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #141414; /* 轨道颜色 */
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #444; /* 滑块深灰 */
+        border-radius: 3px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+      }
+
+      /* 修正底部字数统计颜色 */
+      aie-footer > div {
+        color: #606266;
       }
     }
   }
