@@ -1,0 +1,26 @@
+import { createApp } from "vue";
+import App from "./App.vue";
+import "virtual:svg-icons-register";
+import router from "./router/index";
+import store from "./store/index";
+import "./permission";
+import Avue from "@smallwei/avue";
+import axios from "@/router/axios";
+import "./styles/element-variables.scss";
+import "@smallwei/avue/lib/index.css";
+import "./styles/theme/index.scss";
+import "./styles/index.scss";
+import "package/index.scss";
+import ElementPlus from "element-plus";
+import { draggable } from "@/utils/directive";
+import AdminComponent from "package/index.js";
+
+const app = createApp(App);
+app.use(store);
+app.use(router);
+app.use(ElementPlus);
+app.use(AdminComponent);
+app.directive("draggable", draggable);
+app.use(Avue, { axios });
+
+app.mount("#app");

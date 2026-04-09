@@ -1,0 +1,54 @@
+{
+  "compilerOptions": {
+    // 编译目标
+    "target": "ES2022",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+
+    // 模块解析
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "noEmit": true,
+    "jsx": "preserve",
+
+    // 严格模式（全部开启）
+    "strict": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "alwaysStrict": true,
+
+    // 额外严格检查
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
+    "exactOptionalPropertyTypes": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
+
+    // 渐进迁移：允许 .js 文件共存，但不检查 JS 类型
+    "allowJs": true,
+    "checkJs": false,
+    "skipLibCheck": true,
+
+    // 路径别名（与 vite.config.ts 保持一致）
+    // baseUrl 在 TS 6.0 已废弃，使用 ignoreDeprecations 过渡
+    "ignoreDeprecations": "6.0",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "package/*": ["package/*"]
+    }
+  },
+  "include": ["src/**/*", "package/**/*", "env.d.ts"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}
