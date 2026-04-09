@@ -37,18 +37,14 @@
             <el-icon :size="12"><Check /></el-icon>
           </span>
           <span class="el-upload-list__item-actions func">
-            <el-icon class="icon" :size="22" @click.stop="onPreview(file)"
-              ><Search
-            /></el-icon>
-            <el-icon class="icon" :size="22" @click.stop="onDelete(file)"
-              ><Delete
-            /></el-icon>
+            <el-icon class="icon" :size="22" @click.stop="onPreview(file)"><Search /></el-icon>
+            <el-icon class="icon" :size="22" @click.stop="onDelete(file)"><Delete /></el-icon>
           </span>
         </div>
       </template>
 
       <template v-if="slots.tip" #tip>
-        <slot name="tip"> </slot>
+        <slot name="tip" />
       </template>
     </el-upload>
     <el-image-viewer
@@ -56,11 +52,9 @@
       :zoom-rate="1.2"
       :max-scale="7"
       :min-scale="0.2"
-      :initial-index="
-        previewSrcList.findIndex((item) => item === previewFile.url)
-      "
-      :zIndex="nextZIndex()"
-      :urlList="previewSrcList"
+      :initial-index="previewSrcList.findIndex((item) => item === previewFile.url)"
+      :z-index="nextZIndex()"
+      :url-list="previewSrcList"
       @close="closeViewer" />
   </section>
 </template>
@@ -74,8 +68,8 @@ export default {
 <script setup>
 import { ref, useAttrs, computed, useSlots, readonly, reactive } from "vue";
 import { Check, Search, Delete } from "@element-plus/icons-vue";
-import request from "@/router/axios.js";
-import website from "@/config/website.js";
+import request from "@/router/axios";
+import website from "@/config/website";
 import { ElMessageBox } from "element-plus";
 import { useZIndex } from "element-plus";
 import FileCard from "package/Upload/src/components/FileCard.vue";
@@ -101,7 +95,7 @@ const status = readonly({
 });
 const attrs = useAttrs();
 const slots = useSlots();
-const model = defineModel();
+const model = defineModel({ type: [String, Array] });
 
 const props = defineProps({
   type: {
@@ -196,9 +190,7 @@ const previewSrcList = computed(() => {
 
 const isShowFileList = computed(() => {
   return (
-    bindValue.value["show-file-list"] ||
-    props["show-file-list"] ||
-    props.type === "pictureCard"
+    bindValue.value["show-file-list"] || props["show-file-list"] || props.type === "pictureCard"
   );
 });
 
@@ -226,8 +218,11 @@ function uploadFunc(option) {
   const formData = new FormData();
   if (option.data) {
     for (const [key, value] of Object.entries(option.data)) {
-      if (Array.isArray(value) && value.length) formData.append(key, ...value);
-      else formData.append(key, value);
+      if (Array.isArray(value) && value.length) {
+        formData.append(key, ...value);
+      } else {
+        formData.append(key, value);
+      }
     }
   }
   formData.append("file", option.file);
@@ -330,7 +325,9 @@ function onPreview(file) {
 }
 
 function onDelete(file) {
-  if (isDisabled.value) return;
+  if (isDisabled.value) {
+    return;
+  }
 
   upload.value.handleRemove(file);
 }
@@ -345,7 +342,7 @@ function onChange(file) {
   } else {
     results[file.uid] = {
       status: status.READY,
-      file: file,
+      file,
     };
   }
 }

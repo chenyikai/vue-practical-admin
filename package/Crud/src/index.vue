@@ -81,6 +81,7 @@ function onRowClick(row) {
     <main class="crud-container-main">
       <el-table
         v-loading="loading"
+        class="crud-admin-table"
         :element-loading-spinner="loadingIcon"
         element-loading-text="加载中"
         element-loading-svg-view-box="0 0 57 57"
@@ -91,18 +92,14 @@ function onRowClick(row) {
         :data="model"
         style="width: 100%"
         @row-click="onRowClick">
-        <el-table-column
-          label="序号"
-          :type="tableType"
-          width="80px"
-          align="center" />
+        <el-table-column label="序号" :type="tableType" width="80px" align="center" />
 
         <!-- 数据column -->
         <template v-for="column in config.columns" :key="column.prop">
           <table-column :column="column">
             <!-- 单元格插槽 -->
-            <template v-slot:[column.prop]="{ scope }">
-              <slot :name="column.prop" :scope="scope"></slot>
+            <template #[column.prop]="{ scope }">
+              <slot :name="column.prop" :scope="scope" />
             </template>
           </table-column>
         </template>

@@ -39,7 +39,7 @@ defineExpose({
   <component-box
     class="search-result-list"
     :loading="SearchStore.loading"
-    :zIndex="SearchStore.zIndex">
+    :z-index="SearchStore.zIndex">
     <template v-if="!SearchStore.isEmpty">
       <ul class="result-list" :class="{ empty: SearchStore.isEmpty }">
         <li
@@ -47,9 +47,7 @@ defineExpose({
           v-for="item in SearchStore.results"
           :key="item.mmsi"
           @click.stop="onClick(item)">
-          <span class="label">{{
-            `船名：${item.cnname || item.enname || item.mmsi}`
-          }}</span>
+          <span class="label">{{ `船名：${item.cnname || item.enname || item.mmsi}` }}</span>
           <span class="mmsi">{{ `MMSI：${item.mmsi}` }}</span>
         </li>
       </ul>

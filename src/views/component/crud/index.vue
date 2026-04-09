@@ -69,9 +69,25 @@ const config = {
 const tableData = [
   {
     id: useId(),
-    normal: "普通单元格" + useId(),
-    image:
-      "https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg",
+    normal: `普通单元格${useId()}`,
+    image: "https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg",
+    rate: Math.random() * 5,
+    tag: "已上架",
+    text: "这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！",
+  },
+  {
+    id: useId(),
+    normal: `普通单元格${useId()}`,
+    image: "https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg",
+    rate: Math.random() * 5,
+    tag: "已上架",
+    editabled: true,
+    text: "这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！",
+  },
+  {
+    id: useId(),
+    normal: `普通单元格${useId()}`,
+    image: "https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg",
     rate: Math.random() * 5,
     tag: "已上架",
     text: "这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！这是一段文本！",
@@ -86,7 +102,7 @@ function onTest(scope) {
 <template>
   <admin-card class="crud-card-container">
     <div class="button-group">
-      <page-button type="search"></page-button>
+      <page-button type="search" />
     </div>
     <div class="box">
       <page-crud
@@ -97,22 +113,10 @@ function onTest(scope) {
         border
         default-expand-all>
         <template #menu="{ scope }">
-          <page-button
-            type="create"
-            direction="horizontal"
-            @click.stop="onTest(scope)" />
-          <page-button
-            type="detail"
-            direction="horizontal"
-            @click.stop="onTest(scope)" />
-          <page-button
-            type="update"
-            direction="horizontal"
-            @click.stop="onTest(scope)" />
-          <page-button
-            type="delete"
-            direction="horizontal"
-            @click.stop="onTest(scope)" />
+          <page-button type="create" direction="horizontal" @click.stop="onTest(scope)" />
+          <page-button type="detail" direction="horizontal" @click.stop="onTest(scope)" />
+          <page-button type="update" direction="horizontal" @click.stop="onTest(scope)" />
+          <page-button type="delete" direction="horizontal" @click.stop="onTest(scope)" />
         </template>
       </page-crud>
     </div>

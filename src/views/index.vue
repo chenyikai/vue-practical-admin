@@ -6,7 +6,7 @@ defineOptions({
 
 <template>
   <div class="box">
-    <div id="3DMap"></div>
+    <div id="3DMap" />
   </div>
 </template>
 

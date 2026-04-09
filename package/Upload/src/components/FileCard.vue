@@ -6,12 +6,7 @@ export default {
 
 <script setup>
 import SvgIcon from "package/SvgIcon/src/index.vue";
-import {
-  CircleClose,
-  CircleCloseFilled,
-  Loading,
-  SuccessFilled,
-} from "@element-plus/icons-vue";
+import { CircleClose, CircleCloseFilled, Loading, SuccessFilled } from "@element-plus/icons-vue";
 import { STATUS } from "package/Upload/src/vars.js";
 
 defineOptions({
@@ -88,12 +83,8 @@ function onClick() {
     <el-icon v-if="STATUS.FAIL === status" :size="20" class="status fail"
       ><CircleCloseFilled
     /></el-icon>
-    <el-icon v-if="STATUS.READY === status" :size="20" class="status loading"
-      ><Loading
-    /></el-icon>
-    <el-icon class="close-btn" :size="20" @click.stop="onDelete"
-      ><CircleClose
-    /></el-icon>
+    <el-icon v-if="STATUS.READY === status" :size="20" class="status loading"><Loading /></el-icon>
+    <el-icon class="close-btn" :size="20" @click.stop="onDelete"><CircleClose /></el-icon>
   </div>
 </template>
 

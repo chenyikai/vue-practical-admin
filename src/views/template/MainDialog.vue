@@ -1,17 +1,15 @@
 <script>
 export default {
-  name: "FormConfig",
+  name: "MainDialog",
 };
 </script>
 
 <script setup>
 defineOptions({
-  name: "FormConfig",
+  name: "MainDialog",
 });
 </script>
 
-<template>
-  <div class="form-config" />
-</template>
+<template><slot /></template>
 
 <style scoped lang="scss"></style>

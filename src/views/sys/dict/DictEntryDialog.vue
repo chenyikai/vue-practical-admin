@@ -6,18 +6,18 @@ export default {
 
 <script setup>
 import { onBeforeMount } from "vue";
-import useForm from "@/hooks/useForm.js";
+import useForm from "@/hooks/useForm";
 const { loading, dialog } = useForm();
-import useCrud from "@/hooks/useCrud.js";
-import { dictItemCrudOption } from "@/views/sys/dict/options.js";
-import website from "@/config/website.js";
+import useCrud from "@/hooks/useCrud";
+import { dictItemCrudOption } from "@/views/sys/dict/options";
+import website from "@/config/website";
 import { ElMessage, ElMessageBox } from "element-plus";
 import {
   createDictItem,
   deleteDictItemById,
   getDictItemPage,
   updateDictItem,
-} from "@/api/sys/dict/index.js";
+} from "@/api/sys/dict/index";
 import EntryMainDialog from "./EntryMainDialog.vue";
 
 const pageInfo = {
@@ -137,15 +137,9 @@ defineExpose({
     :show-footer="false">
     <page-container class="dict-entry-page-container" :page-info="pageInfo">
       <template #search>
-        <el-form
-          ref="searchForm"
-          :model="listQuery"
-          :inline="true"
-          label-suffix=":">
+        <el-form ref="searchForm" :model="listQuery" :inline="true" label-suffix=":">
           <el-form-item label="字典项名称" prop="label">
-            <el-input
-              v-model="listQuery.label"
-              placeholder="字典项名称"></el-input>
+            <el-input v-model="listQuery.label" placeholder="字典项名称" />
           </el-form-item>
           <el-form-item>
             <page-button type="search" @click.stop="onSearch" />
@@ -166,19 +160,10 @@ defineExpose({
           @size-change="sizeChange"
           @current-change="currentChange"
           @sort-change="sortChange">
-          <template v-slot:menu="{ row }">
-            <page-button
-              type="detail"
-              direction="horizontal"
-              @click.stop="onDetail(row)" />
-            <page-button
-              type="update"
-              direction="horizontal"
-              @click.stop="onUpdate(row)" />
-            <page-button
-              type="delete"
-              direction="horizontal"
-              @click.stop="onDelete(row)" />
+          <template #menu="{ row }">
+            <page-button type="detail" direction="horizontal" @click.stop="onDetail(row)" />
+            <page-button type="update" direction="horizontal" @click.stop="onUpdate(row)" />
+            <page-button type="delete" direction="horizontal" @click.stop="onDelete(row)" />
           </template>
         </avue-crud>
       </template>

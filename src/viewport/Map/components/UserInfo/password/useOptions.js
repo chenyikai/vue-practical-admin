@@ -1,5 +1,5 @@
 import { reactive } from "vue";
-import { validPassword } from "@/utils/validate.js";
+import { validPassword } from "@/utils/validate";
 
 export default () => {
   const formOption = reactive({

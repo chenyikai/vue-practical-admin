@@ -56,7 +56,7 @@ export default defineComponent({
       type: Number,
       default: 100,
     },
-    customClass: String,
+    customClass: { type: String, default: "" },
   },
   data() {
     return {
@@ -108,8 +108,12 @@ export default defineComponent({
       this.$refs.bigImg.style.left = `-${left * this.coefficient}px`;
     },
     getMoveScope(distance, max) {
-      if (distance <= 0) return 0;
-      if (distance > max) return max;
+      if (distance <= 0) {
+        return 0;
+      }
+      if (distance > max) {
+        return max;
+      }
       return distance;
     },
   },

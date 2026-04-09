@@ -6,11 +6,11 @@ export default {
 
 <script setup>
 import { useDark } from "@vueuse/core";
-import website from "@/config/website.js";
+import website from "@/config/website";
 import analyze from "rgbaster";
 import { readonly, watch, ref, onBeforeMount } from "vue";
-import { go2MenuPage } from "@/router/index.js";
-import { menuStore } from "@/store/index.js";
+import { go2MenuPage } from "@/router/index";
+import { menuStore } from "@/store/index";
 import { useRoute } from "vue-router";
 import SvgIcon from "package/SvgIcon/src/index.vue";
 import { cloneDeep } from "lodash-es";
@@ -41,9 +41,9 @@ onBeforeMount(() => {
 });
 
 function init() {
-  menuList.value = cloneDeep(
-    MenuStore.getMenu(route.meta.id)[menuProps.children],
-  ).sort((a, b) => a.sort - b.sort);
+  menuList.value = cloneDeep(MenuStore.getMenu(route.meta.id)[menuProps.children]).sort(
+    (a, b) => a.sort - b.sort,
+  );
   setColor();
 }
 
@@ -51,7 +51,9 @@ function setColor() {
   menuList.value.forEach((item) => {
     const icon = new URL(`../../icons/${item.icon}.svg`, import.meta.url);
     analyze(icon["href"], { scale: 0.1 }).then((data) => {
-      if (data.length > 0) item.bgColor = data[0].color;
+      if (data.length > 0) {
+        item.bgColor = data[0].color;
+      }
     });
   });
 }
@@ -69,9 +71,7 @@ function handleClick(menu) {
       v-for="menu in menuList"
       :key="menu.id"
       @click="handleClick(menu)">
-      <div
-        class="icon-layout"
-        :style="{ backgroundColor: menu['bgColor'] }"></div>
+      <div class="icon-layout" :style="{ backgroundColor: menu['bgColor'] }" />
       <svg-icon class="icon" :name="menu[menuProps['icon']]" />
       <span class="label">{{ menu[menuProps["label"]] }}</span>
     </li>

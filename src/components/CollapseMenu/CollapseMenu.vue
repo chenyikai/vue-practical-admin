@@ -5,9 +5,9 @@ export default {
 </script>
 
 <script setup>
-import { menuStore } from "@/store/index.js";
+import { menuStore } from "@/store/index";
 import { computed } from "vue";
-import website from "@/config/website.js";
+import website from "@/config/website";
 import CollapseMenuItem from "@/components/CollapseMenu/CollapseMenuItem.vue";
 import { useRoute } from "vue-router";
 
@@ -25,12 +25,18 @@ const currentPath = computed(() => {
 
 const defaultOpen = computed(() => {
   const menu = MenuStore.findMenu({ key: "path", value: currentPath.value });
-  if (!menu) return [];
+  if (!menu) {
+    return [];
+  }
 
   const parent = MenuStore.findMenu({
     key: "id",
     value: menu[menuProps.value.fId],
   });
+
+  if (!parent) {
+    return [];
+  }
   return [parent.id];
 });
 </script>

@@ -6,7 +6,7 @@ export default {
 
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
-import { formatLatitudeAndLongitude } from "@/utils/util.js";
+import { formatLatitudeAndLongitude } from "@/utils/util";
 defineOptions({
   name: "MapControl",
 });
@@ -17,12 +17,9 @@ function zoomIn() {}
 
 function zoomOut() {}
 
-function onMouseMove(e) {
+function _onMouseMove(e) {
   const coordinate = e.lngLat.wrap();
-  const { longitude, latitude } = formatLatitudeAndLongitude(
-    coordinate.lng,
-    coordinate.lat,
-  );
+  const { longitude, latitude } = formatLatitudeAndLongitude(coordinate.lng, coordinate.lat);
   mousePositionInfo.value = `${latitude.completeValue} ${longitude.completeValue}`;
 }
 
@@ -34,16 +31,8 @@ onUnmounted(() => {});
 <template>
   <section class="map-control-container">
     <div class="zoom-control">
-      <img
-        class="btn"
-        src="@/assets/images/map/plus.png"
-        alt=""
-        @click.stop="zoomIn" />
-      <img
-        class="btn"
-        src="@/assets/images/map/minus.png"
-        alt=""
-        @click.stop="zoomOut" />
+      <img class="btn" src="@/assets/images/map/plus.png" alt="" @click.stop="zoomIn" />
+      <img class="btn" src="@/assets/images/map/minus.png" alt="" @click.stop="zoomOut" />
     </div>
     <div class="mouse-position-control">
       {{ mousePositionInfo || "移动初始化" }}

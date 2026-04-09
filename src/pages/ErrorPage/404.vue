@@ -17,10 +17,10 @@ export default {
 
 <script setup>
 import { onMounted } from "vue";
-import { tabStore } from "@/store/index.js";
+import { tabStore } from "@/store/index";
 import { useRoute, useRouter } from "vue-router";
-import website from "@/config/website.js";
-import { validatenull } from "@/utils/validate.js";
+import website from "@/config/website";
+import { validatenull } from "@/utils/validate";
 const router = useRouter();
 const route = useRoute();
 const TabStore = tabStore();

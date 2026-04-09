@@ -5,13 +5,13 @@ export default {
 </script>
 
 <script setup>
-import useForm from "@/hooks/useForm.js";
+import useForm from "@/hooks/useForm";
 import { nextTick } from "vue";
-import website from "@/config/website.js";
-import useOptions from "./useOptions.js";
-import { menuDetail } from "@/api/sys/menu/index.js";
+import website from "@/config/website";
+import useOptions from "./useOptions";
+import { menuDetail } from "@/api/sys/menu/index";
 import IconBox from "package/IconBox/src/index.vue";
-import SkeletonForm from "package/Skeleton/src/index.vue";
+import SkeletonBox from "package/Skeleton/src/index.vue";
 const emits = defineEmits({
   [website.pageStatus.CREATE]: null,
   [website.pageStatus.UPDATE]: null,
@@ -27,17 +27,8 @@ const props = defineProps({
     },
   },
 });
-const {
-  key,
-  form,
-  dialog,
-  loading,
-  formStatus,
-  formData,
-  isDetail,
-  detailFunc,
-  setData,
-} = useForm();
+const { key, form, dialog, loading, formStatus, formData, isDetail, detailFunc, setData } =
+  useForm();
 
 function open(status, data = {}) {
   detailFunc.value = menuDetail;

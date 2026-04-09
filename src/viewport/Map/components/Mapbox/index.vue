@@ -7,15 +7,14 @@ export default {
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import { shipInfoStore } from "@/store";
-import { stringify } from "wellknown";
-// import { trackData, shipData } from "./data.js";
+// import { trackData, shipData } from "./data";
 // import Plot from "plugins/composition/Plot";
 const ShipInfoStore = shipInfoStore();
 
 const map = ref({});
 const loading = ref(false);
 
-function onClick(e) {
+function _onClick(e) {
   ShipInfoStore.show(e.id);
 }
 

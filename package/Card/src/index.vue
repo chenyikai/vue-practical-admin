@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup>
-import { validatenull } from "@/utils/validate.js";
+import { validatenull } from "@/utils/validate";
 
 defineOptions({
   name: "AdminCard",
@@ -25,7 +25,7 @@ const props = defineProps({
       <h1 class="title">{{ props.title }}</h1>
       <el-divider class="divider-line" />
     </template>
-    <slot></slot>
+    <slot />
   </section>
 </template>
 

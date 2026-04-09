@@ -7,10 +7,10 @@ export default {
 <script setup>
 /* 引入 Element Plus 图标 */
 import { User, Lock, Key } from "@element-plus/icons-vue";
-import website from "@/config/website.js";
+import website from "@/config/website";
 import { useRoute, useRouter } from "vue-router";
 import { onBeforeMount, onBeforeUnmount, reactive, ref } from "vue";
-import { randomLenNum } from "@/utils/util.js";
+import { randomLenNum } from "@/utils/util";
 import { userStore } from "@/store";
 import moment from "moment";
 
@@ -21,15 +21,7 @@ const route = useRoute();
 let timer = null;
 const nowDate = ref("");
 const nowTime = ref("");
-const weekArr = [
-  "星期天",
-  "星期一",
-  "星期二",
-  "星期三",
-  "星期四",
-  "星期五",
-  "星期六",
-];
+const weekArr = ["星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
 
 const codeUrl = ref(`${import.meta.env.VITE_API_PREFIX}/rest/auth/captcha`);
 const formData = reactive({
@@ -50,7 +42,9 @@ const formRef = ref(); // 变量名习惯改为 formRef
 
 function handleSubmit() {
   formRef.value.validate((valid) => {
-    if (!valid) return;
+    if (!valid) {
+      return;
+    }
     loading.value = true;
     userStore()
       .userLoginByPassword(formData)
@@ -86,7 +80,9 @@ onBeforeMount(() => {
 });
 
 onBeforeUnmount(() => {
-  timer && clearInterval(timer);
+  if (timer) {
+    clearInterval(timer);
+  }
   timer = null;
 });
 </script>
@@ -94,7 +90,7 @@ onBeforeUnmount(() => {
 <template>
   <div class="login-wrapper">
     <!-- 背景装饰层 -->
-    <div class="bg-layer"></div>
+    <div class="bg-layer" />
 
     <!-- 顶部右上角时间显示 (政务风格常见布局) -->
     <div class="top-corner-time">
@@ -132,12 +128,7 @@ onBeforeUnmount(() => {
       </div>
 
       <!-- 表单区域 -->
-      <el-form
-        ref="formRef"
-        :model="formData"
-        :rules="rules"
-        class="login-form"
-        @submit.prevent>
+      <el-form ref="formRef" :model="formData" :rules="rules" class="login-form" @submit.prevent>
         <!-- 用户名 -->
         <el-form-item prop="username">
           <div class="input-label">账号</div>
@@ -176,20 +167,13 @@ onBeforeUnmount(() => {
               class="gov-input captcha-input"
               @keyup.enter="handleSubmit" />
             <div class="captcha-img-box" @click="refreshCode" title="点击刷新">
-              <img
-                v-if="formData.key"
-                :src="`${codeUrl}?key=${formData.key}`"
-                alt="验证码" />
+              <img v-if="formData.key" :src="`${codeUrl}?key=${formData.key}`" alt="验证码" />
             </div>
           </div>
         </el-form-item>
 
         <!-- 登录按钮 -->
-        <el-button
-          type="primary"
-          class="btn-login"
-          :loading="loading"
-          @click="handleSubmit">
+        <el-button type="primary" class="btn-login" :loading="loading" @click="handleSubmit">
           {{ loading ? "系统登录中..." : "立即登录" }}
         </el-button>
       </el-form>
@@ -198,13 +182,10 @@ onBeforeUnmount(() => {
     <!-- 底部版权 -->
     <div class="footer-copyright">
       <p>
-        Copyright © {{ new Date().getFullYear() }}
-        {{ website.copyright || "XX省大数据管理局" }} All Rights Reserved.
+        Copyright © {{ new Date().getFullYear() }} {{ website.copyright || "丛屿科技" }} All Rights
+        Reserved.
       </p>
-      <p>
-        技术支持：{{ website.author || "XX信息中心" }} | 建议使用 Chrome 或 Edge
-        浏览器访问
-      </p>
+      <p>技术支持：{{ website.author || "项目部" }} | 建议使用 Chrome 或 Edge 浏览器访问</p>
     </div>
   </div>
 </template>

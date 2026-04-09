@@ -35,12 +35,7 @@ const { isUpload, progress, colors } = defineProps({
       <div class="el-upload__text">拖拽文件到此或 <em>点击上传</em></div>
     </template>
     <template v-else>
-      <el-progress
-        striped-flow
-        striped
-        type="dashboard"
-        :percentage="progress"
-        :color="colors">
+      <el-progress striped-flow striped type="dashboard" :percentage="progress" :color="colors">
         <template #default="{ percentage }">
           <div class="upload-progress-content">
             <svg-icon class="icon" name="loading" />

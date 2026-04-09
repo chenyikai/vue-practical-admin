@@ -5,27 +5,18 @@ export default {
 </script>
 
 <script setup>
-import useForm from "@/hooks/useForm.js";
+import useForm from "@/hooks/useForm";
 import { nextTick } from "vue";
-import { dictItemFormOption } from "./options.js";
-import website from "@/config/website.js";
-import { dictEntryDetail } from "@/api/sys/dict/index.js";
+import { dictItemFormOption } from "./options";
+import website from "@/config/website";
+import { dictEntryDetail } from "@/api/sys/dict/index";
 const emits = defineEmits({
   [website.pageStatus.CREATE]: null,
   [website.pageStatus.UPDATE]: null,
   [website.pageStatus.DETAIL]: null,
 });
-const {
-  key,
-  form,
-  loading,
-  formStatus,
-  dialog,
-  formData,
-  isDetail,
-  detailFunc,
-  setData,
-} = useForm();
+const { key, form, loading, formStatus, dialog, formData, isDetail, detailFunc, setData } =
+  useForm();
 function open(status, data = {}) {
   dialog.value.open();
   detailFunc.value = dictEntryDetail;

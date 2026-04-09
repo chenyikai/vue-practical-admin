@@ -5,9 +5,9 @@ export default {
 </script>
 
 <script setup>
-import { popupManageStore } from "@/store/index.js";
+import { popupManageStore } from "@/store/index";
 import loadingIcon from "@/icons/loading.svg?raw";
-import { validatenull } from "@/utils/validate.js";
+import { validatenull } from "@/utils/validate";
 import { onMounted } from "vue";
 
 const PopupManageStore = popupManageStore();
@@ -52,7 +52,7 @@ onMounted(() => {
       :element-loading-spinner="loadingIcon"
       element-loading-text="加载中"
       element-loading-svg-view-box="0 0 57 57">
-      <slot></slot>
+      <slot />
     </main>
   </section>
 </template>

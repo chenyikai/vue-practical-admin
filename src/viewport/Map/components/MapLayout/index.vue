@@ -8,7 +8,7 @@ export default {
 import { ref, onMounted, onBeforeMount, onBeforeUnmount, computed } from "vue";
 import moment from "moment";
 import UserInfo from "../UserInfo/index.vue";
-import website from "@/config/website.js";
+import website from "@/config/website";
 
 defineOptions({
   name: "MapLayout",
@@ -26,15 +26,7 @@ const headerRef = ref({});
 const titleLayout = ref({});
 const nowDate = ref("");
 const nowTime = ref("");
-const weekArr = [
-  "星期天",
-  "星期一",
-  "星期二",
-  "星期三",
-  "星期四",
-  "星期五",
-  "星期六",
-];
+const weekArr = ["星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
 const arrowLength = computed(() => 16 - props.title.length);
 let timer = null;
 
@@ -47,7 +39,9 @@ onBeforeMount(() => {
 });
 
 onBeforeUnmount(() => {
-  timer && clearInterval(timer);
+  if (timer) {
+    clearInterval(timer);
+  }
   timer = null;
 });
 
@@ -56,7 +50,7 @@ onMounted(() => {
     // 92 1920时头部高度
     const height = headerRef.value.offsetHeight || 92 * website.scaleRatio;
     const root = document.documentElement;
-    root.style.setProperty("--header-height", height + "px");
+    root.style.setProperty("--header-height", `${height}px`);
   }, 0);
 });
 </script>
@@ -74,11 +68,11 @@ onMounted(() => {
         </div>
         <div class="title-layout" ref="titleLayout">
           <div class="left-arrow">
-            <div v-for="item in arrowLength" :key="item"></div>
+            <div v-for="item in arrowLength" :key="item" />
           </div>
           <h1 ref="titleRef" class="title">{{ title }}</h1>
           <div class="right-arrow">
-            <div v-for="item in arrowLength" :key="item"></div>
+            <div v-for="item in arrowLength" :key="item" />
           </div>
         </div>
         <div class="right-layout">
@@ -87,11 +81,11 @@ onMounted(() => {
       </div>
     </header>
     <main class="map-page-container-main">
-      <span class="rounded-border" v-for="item in 4" :key="item"></span>
+      <span class="rounded-border" v-for="item in 4" :key="item" />
       <div class="map-container">
-        <slot name="map"></slot>
+        <slot name="map" />
         <div id="controlBox" class="control-container">
-          <slot name="control"></slot>
+          <slot name="control" />
         </div>
       </div>
     </main>
@@ -214,8 +208,7 @@ onMounted(() => {
           > div {
             width: 14px;
             height: 17px;
-            background: url(@/assets/images/map/title-decoration-left.png)
-              no-repeat;
+            background: url(@/assets/images/map/title-decoration-left.png) no-repeat;
             background-size: 100% 100%;
           }
         }
@@ -227,8 +220,7 @@ onMounted(() => {
           > div {
             width: 14px;
             height: 17px;
-            background: url(@/assets/images/map/title-decoration-right.png)
-              no-repeat;
+            background: url(@/assets/images/map/title-decoration-right.png) no-repeat;
             background-size: 100% 100%;
           }
         }

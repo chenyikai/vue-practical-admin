@@ -1,48 +1,27 @@
 <script>
 export default {
-  name: "MainDialog",
+  name: "EntryMainDialog",
 };
 </script>
 
 <script setup>
-import useForm from "@/hooks/useForm.js";
+import useForm from "@/hooks/useForm";
 import { nextTick } from "vue";
-import website from "@/config/website.js";
-import { deptDetail } from "@/api/sys/dept/index.js";
-import useOptions from "./useOptions.js";
-const props = defineProps({
-  departTreeData: {
-    type: Array,
-    default: () => {
-      return [];
-    },
-  },
-});
+import { dictItemFormOption } from "@/views/sys/dict/options";
+import website from "@/config/website";
+import { dictEntryDetail } from "@/api/sys/dict/index";
 const emits = defineEmits({
   [website.pageStatus.CREATE]: null,
   [website.pageStatus.UPDATE]: null,
   [website.pageStatus.DETAIL]: null,
 });
-const {
-  key,
-  form,
-  loading,
-  formStatus,
-  dialog,
-  formData,
-  isDetail,
-  detailFunc,
-  setData,
-} = useForm();
-const { formOption, setColumnData } = useOptions();
-
+const { key, form, loading, formStatus, dialog, formData, isDetail, detailFunc, setData } =
+  useForm();
 function open(status, data = {}) {
   dialog.value.open();
-
-  detailFunc.value = deptDetail;
+  detailFunc.value = dictEntryDetail;
   setData(status, data);
-  setColumnData("parentId", "dicData", props.departTreeData);
-  formOption.disabled = isDetail.value;
+  dictItemFormOption.disabled = isDetail.value;
 
   nextTick().then(() => {
     form.value.clearValidate();
@@ -73,7 +52,7 @@ defineExpose({
 
 <template>
   <page-dialog
-    title="部门管理"
+    title="字典项管理"
     ref="dialog"
     @submit="onDialogSubmit"
     @close="onClose"
@@ -82,7 +61,7 @@ defineExpose({
     <avue-form
       ref="form"
       :key="key"
-      :option="formOption"
+      :option="dictItemFormOption"
       v-model="formData"
       @submit="onFormSubmit" />
   </page-dialog>

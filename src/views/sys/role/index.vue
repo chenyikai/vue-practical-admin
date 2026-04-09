@@ -7,9 +7,9 @@ export default {
 <script setup>
 import { ref, computed, nextTick, onBeforeMount } from "vue";
 import RoleListCard from "./list/index.vue";
-import { validatenull } from "@/utils/validate.js";
+import { validatenull } from "@/utils/validate";
 import LimitSettingCard from "./setting/index.vue";
-import { getMenuAll } from "@/api/sys/menu/index.js";
+import { getMenuAll } from "@/api/sys/menu/index";
 import VerticalStretchBox from "package/VerticalStretchBox/src/index.vue";
 
 const settingData = ref({});
@@ -47,10 +47,7 @@ onBeforeMount(() => {
       <role-list-card ref="list" @setting="handleSetting" />
     </template>
     <template #right>
-      <limit-setting-card
-        ref="limit"
-        :menu-data="allMenuTree"
-        @setting="handleSetting" />
+      <limit-setting-card ref="limit" :menu-data="allMenuTree" @setting="handleSetting" />
     </template>
   </vertical-stretch-box>
 </template>

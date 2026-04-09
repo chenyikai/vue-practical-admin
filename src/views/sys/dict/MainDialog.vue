@@ -5,26 +5,17 @@ export default {
 </script>
 
 <script setup>
-import useForm from "@/hooks/useForm.js";
-import { formOption } from "./options.js";
-import website from "@/config/website.js";
-import { dictDetail } from "@/api/sys/dict/index.js";
+import useForm from "@/hooks/useForm";
+import { formOption } from "./options";
+import website from "@/config/website";
+import { dictDetail } from "@/api/sys/dict/index";
 const emits = defineEmits({
   [website.pageStatus.CREATE]: null,
   [website.pageStatus.UPDATE]: null,
   [website.pageStatus.DETAIL]: null,
 });
-const {
-  key,
-  form,
-  loading,
-  formStatus,
-  dialog,
-  formData,
-  isDetail,
-  detailFunc,
-  setData,
-} = useForm();
+const { key, form, loading, formStatus, dialog, formData, isDetail, detailFunc, setData } =
+  useForm();
 
 function open(status, data = {}) {
   dialog.value.open();

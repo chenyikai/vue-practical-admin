@@ -18,10 +18,7 @@ defineOptions({
 
 <template>
   <div class="iframe-container">
-    <iframe
-      class="iframe"
-      :src="MenuStore.getMenu(route.meta.id).path"
-      frameborder="0"></iframe>
+    <iframe class="iframe" :src="MenuStore.getMenu(route.meta.id).path" frameborder="0" />
   </div>
 </template>
 

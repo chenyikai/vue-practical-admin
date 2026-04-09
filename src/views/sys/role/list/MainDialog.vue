@@ -5,27 +5,18 @@ export default {
 </script>
 
 <script setup>
-import useForm from "@/hooks/useForm.js";
+import useForm from "@/hooks/useForm";
 import { nextTick } from "vue";
-import { formOption } from "./options.js";
-import website from "@/config/website.js";
-import { roleDetail } from "@/api/sys/role/index.js";
+import { formOption } from "./options";
+import website from "@/config/website";
+import { roleDetail } from "@/api/sys/role/index";
 const emits = defineEmits({
   [website.pageStatus.CREATE]: null,
   [website.pageStatus.UPDATE]: null,
   [website.pageStatus.DETAIL]: null,
 });
-const {
-  key,
-  form,
-  loading,
-  formStatus,
-  dialog,
-  formData,
-  isDetail,
-  detailFunc,
-  setData,
-} = useForm();
+const { key, form, loading, formStatus, dialog, formData, isDetail, detailFunc, setData } =
+  useForm();
 
 function open(status, data = {}) {
   detailFunc.value = roleDetail;
@@ -35,19 +26,6 @@ function open(status, data = {}) {
   dialog.value.open();
   nextTick().then(() => {
     form.value.clearValidate();
-  });
-}
-
-function handleSubmit(done) {
-  form.value.validate((valid) => {
-    if (!valid) {
-      done();
-      return;
-    }
-
-    if (valid) {
-      emits(formStatus.value, formData.value, done);
-    }
   });
 }
 

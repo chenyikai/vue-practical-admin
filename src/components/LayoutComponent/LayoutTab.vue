@@ -8,9 +8,9 @@ export default {
 import draggable from "vuedraggable";
 import { computed } from "vue";
 import { useRouter } from "vue-router";
-import { tabStore } from "@/store/index.js";
-import website from "@/config/website.js";
-import { getPath } from "@/router/index.js";
+import { tabStore } from "@/store/index";
+import website from "@/config/website";
+import { getPath } from "@/router/index";
 import { CloseBold } from "@element-plus/icons-vue";
 const router = useRouter();
 const TabStore = tabStore();
@@ -21,9 +21,7 @@ const tabList = computed({
   },
   set(val) {
     let indexPage = [];
-    const index = val.findIndex(
-      (item) => item.value === website.fistPage.value,
-    );
+    const index = val.findIndex((item) => item.value === website.fistPage.value);
 
     if (index !== 0) {
       indexPage = val.splice(index, 1);
@@ -115,18 +113,13 @@ function getDropMenu(tab) {
     animation="300"
     item-key="id">
     <template #item="{ element }">
-      <el-dropdown
-        trigger="contextmenu"
-        popper-class="tab-drop-popper"
-        @command="handleCommand">
+      <el-dropdown trigger="contextmenu" popper-class="tab-drop-popper" @command="handleCommand">
         <div
           class="tab"
           :class="{ active: TabStore['tab']['value'] === element['value'] }"
           @click.stop="handleClick(element)">
           <div class="left-layout">
-            <svg-icon
-              class="icon"
-              :name="element.icon || website.defaultTabIcon" />
+            <svg-icon class="icon" :name="element.icon || website.defaultTabIcon" />
             <span class="label">{{ element.label }}</span>
           </div>
           <el-icon

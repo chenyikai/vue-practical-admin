@@ -10,7 +10,7 @@ import { debounce } from "lodash-es";
 import ComponentBox from "../../ComponentBox.vue";
 import SearchInput from "./SearchInput.vue";
 import ResultList from "./ResultList.vue";
-import { validatenull } from "@/utils/validate.js";
+import { validatenull } from "@/utils/validate";
 import { searchStore, shipInfoStore } from "@/store";
 const SearchStore = searchStore();
 const ShipInfoStore = shipInfoStore();
@@ -50,10 +50,7 @@ function onNodeClick(node) {
   <component-box id="search-bar" class="search-bar-control">
     <search-input v-model="keyword" @search="onSearch" />
   </component-box>
-  <result-list
-    v-if="SearchStore.visible"
-    ref="list"
-    @node-click="onNodeClick" />
+  <result-list v-if="SearchStore.visible" ref="list" @node-click="onNodeClick" />
 </template>
 
 <style lang="scss">

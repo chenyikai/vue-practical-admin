@@ -1,7 +1,7 @@
 <script setup>
 import UserInfo from "@/components/UserInfo/index.vue";
 import { useRouter } from "vue-router";
-import website from "@/config/website.js";
+import website from "@/config/website";
 import ThemeButton from "@/components/ThemeButton/index.vue";
 import NotificationCenter from "@/components/NotificationCenter/index.vue";
 import FullScreen from "@/components/FullScreen/index.vue";

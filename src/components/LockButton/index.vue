@@ -6,8 +6,6 @@ export default {
 
 <script setup>
 import { Lock } from "@element-plus/icons-vue";
-import { useRouter } from "vue-router";
-const router = useRouter();
 
 defineOptions({
   name: "LockButton",

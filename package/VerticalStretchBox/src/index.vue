@@ -33,9 +33,9 @@ const emits = defineEmits({
 const startPosition = ref(null);
 const left = ref({});
 const originWidth = ref(null);
-const _animation = ref(props.animation + "ms");
+const _animation = ref(`${props.animation}ms`);
 const resizeWidth = ref(null);
-const _gap = ref(props.gap + "px");
+const _gap = ref(`${props.gap}px`);
 const box = ref({});
 let moveCleanUp = null;
 let upCleanUp = null;
@@ -82,15 +82,11 @@ function onMouseup() {
       ref="left"
       :class="[{ show: visible }, { animation: !startPosition }]"
       :style="{ width: resizeWidth }">
-      <slot name="left"></slot>
+      <slot name="left" />
     </div>
-    <div
-      ref="shrink"
-      v-if="visible"
-      class="shrink-btn"
-      @mousedown="onMousedown" />
+    <div ref="shrink" v-if="visible" class="shrink-btn" @mousedown="onMousedown" />
     <div class="right-layout" v-if="visible" :class="{ show: visible }">
-      <slot name="right"></slot>
+      <slot name="right" />
     </div>
   </section>
 </template>

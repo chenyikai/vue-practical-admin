@@ -27,8 +27,9 @@ const { value, onTdChange, editabled } = useTd(props);
 
 <template>
   <div v-if="!editabled" class="normal-td-box">{{ value }}</div>
+
   <div v-else class="normal-td-box">
-    <el-input v-model="value" @change="onTdChange"></el-input>
+    <el-input v-model="value" @change="onTdChange" />
   </div>
 </template>
 

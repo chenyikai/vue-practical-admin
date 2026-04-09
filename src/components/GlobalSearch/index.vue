@@ -9,7 +9,7 @@ import { ref, nextTick } from "vue";
 import { Search, DArrowRight } from "@element-plus/icons-vue";
 import { debounce } from "lodash-es";
 import { menuStore } from "@/store";
-import website from "@/config/website.js";
+import website from "@/config/website";
 
 defineOptions({
   name: "GlobalSearch",
@@ -53,11 +53,7 @@ const onInput = debounce(
       <el-icon :size="20"><Search /></el-icon>
     </div>
     <div class="input-layout" v-else>
-      <el-popover
-        :visible="popoverVisible"
-        placement="bottom"
-        title="搜索结果"
-        :width="300">
+      <el-popover :visible="popoverVisible" placement="bottom" title="搜索结果" :width="300">
         <template #default>
           <el-empty :image-size="80" />
         </template>

@@ -32,9 +32,7 @@ function trailing() {
       <el-button v-debounce.trailing="debounce" type="primary">防抖</el-button>
     </admin-card>
     <admin-card title="节流" class="button-card">
-      <el-button v-throttle:1000.leading="trailing" type="primary"
-        >节流</el-button
-      >
+      <el-button v-throttle:1000.leading="trailing" type="primary">节流</el-button>
     </admin-card>
   </section>
 </template>

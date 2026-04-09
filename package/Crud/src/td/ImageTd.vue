@@ -5,13 +5,13 @@ export default {
 </script>
 
 <script setup>
-import { computed } from "vue";
+import useTd from "package/Crud/src/useTd.js";
 
 defineOptions({
   name: "ImageTd",
 });
 
-const { column, scope } = defineProps({
+const props = defineProps({
   column: {
     type: Object,
     default: () => {},
@@ -22,19 +22,11 @@ const { column, scope } = defineProps({
   },
 });
 
-const config = computed(() => {
-  if (typeof column?.config === "function") {
-    return column?.config(scope.row) || {};
-  } else {
-    return column?.config || {};
-  }
-});
-
-const value = computed(() => scope.row[column.prop]);
+const { value, editabled } = useTd(props);
 </script>
 
 <template>
-  <div class="image-td-box" @click.stop>
+  <div class="image-td-box" @click.stop v-if="!editabled">
     <el-image
       style="width: 50px; height: 50px"
       class="image"
@@ -50,6 +42,7 @@ const value = computed(() => scope.row[column.prop]);
       v-bind="config"
       preview-teleported />
   </div>
+  <div class="image-td-box" v-else />
 </template>
 
 <style lang="scss" scoped>

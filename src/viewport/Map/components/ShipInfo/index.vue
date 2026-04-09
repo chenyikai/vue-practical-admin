@@ -33,8 +33,7 @@ const detailTypeList = [
 ];
 
 const translateX = computed(() => {
-  const width =
-    detailTypeList.findIndex((t) => t.id === activeStep.value) * 80 + 12;
+  const width = detailTypeList.findIndex((t) => t.id === activeStep.value) * 80 + 12;
   return `translateX(${width * (window.innerWidth / 1920)}px)`;
 });
 
@@ -77,7 +76,7 @@ onMounted(() => {
     id="shipInfo"
     v-draggable:ship-info-container-header
     :loading="ShipInfoStore.loading"
-    :zIndex="ShipInfoStore.zIndex">
+    :z-index="ShipInfoStore.zIndex">
     <section class="ship-info-container">
       <header class="ship-info-container-header">
         <div class="title-layout">
@@ -86,14 +85,8 @@ onMounted(() => {
           }}</span>
         </div>
         <div class="func-layout">
-          <el-rate
-            v-model="attention"
-            :max="1"
-            clearable
-            @change="onAttentionChange" />
-          <el-icon class="close-btn" @click.stop="onClose"
-            ><CircleClose
-          /></el-icon>
+          <el-rate v-model="attention" :max="1" clearable @change="onAttentionChange" />
+          <el-icon class="close-btn" @click.stop="onClose"><CircleClose /></el-icon>
         </div>
       </header>
       <nav class="ship-info-container-nav">
@@ -107,9 +100,9 @@ onMounted(() => {
         </div>
         <div class="slider-tab" :style="{ transform: translateX }" />
       </nav>
-      <main class="ship-info-container-main"></main>
+      <main class="ship-info-container-main" />
       <footer class="ship-info-container-footer">
-        <div class="ship-info-container-footer-item"></div>
+        <div class="ship-info-container-footer-item" />
       </footer>
     </section>
   </component-box>

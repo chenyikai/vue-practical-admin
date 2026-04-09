@@ -20,7 +20,7 @@ const { src, size } = defineProps({
 });
 
 // 头像
-const avatarSize = ref(size + "px");
+const avatarSize = ref(`${size}px`);
 </script>
 
 <template>

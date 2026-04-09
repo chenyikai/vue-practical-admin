@@ -18,7 +18,7 @@ const { option } = defineProps({
   },
 });
 
-function getItemType(item) {}
+function _getItemType(_item) {}
 </script>
 
 <template>
@@ -30,10 +30,7 @@ function getItemType(item) {}
     <template #template v-if="Array.isArray(option.column)">
       <el-form class="skeleton-form" :label-width="option.labelWidth || 'auto'">
         <el-row>
-          <el-col
-            v-for="item in option.column"
-            :key="item.prop"
-            :span="item?.span || 12">
+          <el-col v-for="item in option.column" :key="item.prop" :span="item?.span || 12">
             <el-form-item :label="item.label" :required="!!item.rules">
               <el-skeleton-item variant="rect" />
             </el-form-item>
@@ -42,7 +39,7 @@ function getItemType(item) {}
       </el-form>
     </template>
     <template #default>
-      <slot></slot>
+      <slot />
     </template>
   </el-skeleton>
 </template>

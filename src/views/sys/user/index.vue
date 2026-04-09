@@ -5,11 +5,11 @@ export default {
 </script>
 
 <script setup>
-import website from "@/config/website.js";
+import website from "@/config/website";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { onBeforeMount } from "vue";
-import useCrud from "@/hooks/useCrud.js";
-import { crudOption } from "./options.js";
+import useCrud from "@/hooks/useCrud";
+import { crudOption } from "./options";
 import MainDialog from "./MainDialog.vue";
 import { useClipboard } from "@vueuse/core";
 import {
@@ -18,7 +18,7 @@ import {
   getUserPage,
   resetPwd,
   updateUser,
-} from "@/api/sys/user/index.js";
+} from "@/api/sys/user/index";
 
 const {
   dialog,
@@ -117,7 +117,9 @@ function handleReset(rowData) {
         confirmButtonText: "复制",
         cancelButtonText: "取消",
         callback: (action) => {
-          if (action !== "confirm") return;
+          if (action !== "confirm") {
+            return;
+          }
 
           const { copy, isSupported } = useClipboard();
           if (!isSupported) {
@@ -152,28 +154,15 @@ onBeforeMount(() => {
 <template>
   <page-container class="dict-page-container">
     <template #search>
-      <el-form
-        ref="searchForm"
-        :model="listQuery"
-        :inline="true"
-        label-suffix=":">
+      <el-form ref="searchForm" :model="listQuery" :inline="true" label-suffix=":">
         <el-form-item label="用户名" prop="username">
-          <el-input
-            v-model="listQuery.username"
-            placeholder="请输入用户名"
-            clearable></el-input>
+          <el-input v-model="listQuery.username" placeholder="请输入用户名" clearable />
         </el-form-item>
         <el-form-item label="姓名" prop="name">
-          <el-input
-            v-model="listQuery.name"
-            placeholder="请输入姓名"
-            clearable></el-input>
+          <el-input v-model="listQuery.name" placeholder="请输入姓名" clearable />
         </el-form-item>
         <el-form-item label="联系方式" prop="mobile">
-          <el-input
-            v-model="listQuery.mobile"
-            placeholder="请输入联系方式"
-            clearable></el-input>
+          <el-input v-model="listQuery.mobile" placeholder="请输入联系方式" clearable />
         </el-form-item>
         <el-form-item>
           <page-button type="search" @click.stop="onSearch" />
@@ -194,24 +183,15 @@ onBeforeMount(() => {
         @size-change="sizeChange"
         @current-change="currentChange"
         @sort-change="sortChange">
-        <template v-slot:menu="{ row }">
+        <template #menu="{ row }">
           <page-button
             icon="reset-password"
             label="重置密码"
             direction="horizontal"
             @click.stop="handleReset(row)" />
-          <page-button
-            type="detail"
-            direction="horizontal"
-            @click.stop="onDetail(row)" />
-          <page-button
-            type="update"
-            direction="horizontal"
-            @click.stop="onUpdate(row)" />
-          <page-button
-            type="delete"
-            direction="horizontal"
-            @click.stop="onDelete(row)" />
+          <page-button type="detail" direction="horizontal" @click.stop="onDetail(row)" />
+          <page-button type="update" direction="horizontal" @click.stop="onUpdate(row)" />
+          <page-button type="delete" direction="horizontal" @click.stop="onDelete(row)" />
         </template>
       </avue-crud>
     </template>

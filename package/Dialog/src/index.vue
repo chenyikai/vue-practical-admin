@@ -89,15 +89,11 @@ defineExpose({
     v-bind="attrs"
     @close="close">
     <div class="form-dialog-content" v-loading="loading">
-      <slot> </slot>
+      <slot />
     </div>
     <template #footer v-if="showFooter && !loading">
       <div class="dialog-footer">
-        <el-button
-          type="primary"
-          @click.stop="onConfirm"
-          :loading="isSubmit"
-          :disabled="isSubmit"
+        <el-button type="primary" @click.stop="onConfirm" :loading="isSubmit" :disabled="isSubmit"
           >保存</el-button
         >
         <el-button @click.stop="onCancel">取消</el-button>

@@ -5,10 +5,10 @@ export default {
 </script>
 
 <script setup>
-import website from "@/config/website.js";
+import website from "@/config/website";
 import { computed } from "vue";
-import { menuStore } from "@/store/index.js";
-import { go2MenuPage } from "@/router/index.js";
+import { menuStore } from "@/store/index";
+import { go2MenuPage } from "@/router/index";
 import SvgIcon from "package/SvgIcon/src/index.vue";
 
 const MenuStore = menuStore();

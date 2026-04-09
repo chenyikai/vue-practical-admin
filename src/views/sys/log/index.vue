@@ -5,12 +5,12 @@ export default {
 </script>
 
 <script setup>
-import website from "@/config/website.js";
+import website from "@/config/website";
 import { onBeforeMount } from "vue";
-import useCrud from "@/hooks/useCrud.js";
-import { crudOption } from "./options.js";
+import useCrud from "@/hooks/useCrud";
+import { crudOption } from "./options";
 import MainDialog from "./MainDialog.vue";
-import { getLogPage } from "@/api/sys/log/index.js";
+import { getLogPage } from "@/api/sys/log/index";
 
 const {
   dialog,
@@ -43,20 +43,12 @@ onBeforeMount(() => {
 <template>
   <page-container class="dict-page-container">
     <template #search>
-      <el-form
-        ref="searchForm"
-        :model="listQuery"
-        :inline="true"
-        label-suffix=":">
+      <el-form ref="searchForm" :model="listQuery" :inline="true" label-suffix=":">
         <el-form-item label="请求接口" prop="url">
-          <el-input
-            v-model="listQuery.url"
-            placeholder="请输入请求接口"></el-input>
+          <el-input v-model="listQuery.url" placeholder="请输入请求接口" />
         </el-form-item>
         <el-form-item label="IP地址" prop="ip">
-          <el-input
-            v-model="listQuery.ip"
-            placeholder="请输入IP地址"></el-input>
+          <el-input v-model="listQuery.ip" placeholder="请输入IP地址" />
         </el-form-item>
         <el-form-item>
           <page-button type="search" @click.stop="onSearch" />
@@ -74,11 +66,8 @@ onBeforeMount(() => {
         @size-change="sizeChange"
         @current-change="currentChange"
         @sort-change="sortChange">
-        <template v-slot:menu="{ row }">
-          <page-button
-            type="detail"
-            direction="horizontal"
-            @click.stop="onDetail(row)" />
+        <template #menu="{ row }">
+          <page-button type="detail" direction="horizontal" @click.stop="onDetail(row)" />
         </template>
       </avue-crud>
     </template>

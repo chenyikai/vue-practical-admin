@@ -1,5 +1,5 @@
 import { reactive } from "vue";
-import { getDictData } from "@/utils/util.js";
+import { getDictData } from "@/utils/util";
 
 export default () => {
   const formOption = reactive({

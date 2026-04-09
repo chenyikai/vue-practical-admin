@@ -5,17 +5,16 @@ export default {
 </script>
 
 <script setup>
-import useForm from "@/hooks/useForm.js";
-import useOptions from "./useOptions.js";
+import useForm from "@/hooks/useForm";
+import useOptions from "./useOptions";
 import { nextTick } from "vue";
-import website from "@/config/website.js";
+import website from "@/config/website";
 const emits = defineEmits({
   [website.pageStatus.CREATE]: null,
   [website.pageStatus.UPDATE]: null,
   [website.pageStatus.DETAIL]: null,
 });
-const { key, form, loading, formStatus, dialog, formData, isDetail, setData } =
-  useForm();
+const { key, form, loading, formStatus, dialog, formData, isDetail, setData } = useForm();
 
 const { formOption, setRule } = useOptions();
 

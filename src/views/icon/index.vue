@@ -13,7 +13,7 @@ defineOptions({
 <template>
   <section class="icon-page-container">
     <ul class="icon-list">
-      <li class="icon"></li>
+      <li class="icon" />
     </ul>
   </section>
 </template>

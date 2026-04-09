@@ -10,6 +10,6 @@ defineOptions({
 });
 </script>
 
-<template></template>
+<template><slot /></template>
 
 <style scoped lang="scss"></style>

@@ -6,8 +6,8 @@ export default {
 
 <script setup>
 import { computed, useSlots } from "vue";
-import { tabStore } from "@/store/index.js";
-import { validatenull } from "@/utils/validate.js";
+import { tabStore } from "@/store/index";
+import { validatenull } from "@/utils/validate";
 import SvgIcon from "package/SvgIcon/src/index.vue";
 const props = defineProps({
   pageInfo: {
@@ -42,18 +42,18 @@ const icon = computed(() => {
           <svg-icon class="icon" :name="icon" />
           <span class="label">{{ label }}</span>
         </h1>
-        <slot name="title"></slot>
+        <slot name="title" />
       </div>
       <div class="form-layout" v-if="!validatenull(slots.search)">
-        <slot name="search"></slot>
+        <slot name="search" />
       </div>
     </header>
     <el-divider class="divider-line" v-if="!validatenull(slots.search)" />
     <div class="button-layout" v-if="!validatenull(slots.button)">
-      <slot name="button"></slot>
+      <slot name="button" />
     </div>
     <main class="page-container-main">
-      <slot name="crud"></slot>
+      <slot name="crud" />
     </main>
     <slot name="dialog" />
   </section>

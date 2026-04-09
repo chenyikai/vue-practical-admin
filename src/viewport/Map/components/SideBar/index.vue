@@ -17,9 +17,7 @@ const sideBarList = reactive([
     id: 1,
     label: "船舶",
     type: "ship",
-    icon: new URL("@/assets/images/map/sideBar/ship.png", import.meta.url)[
-      "href"
-    ],
+    icon: new URL("@/assets/images/map/sideBar/ship.png", import.meta.url)["href"],
     component: "ship",
     active: false,
   },
@@ -27,9 +25,7 @@ const sideBarList = reactive([
     id: 2,
     label: "气象",
     type: "weather",
-    icon: new URL("@/assets/images/map/sideBar/weather.png", import.meta.url)[
-      "href"
-    ],
+    icon: new URL("@/assets/images/map/sideBar/weather.png", import.meta.url)["href"],
     component: "weather",
     active: false,
   },
@@ -37,9 +33,7 @@ const sideBarList = reactive([
     id: 3,
     label: "图层",
     type: "layer",
-    icon: new URL("@/assets/images/map/sideBar/layer.png", import.meta.url)[
-      "href"
-    ],
+    icon: new URL("@/assets/images/map/sideBar/layer.png", import.meta.url)["href"],
     component: "layer",
     active: false,
   },
@@ -47,9 +41,7 @@ const sideBarList = reactive([
     id: 4,
     label: "工具",
     type: "tool",
-    icon: new URL("@/assets/images/map/sideBar/tool.png", import.meta.url)[
-      "href"
-    ],
+    icon: new URL("@/assets/images/map/sideBar/tool.png", import.meta.url)["href"],
     component: "tool",
     active: false,
   },
@@ -57,9 +49,7 @@ const sideBarList = reactive([
     id: 5,
     label: "图源",
     type: "layerSource",
-    icon: new URL("@/assets/images/map/sideBar/source.png", import.meta.url)[
-      "href"
-    ],
+    icon: new URL("@/assets/images/map/sideBar/source.png", import.meta.url)["href"],
     component: "layerSource",
     active: false,
   },

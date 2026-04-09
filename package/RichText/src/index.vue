@@ -80,7 +80,9 @@ const compressImage = (file, quality = 0.7, maxWidth = 1000) => {
 
 // --- 初始化编辑器 ---
 onMounted(() => {
-  if (!divRef.value) return;
+  if (!divRef.value) {
+    return;
+  }
 
   editor = new AiEditor({
     element: divRef.value,
@@ -116,7 +118,9 @@ onMounted(() => {
     onChange: (ed) => {
       const html = ed.getHtml();
       model.value = html;
-      if (props.options.onChange) props.options.onChange(ed);
+      if (props.options.onChange) {
+        props.options.onChange(ed);
+      }
     },
   });
 });
@@ -141,7 +145,7 @@ watch(isDark, (val) => {
 
 // --- 销毁 ---
 onUnmounted(() => {
-  editor && editor.destroy();
+  editor?.destroy();
   editor = null;
 });
 
@@ -160,9 +164,6 @@ defineExpose({
 
 <template>
   <div class="aieditor-wrapper">
-    <div
-      class="editor-container"
-      ref="divRef"
-      :style="{ height: height }"></div>
+    <div class="editor-container" ref="divRef" :style="{ height: height }" />
   </div>
 </template>

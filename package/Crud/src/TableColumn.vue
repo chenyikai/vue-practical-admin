@@ -5,13 +5,13 @@ export default {
 </script>
 
 <script setup>
-import { inject, computed, onMounted } from "vue";
+import { computed, onMounted } from "vue";
 import ImageTd from "./td/ImageTd.vue";
 import TagTd from "package/Crud/src/td/TagTd.vue";
 import NormalTd from "package/Crud/src/td/NormalTd.vue";
 import RateTd from "package/Crud/src/td/RateTd.vue";
 import TextTd from "package/Crud/src/td/TextTd.vue";
-import { validatenull } from "@/utils/validate.js";
+import { validatenull } from "@/utils/validate";
 
 defineOptions({
   name: "TableColumn",
@@ -36,16 +36,7 @@ const tdMap = {
   text: TextTd,
 };
 
-const slots = inject("slots");
-const getHeadSlot = inject("getHeadSlot");
-const getFilterIcon = inject("getFilterIcon");
-
 // const config = inject("config");
-
-const hasChild = computed(
-  () =>
-    Array.isArray(props.column.children) && props.column.children.length !== 0,
-);
 
 const tdType = computed(() => {
   if (validatenull(props.column?.type)) {
@@ -77,13 +68,9 @@ onMounted(() => {
     :width="column.width"
     align="center"
     v-bind="column">
-    <template v-slot:default="scope">
+    <template #default="scope">
       <slot :name="column.prop" :scope="scope">
-        <component
-          :is="getComponent(column)"
-          :column="column"
-          :scope="scope"
-          @change="onChange" />
+        <component :is="getComponent(column)" :column="column" :scope="scope" @change="onChange" />
       </slot>
     </template>
   </el-table-column>

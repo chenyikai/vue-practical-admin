@@ -1,20 +1,24 @@
 <script>
 export default {
-  name: "RoleListCard",
+  name: "DictEntryDialog",
 };
 </script>
 
 <script setup>
+import { onBeforeMount, computed } from "vue";
+import useCrud from "@/hooks/useCrud";
+import { dictItemCrudOption } from "@/views/sys/dict/options";
 import website from "@/config/website";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { onBeforeMount } from "vue";
-import useCrud from "@/hooks/useCrud";
-import { crudOption } from "./options";
+import {
+  createDictItem,
+  deleteDictItemById,
+  getDictItemPage,
+  updateDictItem,
+} from "@/api/sys/dict/index";
 import MainDialog from "./MainDialog.vue";
-import { createRole, deleteRoleById, getRoleList, updateRole } from "@/api/sys/role/index";
-import { validatenull } from "@/utils/validate";
+
 const {
-  crud,
   dialog,
   funcList,
   listQuery,
@@ -26,27 +30,29 @@ const {
   sizeChange,
   handleFilter,
   currentChange,
+  setFreezeData,
   handelResetSearchForm,
 } = useCrud();
-const emits = defineEmits({ setting: null });
 
-const pageInfo = {
-  icon: "role",
-  label: "角色管理",
-};
+const pageInfo = computed(() => {
+  return {
+    icon: "entry",
+    label: `字典项管理-${listQuery.dictName}`,
+  };
+});
 
 function onAdd() {
   dialog.value.open(website.pageStatus.CREATE);
 }
 
 function onDelete(rowData) {
-  ElMessageBox.confirm(`是否确认删除角色：${rowData.roleName}？`, "提示", {
+  ElMessageBox.confirm(`是否确认删除字典项：${rowData.label}？`, "提示", {
     confirmButtonText: "确认",
     cancelButtonText: "取消",
     type: "warning",
   })
     .then(() => {
-      return deleteRoleById(rowData.id);
+      return deleteDictItemById(rowData.id);
     })
     .then(() => {
       ElMessage({
@@ -61,16 +67,12 @@ function onUpdate(rowData) {
   dialog.value.open(website.pageStatus.UPDATE, rowData);
 }
 
-function resetTable() {
-  crud.value.getTableHeight();
-}
-
-function onSetting(rowData) {
-  emits("setting", rowData);
+function onDetail(rowData) {
+  dialog.value.open(website.pageStatus.DETAIL, rowData);
 }
 
 function onCreateSubmit(formData, done) {
-  createRole(formData)
+  createDictItem({ ...formData, dictId: listQuery.dictId })
     .then(() => {
       done(true);
       ElMessage({
@@ -89,7 +91,7 @@ function onCreateSubmit(formData, done) {
 }
 
 function onUpdateSubmit(formData, done) {
-  updateRole(formData)
+  updateDictItem({ ...formData, dictId: listQuery.dictId })
     .then(() => {
       done(true);
       ElMessage({
@@ -107,41 +109,29 @@ function onUpdateSubmit(formData, done) {
     });
 }
 
-function getRoleData() {
-  return new Promise((resolve, reject) => {
-    getRoleList()
-      .then(({ data }) => {
-        const mainData = validatenull(listQuery.roleName)
-          ? data.data
-          : data.data.filter((item) => item.roleName.indexOf(listQuery.roleName) !== -1);
-        resolve({
-          mainData,
-        });
-      })
-      .catch((e) => reject(e));
-  });
-}
-
 function onSearch() {
   handleFilter();
 }
 
 onBeforeMount(() => {
-  funcList.callback = getRoleData;
-  getList();
+  funcList.page = getDictItemPage;
 });
 
 defineExpose({
-  resetTable,
+  search: (data) => {
+    setFreezeData("dictId", data.id);
+    setFreezeData("dictName", data.remarks);
+    onSearch();
+  },
 });
 </script>
 
 <template>
-  <page-container class="role-list-page-container" :page-info="pageInfo">
+  <page-container class="dict-entry-page-container" :page-info="pageInfo">
     <template #search>
       <el-form ref="searchForm" :model="listQuery" :inline="true" label-suffix=":">
-        <el-form-item label="角色名" prop="roleName">
-          <el-input v-model="listQuery.roleName" placeholder="请输入用户名" clearable />
+        <el-form-item label="字典项名称" prop="label">
+          <el-input v-model="listQuery.label" placeholder="字典项名称" />
         </el-form-item>
         <el-form-item>
           <page-button type="search" @click.stop="onSearch" />
@@ -156,18 +146,14 @@ defineExpose({
       <avue-crud
         ref="crud"
         :page="pagination"
-        :option="crudOption"
+        :option="dictItemCrudOption"
         :data="mainTableData"
         :table-loading="tableLoading"
         @size-change="sizeChange"
         @current-change="currentChange"
         @sort-change="sortChange">
         <template #menu="{ row }">
-          <page-button
-            icon="setting"
-            label="权限配置"
-            direction="horizontal"
-            @click.stop="onSetting(row)" />
+          <page-button type="detail" direction="horizontal" @click.stop="onDetail(row)" />
           <page-button type="update" direction="horizontal" @click.stop="onUpdate(row)" />
           <page-button type="delete" direction="horizontal" @click.stop="onDelete(row)" />
         </template>
@@ -182,8 +168,10 @@ defineExpose({
   </page-container>
 </template>
 
-<style lang="scss" scoped>
-.role-list-page-container {
-  padding: 0;
+<style lang="scss">
+.dict-entry-page-dialog {
+  .el-dialog__body {
+    padding: 20px;
+  }
 }
 </style>

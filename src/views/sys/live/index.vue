@@ -5,20 +5,15 @@ export default {
 </script>
 
 <script setup>
-import website from "@/config/website.js";
+import website from "@/config/website";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { onBeforeMount } from "vue";
-import useCrud from "@/hooks/useCrud.js";
-import { crudOption } from "./options.js";
+import useCrud from "@/hooks/useCrud";
+import { crudOption } from "./options";
 import MainDialog from "./MainDialog.vue";
 import { useClipboard } from "@vueuse/core";
-import {
-  createUser,
-  deleteUserById,
-  resetPwd,
-  updateUser,
-} from "@/api/sys/user/index.js";
-import { getLiveList } from "@/api/sys/live/index.js";
+import { createUser, deleteUserById, resetPwd, updateUser } from "@/api/sys/user/index";
+import { getLiveList } from "@/api/sys/live/index";
 
 const {
   dialog,
@@ -99,7 +94,7 @@ function onUpdateSubmit(formData, done) {
     });
 }
 
-function handleReset(rowData) {
+function _handleReset(rowData) {
   ElMessageBox.confirm(`是否确认重置用户：${rowData.username}密码？`, "提示", {
     confirmButtonText: "确认",
     cancelButtonText: "取消",
@@ -113,7 +108,9 @@ function handleReset(rowData) {
         confirmButtonText: "复制",
         cancelButtonText: "取消",
         callback: (action) => {
-          if (action !== "confirm") return;
+          if (action !== "confirm") {
+            return;
+          }
 
           const { copy, isSupported } = useClipboard();
           if (!isSupported) {
@@ -148,28 +145,18 @@ onBeforeMount(() => {
 <template>
   <page-container class="dict-page-container">
     <template #search>
-      <el-form
-        ref="searchForm"
-        :model="listQuery"
-        :inline="true"
-        label-suffix=":">
+      <el-form ref="searchForm" :model="listQuery" :inline="true" label-suffix=":">
         <el-form-item label="用户名称" prop="username">
-          <el-input
-            v-model="listQuery.username"
-            placeholder="请输入用户名称"></el-input>
+          <el-input v-model="listQuery.username" placeholder="请输入用户名称" />
         </el-form-item>
         <el-form-item label="用户登录ip" prop="ip">
-          <el-input
-            v-model="listQuery.ip"
-            placeholder="请输入用户登录ip"></el-input>
+          <el-input v-model="listQuery.ip" placeholder="请输入用户登录ip" />
         </el-form-item>
         <el-form-item label="所在地" prop="location">
-          <el-input
-            v-model="listQuery.beanName"
-            placeholder="请输入所在地"></el-input>
+          <el-input v-model="listQuery.beanName" placeholder="请输入所在地" />
         </el-form-item>
         <el-form-item label="状态" prop="status">
-          <el-input v-model="listQuery.status" placeholder="状态"></el-input>
+          <el-input v-model="listQuery.status" placeholder="状态" />
         </el-form-item>
         <el-form-item>
           <page-button type="search" @click.stop="onSearch" />
@@ -190,15 +177,9 @@ onBeforeMount(() => {
         @size-change="sizeChange"
         @current-change="currentChange"
         @sort-change="sortChange">
-        <template v-slot:menu="{ row }">
-          <page-button
-            type="detail"
-            direction="horizontal"
-            @click.stop="onDetail(row)" />
-          <page-button
-            type="delete"
-            direction="horizontal"
-            @click.stop="onDelete(row)" />
+        <template #menu="{ row }">
+          <page-button type="detail" direction="horizontal" @click.stop="onDetail(row)" />
+          <page-button type="delete" direction="horizontal" @click.stop="onDelete(row)" />
         </template>
       </avue-crud>
     </template>

@@ -38,8 +38,8 @@ function onClose() {
     <template #header>
       <h4>系统设置</h4>
     </template>
-    <template #default> </template>
-    <template #footer> </template>
+    <template #default />
+    <template #footer />
   </el-drawer>
 </template>
 

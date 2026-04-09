@@ -30,21 +30,15 @@ function init() {
 }
 
 function destroy() {
-  document
-    .getElementById("signBoard")
-    .removeEventListener("mousedown", onPointerDown);
+  document.getElementById("signBoard").removeEventListener("mousedown", onPointerDown);
 
-  document
-    .getElementById("signBoard")
-    .removeEventListener("mousemove", onPointerMove);
+  document.getElementById("signBoard").removeEventListener("mousemove", onPointerMove);
 }
 
 function onPointerDown(e) {
   const { offsetX, offsetY } = e;
 
-  document
-    .getElementById("signBoard")
-    .addEventListener("mousemove", onPointerMove);
+  document.getElementById("signBoard").addEventListener("mousemove", onPointerMove);
 
   window.addEventListener("mouseup", onPointerUp);
 
@@ -99,17 +93,13 @@ function drawCurve(beginPoint, controlPoint, endPoint) {
 }
 
 function on() {
-  document
-    .getElementById("signBoard")
-    .addEventListener("mousedown", onPointerDown);
+  document.getElementById("signBoard").addEventListener("mousedown", onPointerDown);
 
   window.addEventListener("mouseup", onPointerUp);
 }
 
 function off() {
-  document
-    .getElementById("signBoard")
-    .removeEventListener("mousemove", onPointerMove);
+  document.getElementById("signBoard").removeEventListener("mousemove", onPointerMove);
   window.removeEventListener("mouseup", onPointerUp);
 }
 
@@ -142,7 +132,7 @@ defineExpose({
 
 <template>
   <section class="sign-board-container" ref="container">
-    <canvas id="signBoard"></canvas>
+    <canvas id="signBoard" />
   </section>
 </template>
 

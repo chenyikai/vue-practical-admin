@@ -22,7 +22,7 @@ export default (props) => {
     },
   });
 
-  const editabled = computed(() => !!scope.value.editabled);
+  const editabled = computed(() => !!scope.value.row.editabled);
 
   const currentTd = ref({});
 

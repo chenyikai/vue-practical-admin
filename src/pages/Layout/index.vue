@@ -9,9 +9,9 @@ import { onBeforeMount } from "vue";
 import LayoutAside from "@/components/LayoutComponent/LayoutAside.vue";
 import LayoutHeader from "@/components/LayoutComponent/LayoutHeader.vue";
 import LayoutTab from "@/components/LayoutComponent/LayoutTab.vue";
-import { menuStore } from "@/store/index.js";
-import { initRoutes } from "@/router/index.js";
-import { menuData } from "@/mock/module/menu.js";
+import { menuStore } from "@/store/index";
+import { initRoutes } from "@/router/index";
+import { getUserMenuAll } from "@/api/sys/user/index";
 
 onBeforeMount(() => {
   initMenu().then((menu) => {
@@ -22,7 +22,9 @@ onBeforeMount(() => {
 
 function initMenu() {
   return new Promise((resolve) => {
-    resolve(menuData);
+    getUserMenuAll().then(({ data }) => {
+      resolve(data.data);
+    });
   });
 }
 </script>

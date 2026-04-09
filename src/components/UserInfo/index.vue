@@ -5,17 +5,17 @@ export default {
 </script>
 
 <script setup>
-import website from "@/config/website.js";
+import website from "@/config/website";
 import { ref, computed } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { userStore } from "@/store/index.js";
+import { userStore } from "@/store/index";
 import { useRoute, useRouter } from "vue-router";
-import { validatenull } from "@/utils/validate.js";
-import { encryption } from "@/utils/util.js";
+import { validatenull } from "@/utils/validate";
+import { encryption } from "@/utils/util";
 import PasswordDialog from "./password/PasswordDialog.vue";
-import { resetPassword } from "@/api/sys/auth/index.js";
+import { resetPassword } from "@/api/sys/auth/index";
 import UserInfoDialog from "./info/UserInfoDialog.vue";
-import { updateUser } from "@/api/sys/user/index.js";
+import { updateUser } from "@/api/sys/user/index";
 import SvgIcon from "package/SvgIcon/src/index.vue";
 const router = useRouter();
 const route = useRoute();
@@ -112,15 +112,11 @@ function onInfoModifySubmit(formData, done) {
       <template #dropdown>
         <el-dropdown-menu>
           <el-dropdown-item command="info">
-            <svg-icon
-              name="modifyInfo"
-              style="width: 18px; height: 18px; margin-right: 5px" />
+            <svg-icon name="modifyInfo" style="width: 18px; height: 18px; margin-right: 5px" />
             <span>修改信息</span>
           </el-dropdown-item>
           <el-dropdown-item command="password">
-            <svg-icon
-              name="modifyPassword"
-              style="width: 18px; height: 18px; margin-right: 5px" />
+            <svg-icon name="modifyPassword" style="width: 18px; height: 18px; margin-right: 5px" />
             <span>修改密码</span>
           </el-dropdown-item>
         </el-dropdown-menu>

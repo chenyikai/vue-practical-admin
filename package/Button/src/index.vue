@@ -6,7 +6,7 @@ export default {
 
 <script setup>
 import { readonly, computed, reactive } from "vue";
-import { validatenull } from "@/utils/validate.js";
+import { validatenull } from "@/utils/validate";
 import { userStore } from "@/store";
 import SvgIcon from "package/SvgIcon/src/index.vue";
 const emits = defineEmits({
@@ -108,9 +108,7 @@ function handleClick(e) {
 <template>
   <el-button
     class="page-button"
-    v-if="
-      validatenull(permission) || UserStore.permissions.includes(permission)
-    "
+    v-if="validatenull(permission) || UserStore.permissions.includes(permission)"
     :class="[props['type'], direction]"
     @click.stop="handleClick">
     <slot>

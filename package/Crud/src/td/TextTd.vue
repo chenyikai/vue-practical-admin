@@ -26,11 +26,8 @@ const { config, value, currentTd } = useTd(props);
 </script>
 
 <template>
-  <div ref="currentTd" class="tet-td-box" @click.stop>
-    <el-tooltip
-      :content="value"
-      v-bind="config.tooltip"
-      v-if="config.truncated">
+  <div ref="currentTd" class="text-td-box" @click.stop>
+    <el-tooltip :content="value" v-bind="config.tooltip" v-if="config.truncated">
       <el-text v-bind="config">{{ value }}</el-text>
     </el-tooltip>
 

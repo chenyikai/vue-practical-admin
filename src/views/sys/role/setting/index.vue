@@ -7,8 +7,8 @@ export default {
 <script setup>
 import { CloseBold, Select } from "@element-plus/icons-vue";
 import { ref } from "vue";
-import { updateRole } from "@/api/sys/role/index.js";
-import { getRoleMenuById } from "@/api/sys/menu/index.js";
+import { updateRole } from "@/api/sys/role/index";
+import { getRoleMenuById } from "@/api/sys/menu/index";
 import { ElMessage } from "element-plus";
 import { debounce } from "lodash-es";
 import SvgIcon from "package/SvgIcon/src/index.vue";
@@ -46,10 +46,7 @@ function init(info) {
 function updateRoleMenuData() {
   updateRole({
     id: currentRoleInfo.value.id,
-    menuIds: [
-      ...tree.value.getCheckedKeys(),
-      ...tree.value.getHalfCheckedKeys(),
-    ],
+    menuIds: [...tree.value.getCheckedKeys(), ...tree.value.getHalfCheckedKeys()],
   }).then(() => {
     ElMessage({
       message: "更新角色菜单成功",
@@ -92,17 +89,11 @@ defineExpose({
       <h1 class="page-title">
         <svg-icon name="limit" class="icon" />
         <span class="label">权限配置</span>
-        <span v-if="currentRoleInfo.roleName" class="label"
-          >({{ currentRoleInfo.roleName }})</span
-        >
+        <span v-if="currentRoleInfo.roleName" class="label">({{ currentRoleInfo.roleName }})</span>
       </h1>
       <div class="button-group">
         <el-button type="success" :icon="Select" circle @click.stop="submit" />
-        <el-button
-          type="danger"
-          :icon="CloseBold"
-          circle
-          @click.stop="emits('setting', {})" />
+        <el-button type="danger" :icon="CloseBold" circle @click.stop="emits('setting', {})" />
       </div>
     </header>
     <el-divider class="divider-line" style="margin-top: 15px" />

@@ -40,9 +40,7 @@ const toggleTheme = () => {
       {
         duration: 400,
         easing: "ease-in",
-        pseudoElement: isDark.value
-          ? "::view-transition-old(root)"
-          : "::view-transition-new(root)",
+        pseudoElement: isDark.value ? "::view-transition-old(root)" : "::view-transition-new(root)",
       },
     );
   });

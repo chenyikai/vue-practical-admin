@@ -18,7 +18,7 @@ function onInput(val) {
 }
 
 function onSearch() {
-  emits("search", keyword);
+  emits("search", keyword.value);
 }
 </script>
 
@@ -28,12 +28,9 @@ function onSearch() {
     :model-value="keyword"
     placeholder="查找指定经纬度、船舶、港口码头等"
     @input="onInput">
-    <template v-slot:suffix>
+    <template #suffix>
       <button class="search-button" @click="onSearch">
-        <img
-          src="@/assets/images/searchBar/search-btn.png"
-          alt=""
-          class="search-btn" />
+        <img src="@/assets/images/searchBar/search-btn.png" alt="" class="search-btn" />
       </button>
     </template>
   </el-input>
